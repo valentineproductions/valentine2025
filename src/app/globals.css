@@ -1,0 +1,1857 @@
+@font-face {
+  font-family: 'Helvetica Neue'; /* Use a specific font-family name */
+  src: url('/fonts/HelveticaNeue.ttc') format('truetype-collection');
+  font-weight: 500; /* Medium weight is 500 */
+  font-style: normal; /* Assuming Medium is not italic */
+  font-display: swap; /* Recommended for performance */
+}
+
+/* Regular face */
+@font-face {
+  font-family: 'Baskerville';
+  src: url('/fonts/Baskerville.ttc') format('truetype-collection');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* Optional for performance */
+}
+
+/* Italic face - MUST use same font-family name */
+@font-face {
+  font-family: 'Baskerville';
+  src: url('/fonts/Baskerville.ttc') format('truetype-collection');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sloop Script'; /* Choose a name for this font-family */
+  src: url('/fonts/Sloop Script Regular.ttf') format('truetype'); /* Use 'truetype' for .ttf files */
+  font-weight: normal;
+  font-style: normal;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: #5F1B19;
+  background-color: #fff;
+  /* font-family: Helvetica, sans-serif; */
+  font-family: 'Helvetica Neue', sans-serif;
+  /* Improves the rendering of fonts on WebKit-based browsers (like Chrome and Safari), making them appear smoother. */
+  -webkit-font-smoothing: antialiased;
+  /* Similar but for Gecko-based browsers (like Firefox) on macOS. */
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body.homeBody {
+    background: #5F1B19;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  /* Sets the color of the link text to inherit the color of its parent element (which will likely be the --foreground color). */
+  color: inherit;
+  /* text-decoration: none; */
+}
+
+/* Layout Styles */
+
+
+
+/* END Layout Styles */
+
+/* Navigation Bar Styles        NAV*/
+
+.navBar {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px 10px 20px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 2000px;
+  z-index: 10; /* Ensure it's above other content */
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Styles for the home page navigation bar (overlapping and fixed) */
+.navBar.homeNavBar {
+  background-color: transparent; /* Make the background transparent */
+  position: fixed; /* Make it stick to the top */
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Optional: Add a slight background blur for better readability over video */
+  /* backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.1); /* Adjust opacity as needed */
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.navBar.homeNavBar .homeNavLink,
+.navBar.homeNavBar a {
+  color: white; /* Set the text color to white */
+}
+
+/* Keep the existing underline styles for the homepage */
+.navBar.homeNavBar .homeNavLink::after,
+.navBar.homeNavBar a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: white; /* Underline color should also be white */
+  transition: width 0.3s ease;
+}
+
+.navBar.homeNavBar .homeNavLink:hover,
+.navBar.homeNavBar a:hover, .homeBody .menu-trigger:hover {
+  color: rgb(220, 220, 220); /* Optional: Slightly lighter white on hover */
+}
+
+.navBar.homeNavBar .homeNavLink:hover::after,
+.navBar.homeNavBar a:hover::after {
+  width: 100%;
+}
+
+/* Existing styles for the non-homepage navigation bar */
+.homeNavLink {
+  color: var(--foreground);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  margin-right: auto;
+  position: relative; /* Needed for the underline effect */
+}
+
+.homeNavLink::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: #5F1B19; /* Or your desired underline color */
+  transition: width 0.3s ease;
+}
+
+.homeNavLink:hover {
+  color: #5F1B19; /* Optional: Change color on hover */
+}
+.homeBody .homeNavLink:hover {
+  color: #fff; /* Optional: Change color on hover */
+}
+
+.homeNavLink:hover::after {
+  width: 100%;
+}
+
+.navBar a, span.menu-trigger {
+  color: var(--foreground);
+  text-decoration: none;
+  margin-left: 1rem;
+  transition: color 0.3s ease;
+  position: relative; /* Needed for the underline effect */
+  font-weight: 500;
+  letter-spacing: 0.32px;
+}
+
+.navBar a:first-child {
+  margin-left: 0;
+}
+
+.navBar a::after, span.menu-trigger::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: #5F1B19; /* Or your desired underline color */
+  transition: width 0.3s ease;
+}
+
+.homeBody span.menu-trigger::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: #fff; /* Or your desired underline color */
+  transition: width 0.3s ease;
+}
+
+
+.navBar a:hover::after, span.menu-trigger:hover::after {
+  width: 100%;
+}
+
+.menu-trigger {
+  cursor: pointer; /* Make it clear it's clickable */
+}
+
+.menu-trigger:hover {
+  color: #5F1B19; /* Add a hover effect if desired */
+}
+
+/* END Navigation Bar Styles      NAV */
+
+
+
+/* Home Page Styles - - - - -  HOME  */
+
+.sloganSolid h2, .SloganContainerVideo h2, .homePage .three h2, .homePage .four h2, .homePage .five .approachContainer h2 {
+  /* color: red; */
+  font-family: Sloop Script, cursive;
+  font-weight: inherit;
+  letter-spacing: 0.32px;
+}
+/* 
+header.navBar.homeNavBar + main {
+  background: #5f1b19;
+  position: absolute;
+  z-index: -2;
+  width: 100%;
+} */
+
+.homePage {
+  color: #fff; /* Font Color */
+  
+}
+
+.SloganContainerSolid h1 {
+  text-align: center;
+}
+
+.homePage .container {
+  overflow-y: scroll;
+  height: 100vh;
+  scroll-snap-type: y mandatory; 
+  /* Enable vertical scroll snapping */
+  
+}
+
+/* section .two, section .three, section .four, section .five { */
+.sloganVideo.two, .processSection.four, .approachSection.five {
+  min-height: 100vh;
+  display: flex;
+  place-items: center;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: end; 
+  align-items: center;
+  scroll-snap-align: start;
+  overflow: hidden;
+  /* position: relative; - commented out in the second rule */
+}
+
+.SloganContainerVideo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+}
+
+.servicesSection.three{
+  min-height: 100vh;
+  display: flex;
+  place-items: center;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: space-around; 
+  align-items: center;
+  scroll-snap-align: start;
+  overflow: hidden;
+}
+
+.servicesTop {
+  margin-top: 50px;
+}
+
+.servicesDescription {
+  /* padding-bottom: 2%; */
+}
+
+.homePage section > *:not(.locationsNemail) {
+  /* Target all direct children that are NOT .locationsNemail */
+  margin-top: auto; /* Push them towards the top (due to space-between) */
+  margin-bottom: auto; /* Keep them centered vertically within the available space */
+  text-align: center;
+  width: 100%;
+}
+
+.homePage section.one > *:not(.locationsNemail) {
+  /* Special handling for the first section if needed */
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.homePage section.two > *:not(.locationsNemail) {
+  /* Special handling for the second section if needed */
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.servicesContainer {
+  margin-bottom: 0 !important;
+}
+
+.homePage section.three {
+  /* Our Services */
+  margin:20px; /*I need this one for it to appear*/
+}
+
+.homePage section.four > *:not(.locationsNemail) {
+  /* Special handling for the fourth section if needed */
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.locationsNemail {
+  display: flex; /* Enable flexbox for horizontal arrangement of children */
+  justify-content: center; /* Center the content horizontally within this container */
+  align-items: center; /* Vertically align items in case they have different heights */
+  width: 100%; /* Ensure it takes the full width of the section */
+  padding: 10px 0 20px 0; /* Removed top because of the frame, only if I apply the bg per sectino approach */
+  font-family: 'Helvetica Neue', sans-serif;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+  height: 50px;
+}
+
+.locationsNemail2 {
+  display: flex; /* Enable flexbox for horizontal arrangement of children */
+  justify-content: center; /* Center the content horizontally within this container */
+  align-items: center; /* Vertically align items in case they have different heights */
+  width: 100%; /* Ensure it takes the full width of the section */
+  padding: 10px 0 20px 0; /* Removed top because of the frame, only if I apply the bg per sectino approach */
+  font-family: 'Helvetica Neue', sans-serif;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.locationsCodes,
+.homeEmail {
+  /* Add some horizontal margin to create space between them */
+  margin: 0 35px; /* Adjust the value as needed for the desired space */
+}
+
+.homeEmail a {
+  text-decoration: none;
+}
+
+#VideoBG, .videos {
+  position: fixed; /* Position relative to .one */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  z-index: -1; /* Place behind text */
+  touch-action: none;
+}
+
+/* Frame v1 */
+/* .overlayFrame {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999; 
+  pointer-events: none;
+}
+
+.overlayFrame img {
+  height: 122% !important;
+  top: 7px !important;
+} */
+/*  */
+
+/* "Hidden" name of the company to get an h1 with it  */
+.SloganContainerVideo h1 {
+  visibility: hidden; /* Hide the text */
+  text-align: center;
+}
+
+/* .sloganSolid {
+  
+} */
+/* 
+section.sloganVideo.two {
+  background: linear-gradient(#5f1b19 70%, #0000 100%);
+} */
+
+.sloganContainerSolid h2,
+.sloganVideo h2,
+.servicesSection h2,
+.processSection h2,
+.approachContainer h2:first-child {
+  font-size: 69px;
+  background-color: initial; /* Remove existing background color */
+  padding: 0; /* Remove existing padding */
+  line-height: 65%;
+}
+
+
+
+/* Shadow to help read text over home video */
+header.navBar.homeNavBar a, .homeBody .menu-trigger, section.sloganVideo h2, .locationsNemail p, .locationsNemail a, .locationsNemail2 p, .locationsNemail2 a, .servicesDescription p, .servicesLists, .servicesSection h2, .processSection h2, .processDescription, .processDescription p, .approachContainer p, .approachContainer h2, section.approachSection .pageNote {
+  color: white;
+  text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  
+}
+  .servicesDescription p  {
+      width: 80%;
+      margin: 0 auto;
+    }
+  .approachContainer p {
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Next.js BG, important note, the Image is at process, tried it a the slogon and it disappears */
+    .processContainer {
+        height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        position: relative;
+    }
+    
+    .background-image-wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        /* To put it behind text */
+        z-index: -1;
+    }
+
+    /* I will maybe have to modify these with js */
+    .background-image-wrapper img {
+        height: 95% !important;
+        top: 10px !important;
+    }
+    /* Works but will try Next.js approach */
+    /* .processContainer {
+        height: 94vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background-image: url('https://cdn.sanity.io/images/m2vd2mbt/production/1310b78f98d4b3a22dbbb3b3b711363f40c358a1-7613x4161.png ');
+        background-size: contain;
+        margin-top: 10px !important;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: local;
+        position: relative;
+    } */
+
+  .processDescription p {
+    font-weight: 500;
+    color: white;
+    text-shadow: 1px 1px 4px #000;
+    text-align: center;
+    width: 85%;
+    margin: 0 auto;
+    font-size: 12px;
+  }
+
+  .servicesDescription span p, .approachDescription span p {
+    font-weight: 400;
+    font-size: 60px;
+    text-transform: uppercase;
+    font-family: 'Baskerville', serif;
+    white-space: pre-wrap;
+    line-height: 83%;
+    /* font-style: italic; */
+    letter-spacing: -0.64px;
+    
+  }
+
+  span p:empty {
+      /* height: 60px; */
+      margin: 2% auto;
+  }
+
+  .servicesLists h3 {
+      font-family: 'Baskerville', serif;
+      font-weight: 100;
+      margin-bottom: 5px;
+      font-style: italic;
+      line-height: 93%;
+      letter-spacing: -0.32px;
+      
+  }
+
+  .servicesLists {
+    display: flex; /* Enable flexbox for horizontal arrangement */
+    flex-wrap: wrap; /* Allow items to wrap to the next line on smaller screens */
+    justify-content: center; /* Center the columns horizontally */
+    gap: 20px; /* Space between the columns */
+    width: 100%; /* Take full width of the parent */
+    max-width: 960px; /* Optional: Limit the maximum width of the container */
+    margin: 50px 0 130px 0 !important;
+  }
+  
+
+  .servicesLists .animatedDivs {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      width: 100%;
+      max-width: 960px;
+      margin: 0px auto;
+      display: flex;
+  }
+  
+  /* Common height breakpoints */
+@media (max-height: 900px) {
+  .servicesLists {
+    margin: 40px 0 100px !important;
+  }
+  .servicesLists h3 {
+    font-size: 18px;
+  }
+}
+
+@media (max-height: 800px) {
+  .servicesLists {
+    margin: 0px 0 90px !important;
+    gap: 15px;
+  }
+  .servicesLists h3 {
+    font-size: 17px;
+  }
+  .servicesLists li {
+    font-size: 14px;
+  }
+}
+
+@media (max-height: 710px) {
+  .servicesLists {
+    margin: -15px 0 60px !important;
+    gap: 12px;
+  }
+  .servicesLists h3 {
+    font-size: 16px;
+  }
+  .servicesLists li {
+    font-size: 13px;
+  }
+  .servicesDescription span p, .approachDescription span p{
+    font-size: 40px;
+  }
+  .servicesContainer {
+      margin-top: 100px !important;
+  }
+}
+
+@media (max-height: 600px) {
+  .servicesLists {
+    margin: 25px 0 30px !important;
+    gap: 10px;
+  }
+  .servicesLists h3 {
+    font-size: 15px;
+  }
+  .servicesLists li {
+    font-size: 12px;
+  }
+  .coolBG {
+      opacity: 0;
+  }
+  .servicesSection.three {
+    min-height: 100vh;
+    }
+
+  .servicesDescription span p, .approachDescription span p{
+    font-size: 40px;
+  }
+
+  .processDescription div h3 {
+    font-size: 50px;
+  }
+
+  .servicesContainer {
+    margin-top: 50px !important;
+}
+}
+  
+  .serviceList1,
+  .serviceList2,
+  .serviceList3 {
+    flex: 1 1 auto; /* Distribute available space, initial width of 300px */
+    text-align: center; /* Center the content within each column */
+    /* padding: 20px; */
+    border-radius: 5px; /* Optional: Add rounded corners */
+  }
+
+  
+
+  .servicesLists ul {
+    list-style: none;
+    padding: 0;
+    text-transform: uppercase;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.32px;
+    line-height: 93%;
+  }
+
+  .servicesLists ul li {
+    font-weight: 500;
+  }
+
+  .processDescription div h3 {
+    text-align: center;
+    font-size: 60px;
+    text-transform: uppercase;
+  }
+  
+  .processDescription div h3:not(:first-child) {
+    padding: 10px 0 0px 0;
+  }
+
+
+  /* Hover Animation @ Process */
+.processDescription {
+  display: flex; /* To keep the divs in a column */
+  flex-direction: column; /* Arrange divs vertically */
+}
+
+.processDescription .animatedDivs > div {
+  /* Styles for the normal state */
+  height: 90px; /* Adjust as needed for your initial content height */
+  display: flex; /* Enable flexbox for vertical centering on hover */
+  flex-direction: column; /* Stack content within the div initially */
+  justify-content: flex-start; /* Align content to the top initially */
+  align-items: center; /* Center content horizontally */
+  text-align: center; /* Center text within the paragraph */
+  transition: height 1s ease-in-out; /* Smooth transition for the height change */
+}
+
+.processDescription .animatedDivs > div:hover {
+  /* Styles for the hover state */
+  height: 200px;
+  justify-content: center; /* Vertically center content on hover */
+  font-size: 20px;
+  width: auto;
+  margin: 0 auto;
+  /* transition: height 3s ease-in-out;  */
+}
+
+.processDescription .animatedDivs > div h3 {
+  margin-top: 0; /* Reset default margin for the heading */
+  font-family: 'Baskerville', serif;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 93%;
+  letter-spacing: -0.32px;
+}
+
+.pinyon-script-regular, .processContainer span {
+  font-family: "Pinyon Script", cursive;
+  font-size: 60px;
+  letter-spacing: -0.32px;
+  line-height: 83%;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.processDescription > div p {
+  margin-top: 0; /* Reset default margin for the paragraph */
+  text-transform: uppercase;
+  
+}
+
+@media (max-width: 1199px) {
+  /* Styles for large screens go here */
+  .coolBG {
+      display: none;
+  }
+}
+
+  /* Responsive adjustments for smaller screens */
+  /* 7   6   7 */
+
+  @media (max-width: 767px) {
+
+  .servicesSection h2 {
+    padding: 100px 0 0 0;
+  }
+
+  .servicesDescription {
+    padding-bottom: 20px;
+  }
+
+  .servicesDescription span p, .approachDescription span p, .processDescription div h3 {
+    text-align: center;
+    font-size: 40px;
+  }
+
+  span p:empty {
+    height: 40px;
+    margin: 0 auto;
+  }
+
+  .processDescription div h3:not(:first-child) {
+    padding: 10px 0 0px 0;
+  }
+
+  .processDescription > div:hover {
+    /* Styles for the hover state */
+    height: 160px;
+  }
+
+  .servicesLists {
+    flex-direction: column; /* Stack columns vertically on smaller screens */
+    align-items: center; /* Center the columns horizontally */
+  }
+
+  .serviceList1,
+  .serviceList2,
+  .serviceList3 {
+    width: 80%; /* Make columns wider on smaller screens */
+    margin-bottom: 20px; /* Add more space between stacked columns */
+  }
+
+  .servicesDescription p span, .approachDescription p span {
+    font-weight: 500;
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 575px) {
+  .sloganContainerSolid h2,
+  .sloganVideo h2,
+  .servicesSection h2,
+  .processSection h2,
+  .approachContainer h2:first-child {
+    
+    font-size: 51px;
+    background-color: initial; /* Remove existing background color */
+    /* padding-bottom: 10px; */
+    text-wrap: balance;
+  }
+
+  .processDescription > div:hover {
+    width: 100%;
+  }
+
+}
+
+
+
+
+/* Footer Home Page */
+.homePage section .approachSection {
+  scroll-snap-align: start;
+  flex-direction: column;
+  place-items: center;
+  gap: 10px;
+  min-height: 100vh;
+  display: flex;
+}
+
+.homePage .approachSection.five {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the section is at least viewport height */
+  justify-content: flex-start; /* Distribute space between top and bottom elements */
+}
+
+.approachContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  height: 100vh;
+}
+
+.homeLastVideoFooter {
+  width: 100%;
+  padding: 20px 20px 50px 20px;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.homeLastVideoFooter .pageNote {
+  display: flex;
+  justify-content: space-between; /* Keep space-between for large screens */
+  max-width: 2000px;
+  margin: 0 auto;
+  align-items: end;
+}
+
+.homeLastVideoFooter .leftSide {
+  display: flex; /* Keep flex row for large screens */
+  gap: 40px;
+  padding-left: 30px;
+}
+
+/* Removed aside.sideBar .pageNoteText, for anomation */
+
+aside.sideBar .pageNoteText {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: pre-wrap;
+  line-height: 95%;
+  letter-spacing: 0.70px;
+}
+
+.leftSide .pageNoteText, .leftSide a, aside.sideBar .connectSection a {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: pre-wrap;
+  text-wrap: balance;
+  line-height: 95%;
+  letter-spacing: 0.70px;
+}
+
+aside.sideBar .departmentsSection a {
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: pre-wrap;
+  text-wrap: balance;
+  line-height: 95%;
+  letter-spacing: 0.70px;
+}
+
+aside.sideBar .departmentsSection a:hover {
+  text-decoration: underline;
+}
+
+.homeLastVideoFooter .workSection {
+  text-align: left;
+  width: 330px;
+}
+
+.homeLastVideoFooter .connectSection {
+  text-align: left;
+  width: 120px;
+}
+
+.homeLastVideoFooter .copyRight {
+  text-align: left;
+  width: 300px;
+}
+
+.homeLastVideoFooter .pageNoteTitle {
+  font-size: 16px;
+  font-weight: 500;
+  font-family: 'Baskerville', serif;
+  font-style: italic;
+  line-height: 93%;
+  margin-bottom: 5px;
+  letter-spacing: -0.32px;
+}
+
+/* .homeLastVideoFooter .pageNoteText {
+  margin-bottom: 15px;
+  line-height: 1.5;
+} */
+
+.homeLastVideoFooter .contactLink {
+  display: block;
+  margin-bottom: 0;
+  text-decoration: none;
+}
+
+.homeLastVideoFooter .contactLink:hover {
+  text-decoration: underline;
+}
+
+
+/* END Home Page Styles - - - - - - HOME*/
+
+
+/* ----- Pages Styles */
+
+.pageContainer header a:hover {
+  text-decoration: underline;
+}
+
+.pageContainer header h1{
+  font-family: Sloop Script, cursive;
+  font-weight: 500;
+  margin: 70px 0 0px;
+  letter-spacing: 0.32px;
+  font-size: 69px;
+  line-height: 65%;
+
+}
+
+.pageContainer header {
+  text-align: center;
+  width: 70%;
+  margin: 0 auto;
+}
+
+header.talent-page {
+  margin: 156px auto 0;
+}
+
+header .pageDescription {
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  font-weight: 500;
+  font-size: 12px;
+  text-wrap: balance;
+  white-space: pre-wrap;
+  line-height: 93%;
+  letter-spacing: 0.32px;
+}
+
+header .contactInfo {
+  margin-bottom: 40px;
+  font-family: 'Baskerville', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 93%;
+  letter-spacing: 0.16px;
+}
+
+/* Team Members Styles   -----TM Changes */
+  .pageContent .gallery {
+    overflow-y: clip; /*Was not working in the class bellow idk*/
+  } 
+
+  /* --- Gallery Container --- */
+  .gallery{
+    width: 100%; /* Takes full width */
+    max-width: 100%; /* Optional max-width */
+    margin-inline: auto;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    padding: 40px 0px 40px 7px; /* Add padding for content spacing and scrollbar */
+    /* Optional: Add scrollbar styling / Firefox */
+    /* scrollbar-width: thin; 
+    scrollbar-color: #ccc #f0f0f0;  */
+    
+    /* Coming Soon Updates */
+    min-height: 90vh; /* 400px min before, this way call for a scroll*/
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery h2 {
+  letter-spacing: .32px;
+  margin: 70px 0 0;
+  font-family: Sloop Script, cursive;
+  font-size: 69px;
+  font-weight: 500;
+  line-height: 65%;
+}
+
+
+/* End Comming Soon Changes */
+
+.gallery {
+  /* Other styles for your gallery */
+  overflow: auto; /* Or overflow-x: auto; or overflow-y: auto; depending on the scrolling direction */
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+.gallery::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and newer Edge */
+}
+
+.gallery-panel{
+    width: 395px; /* Fixed size for the team member pictures */ 
+    height: 62vh;
+    flex-shrink: 0; /* Prevent shrinking */
+    /* border-radius: 0.75rem; */
+    cursor: n-resize;
+    transition: width 0.5s ease-in-out;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+}
+
+.panel-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Let content fill available space */
+  transition: transform 0.5s ease-in-out;
+}
+.panel-content:hover {
+  transform: translateY(-40px); /* Move up on hover, but not all of it */
+}
+
+.member-title span {
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 12px;
+  display: block;
+  padding: 7px;
+  text-align: center;
+  letter-spacing: 0.32px;
+  line-height: 93%;
+}
+
+.member-title span i {
+  text-transform: capitalize;
+  font-style: italic;
+  font-family: 'Baskerville', serif;
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 93%;
+}
+
+
+.gallery-panel img {
+    width: 100%;
+    height: 100%;
+    /* Allow image to take available vertical space */
+    /* flex-grow: 1;  */
+    object-fit: cover;
+    transition: transform 3s ease, filter 3s ease; /* Added filter transition */
+    z-index: 1; /* Ensure image is interactive */
+}
+
+.text-info {
+  padding: 3px;
+  text-align: center;
+  background-color: #fff; /* Match panel background */
+  z-index: 0;
+}
+
+.fullname {
+  font-weight: bold;
+  font-size: 30px;
+  opacity: 0; /* Initially hidden */
+  visibility: hidden;
+  height: 0; /* Collapse space when hidden */
+  overflow: hidden; /* Prevent content visibility when height is 0 */
+  /*  */
+  transform: translateY(-20px); /* Start 10px below its final position */
+  transition: opacity 3s ease, transform 1s ease, height 0.5s 0.4s; /* Add transform to transition */
+  font-family: Sloop Script, cursive;
+  font-weight: 100;
+  font-size: 45px;
+}
+
+/* --- Hover Effects --- */
+
+
+/* Move image up and reveal full name on hover */
+.gallery-panel:hover img {
+  transform: translateY(-6px); /* Adjust this value as needed */
+  /* height: auto; */
+}
+
+.gallery-panel:hover .fullname {
+  opacity: 1; /* Show full name */
+  visibility: visible;
+  height: auto; /* Allow it to take space */
+  /* Animation */
+  transform: translateY(0); /* Slide up to its current position */
+}
+
+.gallery-panel:hover .member-title {
+  transform: translateY(-7px); /* Slide up to its current position */
+}
+
+/* Grayscale effect for non-hovered panels */
+.gallery:has(.gallery-panel:hover) .gallery-panel:not(:hover) img{
+    filter: grayscale(100%);
+    height: 550px; /* Adjust height for non-hovered panels in desktop*/
+}
+
+/* --- Media Queries --- */
+
+@media (max-width: 600px) {
+  /* Adjust hover image move on small screens */
+  .gallery-panel:hover img {
+    transform: translateY(-6px); /* Less movement */
+    width: 320px;
+  }
+  .gallery-panel:hover, .gallery-panel{
+      width: 320px; 
+      height: 485px; /*Helps with the mobile size of the other images*/
+  }
+
+  .panel-content:hover {
+    transform: translateY(-40px); /* Move up on hover, but not all of it */
+  }
+
+  .pageContainer header {
+    text-align: center;
+    width: auto;
+    margin: 0 auto;
+  }
+
+  header .pageDescription, header .contactInfo {
+      font-size: 12px;
+      width: 304px;
+      margin: 0 auto;
+  }
+  header .pageDescription, header .contactInfo {
+      margin-bottom: 20px;
+  }
+}
+
+/* END Team Members Styles   -----TM */
+
+
+/* Work Page Styles */
+
+.workImages {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(24%, 1fr)); /* Creates responsive columns */
+  gap: 7px; /* Adjust the gap between images as needed */
+  padding-bottom: 50px;
+}
+
+.workProductImage {
+  width: 100%; /* Make images take up the full width of their grid cell */
+  height: 100%; /* Maintain aspect ratio */
+  display: block; /* Prevent extra space below inline elements */
+  object-fit: cover;
+}
+
+/*  */
+.workImages .image-container {
+  position: relative;
+  transition: opacity 1s ease;
+  width: 100%;
+  aspect-ratio: 671/1000; /* For exact ratio (439/654) */
+  /* OR */
+  aspect-ratio: 2/3; /* Simplified ratio (close enough) */
+  min-height: 150px; /* Fallback for older browsers */
+}
+/* Modern aspect-ratio will override this, but it's good for fallback */
+@supports not (aspect-ratio: 2/3) {
+  .workImages .image-container::before {
+    content: "";
+    display: block;
+    padding-bottom: 149%; /* (654/439)*100 ≈ 149% */
+    /* This creates the same ratio using old-school padding technique */
+  }
+}
+
+.workImages .fade-out {
+  opacity: 0;
+}
+
+.workImages .fade-in {
+  opacity: 1;
+}
+
+.workImages .workProductImage {
+  transition: opacity 1s ease;
+}
+/*  */
+
+/* Optional: Adjust for smaller screens if needed */
+@media (max-width: 575px) {
+  .workImages {
+    grid-template-columns: repeat(auto-fit, minmax(50%, 1fr)); /* Two columns on medium screens */
+  }
+
+  .pageContainer header h1 {
+      /* margin-bottom: -20px; */
+      font-size: 51.75px;
+      font-weight: 500;
+  }
+}
+
+
+/* END Work Page Styles */
+
+
+/* Footer ------F  */
+footer {
+  width: 100%;
+  padding: 20px; /* Adjust padding as needed */
+  /* position: fixed; */
+  bottom: 0;
+  left: 0;
+  z-index: 10; /* Ensure it's above other content if needed */
+}
+
+footer .pageNote {
+  display: flex;
+  justify-content: space-between; /* Distribute space between the main sections */
+  align-items: center; /* Align items to the top */
+  max-width: 2000px; /* Optional: Limit the width of the footer content */
+  margin: 0 auto; /* Optional: Center the footer content horizontally */
+}
+
+footer .leftSide {
+  display: flex; /* Arrange workSection and connectSection horizontally */
+  gap: 40px; /* Adjust the space between the two sections */
+  padding-left: 30px;
+}
+
+footer .workSection {
+  text-align: left;
+  width: 330px; /* 330 before .: */
+  /* Add any specific styling for the work section here */
+}
+
+footer .connectSection {
+  text-align: left; /* Or center if you prefer the links centered within this section */
+  /* Add any specific styling for the connect section here */
+  width: 120px; /* 120 before .: */
+}
+
+footer .copyRight {
+  text-align: left;
+  width: 300px; /* 250 before .: */
+}
+
+footer .pageNoteTitle, aside .pageNoteTitle {
+  font-size: 16px;
+  font-weight: 500;
+  font-style: italic;
+  margin-bottom: 5px;
+  font-family: 'Baskerville', serif;
+  line-height: 93%;
+}
+
+.departmentsSection h2.pageNoteTitle {
+  margin: -7px 0 0;
+}
+
+footer .pageNoteText {
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+footer .contactLink, aside .contactLink {
+  display: block; /* Make links stack on top of each other */
+  margin-bottom: 0;
+  text-decoration: none;
+}
+
+footer .contactLink:hover {
+  text-decoration: underline;
+}
+
+/* ----- END Pages Styles */
+
+/* Responsive Styles for footer Pages */
+@media (max-width: 767px) {
+
+  .homeLastVideoFooter .pageNote, footer .pageNote {
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start;
+  }
+
+  .homeLastVideoFooter .leftSide, footer .leftSide {
+    display: flex;
+    flex-direction: column; /* Stack workSection and connectSection */
+    gap: 3px;
+    padding-left: 0;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  .homeLastVideoFooter .connectAndCopyright, footer .connectAndCopyright {
+    display: flex; /* Arrange connect and copyright in a row */
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .homeLastVideoFooter .connectSection, footer .connectSection {
+    width: auto;
+  }
+
+  .homeLastVideoFooter .workSection, footer .workSection {
+    width: auto;
+    /* margin-bottom: 20px; */
+  }
+
+  .homeLastVideoFooter .copyRight, footer .copyRight {
+    width: auto;
+    text-align: left;
+    flex-grow: 1;
+  }
+}
+
+.myProjects {
+  color:green;
+  margin-top: 24px;
+}
+/* box */
+.aProject {
+  border-width: 1px;
+  border-radius: 3px;
+  border: #505050;
+  border-style: solid;
+  max-width: 50%;
+  margin: 3 auto;
+
+  /* Scroll Animation */
+  display:grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto;
+  gap: 5px;
+
+  align-items: center;
+  justify-content: center;
+  /*takes it out of the screen, to the right */
+  transform: translateX(400%); 
+  transition: transform 1s ease;
+  /*   opacity: 0; */
+}
+
+.aProject:nth-of-type(even):not(.show) {
+  transform: translateX(-400%); /*No space between the X and the (*/
+/*   opacity: 0; */
+}
+
+.aProject.show{
+  transform: translateX(0);  /*brings it back to the screen, setting this class with JS*/
+/*   opacity: 1;
+  transition: opacity 3s; */
+}
+
+/* End Scroll Animation */
+
+.projectTitle {
+  font-weight: bolder;
+  text-align: center; /* Center the text within its grid cell */
+
+}
+.projectImage {
+  width: 100%;
+  height: auto; /* Maintain aspect ratio */
+  display: block; /* Prevent extra space below the image */
+}
+
+
+.bg-gradient-text {
+  background-image: linear-gradient(to right, #f97316, #ef4444, #7e22ce); /* Tailwind's orange-400, red-500, purple-600 */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Project Page */
+
+.projectContainer header {
+  display: flex;
+  justify-content: space-between; /* Puts space between the title and the link */
+  align-items: center; /* Vertically aligns the title and the link in the center */
+  padding: 5rem; /* Add some padding around the header content */
+  /* You might want to add a border-bottom here to visually separate the header */
+  /* border-bottom: 1px solid #ccc; */
+}
+
+.projectContainer header h1 {
+  font-size: 1.5rem; /* Adjust the font size as needed */
+  margin: 0; /* Remove default margin for better alignment */
+}
+
+.projectContainer header a {
+  /* Basic link styling - feel free to customize */
+  color: green; /* Or your desired link color */
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: 1px solid green; /* Or your desired border */
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.projectContainer header a:hover {
+  background-color: lightgreen; /* Example hover effect */
+  color: white;
+}
+
+.projectContent p {
+  padding: 40px;
+  text-align: center;
+}
+
+.singleProjectImage {
+  width: 50%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* END Project Page */
+
+/* About Page Styles */
+
+.aboutPage {
+  display: flex; /* Enable flexbox for the main layout */
+  min-height: 100vh; /* Ensure the page takes up at least the full viewport height */
+  justify-content: flex-start; /* Align items to the start of the flex container */
+  position: relative; /* Needed for sticky sidebar */
+}
+
+/* Media query for screens larger than 2000px */
+@media (min-width: 2001px) {
+  .aboutPage {
+    justify-content: center; /* Center content horizontally on very large screens */
+  }
+}
+
+.aboutMain {
+  flex: 1; /* Still allows the main content to take up the remaining horizontal space */
+  color: #5F1B19; /* Font Color */
+  /* max-width: 1300px;  */
+  min-width: 0;
+  overflow-anchor: none;
+}
+
+.aboutContent {
+  display: flex; /* Enable flexbox for the content */
+  flex-direction: column; /* Stack the title and text vertically */
+  align-items: center; /* Center items horizontally */
+  text-align: center; /* Center text within the elements (fallback for older browsers) */
+  line-height: 65%;
+  
+}
+
+.aboutTitle {
+  font-family: Sloop Script, cursive;
+  font-weight: 100;
+  font-size: 50px;
+  margin: 70px 0 10px 0;
+  text-wrap: balance;
+  letter-spacing: 0.32px;
+}
+
+.aboutText, .projectDescription {
+  font-size: 40px;
+  line-height: 30px;
+  max-width: 90%;
+  font-weight: 400;
+  line-height: 83%;
+  font-family: 'Baskerville', serif;
+  text-transform: uppercase;
+  white-space: pre-wrap;
+  text-wrap: balance;
+  letter-spacing: -.32px;
+}
+
+.aboutText {
+  /* Include all the base styles */
+  margin-bottom: 70px;
+}
+
+.projectDescription {
+  /* Include all the base styles */
+  margin: 70px 0;
+}
+
+.featureAnimated {
+  margin: 20px 0;
+}
+
+/* Improved About Project Styles */
+
+.aboutProject {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center overall content */
+  margin-bottom: 50px; /* Slightly increased bottom margin */
+  text-align: center; /* Default text alignment */
+  width: 100%; /* Consistent width for the project section */
+  /* max-width: 1300px;  */
+}
+
+.lastSection {
+  margin-bottom: 200px; 
+}
+
+
+.clientInfo {
+  position: relative; /* Needed for absolute positioning of children */
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0 7px;
+  text-align: left;
+  line-height: 93%;
+  letter-spacing: 0.32px;
+}
+
+.clientInfo, .projectImages {
+  padding-left: 7px;
+}
+
+.clientInfo h3 {
+  font-size: 12px;
+  margin-bottom: 0;
+  white-space: nowrap; /* Prevent titles from wrapping and taking up more width */
+  overflow: hidden;       /* Hide overflowing text */
+  text-overflow: ellipsis; /* Indicate overflow with an ellipsis */
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.clientInfo .projectTitle {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /* Center the element */
+  text-align: center;
+  width: 60%; /* Adjust as needed to prevent overlap with long client/year */
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.clientInfo .projectYear {
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.projectImages,
+.projectImages2 {
+  display: flex; /* Arrange images horizontally */
+  gap: 7px;
+  width: 100%;
+  margin-bottom: 30px; /* Add some vertical margin */
+
+}
+
+.aboutProductImage {
+  width: 100%; /* Make images fill their container */
+  height: auto; /* Maintain aspect ratio */
+  object-fit: cover; /* Ensure the image covers the space */
+  /* border-radius: 5px; */
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.projectIntro {
+  width: 100%; /* Use the same width as other elements for consistency */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Keep centered for now, can adjust */
+  text-align: center; /* Ensure text is centered by default */
+}
+
+.featuredImage {
+  max-width: 100%;
+  height: auto;
+  display: block; /* Ensure proper spacing */
+  margin: 0 auto; /* Center the image */
+}
+
+/* Short Featured Image (528x339) */
+.shortFeaturedImage {
+  width: 528px;
+  height: 339px;
+  object-fit: cover; /* Ensure the image covers the space */
+}
+
+/* Tall Featured Image (405x541) */
+.tallFeaturedImage {
+  width: 405px;
+  height: 541px;
+  object-fit: cover; /* Ensure the image covers the space */
+}
+
+/* For projectImages (3 images) */
+.projectImages .aboutProductImage {
+  flex: 1 1 calc((100% - 14px) / 3); /* Subtract gap space (7px * 2 gaps) */
+  min-width: 0; /* Allow images to shrink below their intrinsic width */
+}
+
+/* For projectImages2 (2 images) */
+.projectImages2 .aboutProductImage {
+  flex: 1 1 calc((100% - 7px) / 2); /* Subtract gap space (7px * 1 gap) */
+  min-width: 0; /* Allow images to shrink below their intrinsic width */
+}
+
+@media (max-width: 767px) {
+  /* Stack images vertically on very small screens if needed */
+  .projectImages, .projectImages2 {
+    /* flex-direction: column; */
+    flex-direction: row;
+    overflow-x: auto;
+  }
+  .projectImages .aboutProductImage,
+  .projectImages2 .aboutProductImage {
+    width: 90%;
+    flex: none;
+  }
+  
+}
+
+/* Make featured images responsive based on their default size*/
+@media (max-width: 575px) {
+  .featureAnimated {
+      width: 100%;
+  }
+  .shortFeaturedImage {
+    width: 80%;
+    height: auto;
+    max-height: 339px;
+  }
+  
+  .tallFeaturedImage {
+    width: 80%;
+    height: auto;
+    max-height: 541px;
+  }
+}
+
+/* Sidebar or Page Note Sticky*/ 
+
+
+.sidebar-container {
+  width: 27%;
+  position: relative;
+}
+
+.sideBar {
+  width: 100%; /* Sidebar takes up 30% of the parent's width */
+  padding: 20px 20px 20px 85px; 
+  background-color: #fff; /* Example background for visibility */
+  flex-shrink: 0;
+  color: #5F1B19; /* Font Color */
+  /* display: flex;  */
+  justify-content: left; /* Left pageNote horizontally */
+  position: absolute;
+  top: 0; 
+  height: 100vh; /* Make the sidebar take up the full viewport height */
+  overflow-y: auto; /* Enable scrolling within the sidebar if content overflows */
+  will-change: transform;
+}
+
+.sideBar .pageNote {
+  max-width: 382px;
+  width: 100%;
+  height: 90%; /* Take full height of sidebar */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Push sections to top and bottom */
+}
+
+.sideBar .copyRight {
+  margin-top: auto; /* Push to bottom */
+  padding-bottom: 30px; /* Add some space at the bottom */
+}
+
+.copyRightText {
+  font-size: 10px; 
+  line-height: 107%;
+  text-transform: uppercase;
+  letter-spacing: -0.48px;
+  font-family: 'Helvetica Neue';
+  font-weight: 500;
+  text-wrap: balance;
+}
+
+.copyRightText span {
+  font-weight: bold;
+}
+
+p.copyRightText b {
+  font-style: italic;
+  font-family: 'Baskerville';
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.sideBar .workSection {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  height: 135px;
+}
+
+.sideBar .connectSection {
+  margin-bottom: 40px;
+}
+
+.pageNoteTitle .pageNoteText {
+  text-align: left; /* Center the title text */
+}
+
+.sideBar h2.pageNoteTitle {
+  padding: 20px 0 0px 0;
+}
+
+.contactLink {
+  display: block;
+  text-align: left; /* Center the contact links */
+  margin-bottom: 10px;
+  color: inherit; /* Inherit color from sidebar */
+  text-decoration: none;
+}
+
+.contactLink:hover {
+  text-decoration: underline;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .sideBar {
+      padding: 20px 20px 20px 20px;
+  }
+}
+
+
+@media (max-width: 767px) {
+  .sidebar-container {
+      display: none;
+  }
+  .clientInfo .projectYear {
+      padding-right: 7px;
+  }
+  .projectImages, .projectImages2{
+    gap: 0;
+    max-height: 700px;
+  }
+  header.navBar {
+      font-size: 12px;
+  }
+  .navBar {
+    padding: 10px;
+  }
+  header.navBar img {
+      width: 77px;
+      height: auto;
+  }
+  .aboutMain .sectionContainer .lastAboutSection {
+    margin-bottom: 150px; 
+  }
+}
+
+@media (min-width: 768px) {
+  .sidebar-container {
+      display: block;
+  }
+  .aboutFooter {
+      display: none;
+  }
+  header.navBar {
+      font-size: 12px;
+  }
+
+}
+
+/* 7 6 7 */
+
+@media (max-width: 767px) {
+  .sideBar {
+    padding: 7px;
+  }
+
+  .sideBar .connectSection {
+      margin-bottom: 0px;
+  }
+  .locationsCodes, .homeEmail{
+    margin: 0 12px;
+  }
+  /* WIP */
+  .clientInfo {
+    display: flex;
+    flex-direction: column; /* Arrange items in a column */
+    align-items: center; /* Center items horizontally */
+    text-align: center; /* Center text within each item */
+    width: 100%; /* Take full width */
+    margin-bottom: 15px; /* Add more vertical spacing between items */
+    position: relative; /* Keep position relative if needed for other reasons */
+    justify-content: flex-start; /* Align items to the top of the column */
+  }
+
+  .clientInfo h3 {
+    white-space: normal; /* Allow text to wrap on smaller screens */
+    text-overflow: initial; /* Show the full text */
+    text-transform: uppercase; /* Keep uppercase */
+    font-size: 12px; /* Keep the font size */
+    font-weight: 500; /* Keep the font weight */
+    overflow: visible; /* Show the full text */
+    width: 100%; /* Make each h3 take full width of the container */
+    letter-spacing: 0.32px; /* Keep letter spacing */
+    line-height: 93%;
+  }
+
+  .clientInfo .projectTitle {
+    text-align: center; /* Center the project title */
+    text-transform: uppercase; /* Keep uppercase */
+    width: 100%; /* Take full width */
+    font-weight: 500; /* Keep font weight */
+    position: static; /* Remove absolute positioning */
+    left: auto; /* Reset left */
+    transform: translateX(0); /* Reset transform */
+    margin-top: 5px; /* Add some space above the project title */
+  }
+
+  .clientInfo .projectYear {
+    text-align: center; /* Center the project year */
+    white-space: normal; /* Allow text to wrap */
+    text-overflow: initial; /* Show full text */
+    overflow: visible; /* Show full text */
+    width: 100%; /* Take full width */
+    margin-top: 5px; /* Add some space above the project year */
+  }
+  
+
+}
+
+/* END About Page Styles */
+
+/* Common Media Query Ranges Used as Reference */
+
+/* Extra Small Devices (Phones - Portrait) */
+@media (max-width: 575px) {
+  /* Styles for extra small screens go here */
+}
+
+/* Small Devices (Phones - Landscape & Larger Phones) */
+@media (min-width: 576px) and (max-width: 767px) {
+  /* Styles for small screens go here */
+}
+
+/* Medium Devices (Tablets) */
+@media (min-width: 768px) and (max-width: 991px) {
+  /* Styles for medium screens go here */
+}
+
+/* Large Devices (Laptops & Small Desktops) */
+@media (min-width: 992px) and (max-width: 1199px) {
+  /* Styles for large screens go here */
+}
+
+/* Extra Large Devices (Large Desktops & TVs) */
+@media (min-width: 1200px) {
+  /* Styles for extra large screens go here */
+}
+
+
+/* Common Media Query Ranges */
