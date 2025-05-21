@@ -1693,12 +1693,12 @@ p.copyRightText b {
 
 .sideBar .workSection {
   margin-top: 40px;
-  /* margin-bottom: 40px; */
-  height: 135px;
+  margin-bottom: 60px;
+  /* height: 135px; */
 }
 
-.sideBar .connectSection {
-  margin-bottom: 40px;
+.sideBar .connectSection, .departmentsSection {
+  margin-bottom: 50px;
 }
 
 .pageNoteTitle .pageNoteText {

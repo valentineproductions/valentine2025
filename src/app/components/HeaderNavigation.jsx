@@ -51,11 +51,15 @@ export default function HeaderNavigation() { // Default empty array
             </Link>
             {isMobile ? (
                 <div className="mobileNavContainer">
-                    {!menuOpen ? (
-                        <span className="menu-trigger" onClick={toggleMenu}>
-                            MENU
-                        </span>
-                    ) : (
+                    <span 
+                        className={`menu-trigger ${menuOpen ? 'menu-open' : ''}`} 
+                        onClick={toggleMenu}
+                    >
+                        {menuOpen ? 'MENU' : 'MENU'}
+                    </span>
+                    
+                    {/* Menu content that toggles */}
+                    {menuOpen && (
                         <MenuAnimation isOpen={menuOpen}>
                             <div className="mobileNavLinks">
                                 {pages.slice().reverse().map((page) => (
