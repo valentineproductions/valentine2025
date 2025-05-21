@@ -7,8 +7,8 @@ import { getAllPagesData } from "../../../sanity/schemas/sanity-utils";
 
 
 export const metadata = {
-  title: "Valentine Website 2025",
-  description: "Generated with Next + Sanity",
+  title: "Valentine Global",
+  description: "Where Vision Meets Execution",
 };
 
 export const revalidate = 300; // Revalidate every 5 minutes
@@ -19,7 +19,7 @@ export default async function RootLayout({ children }) {
   // const pages = data?.pages || []; // Access the 'pages' array
 
   const allData = await getAllPagesData();
-  //console.log("All Data:", allData); //  line to check the data structure
+  console.log("All Data:", allData); //  line to check the data structure
   const pages = allData?.pages || [];
   
   const homePageData = allData?.homepage || null;

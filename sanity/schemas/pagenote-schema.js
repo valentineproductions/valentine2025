@@ -95,6 +95,32 @@ const pageNote = {
         description: 'Email address associated with Department 3 on the About page',
       },
       {
+        name: 'globalTeamTitle',
+        title: 'Global Team Title',
+        type: 'string',
+        description: 'Optional title for the "Glogal Team" section.',
+      },
+      {
+        name: 'cities',
+        title: 'Cities',
+        type: 'array',
+        of: [{
+          type: 'object',
+          fields: [
+            {
+              name: 'cityTitle',
+              title: 'City Name',
+              type: 'string'
+            }
+          ],
+          preview: {
+            select: {
+              title: 'cityTitle'
+            }
+          }
+        }]
+      },
+      {
         name: 'copyrightText',
         title: 'Copyright Text',
         type: 'string',

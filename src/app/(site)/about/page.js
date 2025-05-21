@@ -256,6 +256,17 @@ export default function About() {
                     </div>
                     )}
 
+                    {/* To Update Once Schema gets updated with fields = globalTeamTitle & cities */}
+                    <div className="departmentsSection">
+                        <h2 className="pageNoteTitle">Global Teams In:</h2>
+                        <p>LONDON</p>
+                        <p>HUNGARY</p>
+                        <p>SEOUL</p>
+                        <p>TORONTO</p>
+                        <p>BUENOS AIRES</p>
+                        <p>MADRID</p>
+                    </div>
+
                     {aboutPageData.pageNote.copyrightText && (
                     <div className="copyRight">
                         <p className="copyRightText"><b>{aboutPageData.pageNote.copyrightBrandName}</b> {aboutPageData.pageNote.copyrightText} {aboutPageData.pageNote.copyrightYear} {aboutPageData.pageNote.copyrightBrandName}</p>

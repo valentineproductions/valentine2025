@@ -72,7 +72,7 @@ export default function Page() {
                     
                     <div className="gallery">
                         <div className="stickNav">
-                            <StickyNav></StickyNav> 
+                            {/* <StickyNav></StickyNav>  */}
                         </div>
                         {/* <h2>Coming Soon</h2> */}
                         {/* <SoonAnimation>{currentPage.tbd}</SoonAnimation> */}
