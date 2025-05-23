@@ -214,21 +214,38 @@ export default function About() {
 
                     {/* Global Team */}
                     <div className="departmentsSection">
+                        
+                        {/* 1 Column */}
                         {aboutPageData.pageNote.globalTeamTitle && (
+                        <h2 className="pageNoteTitle">{aboutPageData.pageNote.globalTeamTitle}</h2>
+                        )}
+                        {aboutPageData.pageNote.cities?.length > 0 && (
+                        <div className="city-list">
+                            {aboutPageData.pageNote.cities.map((city, index) => (
+                            <p key={index} className="city-item">
+                                {city.cityTitle}
+                            </p>
+                            ))}
+                        </div>
+                        )}
+                        
+                        {/* Together, with commas & 4th element enter*/}
+                        {/* {aboutPageData.pageNote.globalTeamTitle && (
                             <h2 className="pageNoteTitle">{aboutPageData.pageNote.globalTeamTitle}</h2>
                         )}
                         <p>
                             {aboutPageData.pageNote.cities?.map((city, index) => (
                                 <span key={index}>
                                     {city.cityTitle}
-                                    {/* Add comma if not last item */}
                                     {index !== aboutPageData.pageNote.cities.length - 1 ? ', ' : ''}
-                                    {/* Add line break after every 4th item (except last) */}
                                     {(index + 1) % 4 === 0 && index !== aboutPageData.pageNote.cities.length - 1 ? <br /> : ''}
                                 </span>
                             ))}
-                        </p>
+                        </p> */}
+
                     </div>
+
+                    
 
                     {/* Department 1 */}
                     {aboutPageData.pageNote.aboutDepartment1 && (
