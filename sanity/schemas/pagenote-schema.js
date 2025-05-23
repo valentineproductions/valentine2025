@@ -123,7 +123,7 @@ const pageNote = {
       {
         name: 'copyrightText',
         title: 'Copyright Text',
-        type: 'string',
+        type: 'text',
         description: 'Optional copyright information.',
       },
       {

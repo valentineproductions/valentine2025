@@ -159,7 +159,7 @@ a {
 .navBar a, span.menu-trigger {
   color: var(--foreground);
   text-decoration: none;
-  margin-left: 1rem;
+  margin-left: 60px;
   transition: color 0.3s ease;
   position: relative; /* Needed for the underline effect */
   font-weight: 500;
@@ -826,18 +826,7 @@ aside.sideBar .pageNoteText {
   letter-spacing: 0.70px;
 }
 
-.leftSide .pageNoteText, .leftSide a, aside.sideBar .connectSection a {
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 500;
-  white-space: pre-wrap;
-  text-wrap: balance;
-  line-height: 95%;
-  letter-spacing: 0.70px;
-}
-
-aside.sideBar .departmentsSection a, .departmentsSection p {
-  text-decoration: none;
+.leftSide .pageNoteText, .leftSide a, aside.sideBar .connectSection a, aside.sideBar .departmentsSection a, .departmentsSection p {
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 500;
@@ -917,8 +906,8 @@ aside.sideBar .departmentsSection a:hover {
   margin: 0 auto;
 }
 
-header.talent-page {
-  margin: 156px auto 0;
+header.talent-page, .pageContainer header, .pageContent .aboutMain{
+  margin: 190px auto 0;
 }
 
 header .pageDescription {
@@ -1247,16 +1236,16 @@ footer .pageNoteTitle, aside .pageNoteTitle {
   line-height: 93%;
 }
 
-.departmentsSection h2.pageNoteTitle {
+/* .departmentsSection h2.pageNoteTitle {
   margin: -7px 0 0;
-}
+} */
 
 footer .pageNoteText {
   margin-bottom: 15px;
   line-height: 1.5;
 }
 
-footer .contactLink, aside .contactLink {
+footer .contactLink, aside .contactLink, aside.sideBar .departmentsSection a{
   display: block; /* Make links stack on top of each other */
   margin-bottom: 0;
   text-decoration: none;
@@ -1638,23 +1627,28 @@ footer .contactLink:hover {
 
 .sidebar-container {
   width: 27%;
+  flex-shrink: 0;
   position: relative;
 }
 
 .sideBar {
-  width: 100%; /* Sidebar takes up 30% of the parent's width */
-  padding: 20px 20px 20px 85px; 
-  background-color: #fff; /* Example background for visibility */
   flex-shrink: 0;
-  color: #5F1B19; /* Font Color */
-  /* display: flex;  */
   justify-content: left; /* Left pageNote horizontally */
-  position: absolute;
-  top: 0; 
-  height: 100vh; /* Make the sidebar take up the full viewport height */
-  overflow-y: auto; /* Enable scrolling within the sidebar if content overflows */
   will-change: transform;
+
+  position: fixed; /* Lock to viewport */
+  top: 0; /* Stick to top */
+  right: 0; /* Stick to right edge */
+  width: 26.7%; /* Match parent width */
+  height: 100vh; /* Full viewport height */
+  padding: 20px 20px 20px 85px;
+  background-color: #fff; /* Example background for visibility */
+  color: #5F1B19;
+  overflow-y: auto; /* Enable scrolling if content overflows */
+  z-index: -100; /* Ensure it stays above other content */
 }
+
+
 
 .sideBar .pageNote {
   max-width: 382px;
@@ -1671,13 +1665,14 @@ footer .contactLink:hover {
 }
 
 .copyRightText {
-  font-size: 10px; 
+  font-size: 8px; 
   line-height: 107%;
   text-transform: uppercase;
-  letter-spacing: -0.48px;
+  letter-spacing: 0.40px;
   font-family: 'Helvetica Neue';
   font-weight: 500;
   text-wrap: balance;
+  white-space: pre-wrap;
 }
 
 .copyRightText span {
@@ -1688,26 +1683,27 @@ p.copyRightText b {
   font-style: italic;
   font-family: 'Baskerville';
   font-weight: 600;
-  font-size: 12px;
+  font-size: 10px;
+  letter-spacing: -0.27px;
 }
 
 .sideBar .workSection {
-  margin-top: 40px;
-  margin-bottom: 60px;
+  margin-top: 40%;
+  margin-bottom: 42px;
   /* height: 135px; */
 }
 
 .sideBar .connectSection, .departmentsSection {
-  margin-bottom: 50px;
+  margin-bottom: 35px;
 }
 
 .pageNoteTitle .pageNoteText {
   text-align: left; /* Center the title text */
 }
 
-.sideBar h2.pageNoteTitle {
+/* .sideBar h2.pageNoteTitle {
   padding: 20px 0 0px 0;
-}
+} */
 
 .contactLink {
   display: block;

@@ -200,6 +200,7 @@ export default function About() {
 
 
             <StickySidebar>
+                {/* Interested in working together? */}
                 {aboutPageData.pageNote && (
                 <div className="pageNote">
                     {aboutPageData.pageNote.workTitle && (
@@ -211,6 +212,57 @@ export default function About() {
                     </div>
                     )}
 
+                    {/* Global Team */}
+                    <div className="departmentsSection">
+                        {aboutPageData.pageNote.globalTeamTitle && (
+                            <h2 className="pageNoteTitle">{aboutPageData.pageNote.globalTeamTitle}</h2>
+                        )}
+                        <p>
+                            {aboutPageData.pageNote.cities?.map((city, index) => (
+                                <span key={index}>
+                                    {city.cityTitle}
+                                    {/* Add comma if not last item */}
+                                    {index !== aboutPageData.pageNote.cities.length - 1 ? ', ' : ''}
+                                    {/* Add line break after every 4th item (except last) */}
+                                    {(index + 1) % 4 === 0 && index !== aboutPageData.pageNote.cities.length - 1 ? <br /> : ''}
+                                </span>
+                            ))}
+                        </p>
+                    </div>
+
+                    {/* Department 1 */}
+                    {aboutPageData.pageNote.aboutDepartment1 && (
+                    <div className="departmentsSection">
+                        {aboutPageData.pageNote.aboutDepartment1 && (
+                        <h2 className="pageNoteTitle">{aboutPageData.pageNote.aboutDepartment1}</h2>
+                        )}
+                        {aboutPageData.pageNote.aboutEmailD1 && (
+                        <a href={`mailto:${aboutPageData.pageNote.aboutEmailD1}`}>{aboutPageData.pageNote.aboutEmailD1}</a>
+                        )}
+                    </div>
+                    )}
+                    {/* Department 2 */}
+                    {aboutPageData.pageNote.aboutDepartment2 && (
+                    <div className="departmentsSection">
+                        {aboutPageData.pageNote.aboutDepartment2 && (
+                        <h2 className="pageNoteTitle">{aboutPageData.pageNote.aboutDepartment2}</h2>
+                        )}
+                        {aboutPageData.pageNote.aboutEmailD2 && (
+                        <a href={`mailto:${aboutPageData.pageNote.aboutEmailD2}`}>{aboutPageData.pageNote.aboutEmailD2}</a>
+                        )}
+                    </div>
+                    )}
+                    {/* Department 3 */}
+                    {aboutPageData.pageNote.aboutDepartment3 && (
+                    <div className="departmentsSection">
+                        {aboutPageData.pageNote.aboutDepartment1 && (
+                        <h2 className="pageNoteTitle">{aboutPageData.pageNote.aboutDepartment3}</h2>
+                        )}
+                        {aboutPageData.pageNote.aboutEmailD3 && (
+                        <a href={`mailto:${aboutPageData.pageNote.aboutEmailD3}`}>{aboutPageData.pageNote.aboutEmailD3}</a>
+                        )}
+                    </div>
+                    )}
                     {/* Connect Section */}
                     {aboutPageData.pageNote.connectTitle && (
                     <div className="connectSection">
@@ -229,42 +281,6 @@ export default function About() {
                         ))}
                     </div>
                     )}
-
-                    {/* Departments */}
-                    {aboutPageData.pageNote.aboutDepartment1 && (
-                    <div className="departmentsSection">
-                        {aboutPageData.pageNote.aboutDepartment1 && (
-                        <h2 className="pageNoteTitle">{aboutPageData.pageNote.aboutDepartment1}</h2>
-                        )}
-                        {aboutPageData.pageNote.aboutEmailD1 && (
-                        <a href={`mailto:${aboutPageData.pageNote.aboutEmailD1}`}>{aboutPageData.pageNote.aboutEmailD1}</a>
-                        )}
-                        
-                        {aboutPageData.pageNote.aboutDepartment2 && (
-                        <h2 className="pageNoteTitle">{aboutPageData.pageNote.aboutDepartment2}</h2>
-                        )}
-                        {aboutPageData.pageNote.aboutEmailD2 && (
-                        <a href={`mailto:${aboutPageData.pageNote.aboutEmailD2}`}>{aboutPageData.pageNote.aboutEmailD2}</a>
-                        )}
-                        
-                        {aboutPageData.pageNote.aboutDepartment3 && (
-                        <h2 className="pageNoteTitle">{aboutPageData.pageNote.aboutDepartment3}</h2>
-                        )}
-                        {aboutPageData.pageNote.aboutEmailD3 && (
-                        <a href={`mailto:${aboutPageData.pageNote.aboutEmailD3}`}>{aboutPageData.pageNote.aboutEmailD3}</a>
-                        )}
-                    </div>
-                    )}
-
-                    {/* To Update Once Schema gets updated with fields = globalTeamTitle & cities */}
-                    <div className="departmentsSection">
-                        {aboutPageData.pageNote.globalTeamTitle && (
-                        <h2 className="pageNoteTitle">{aboutPageData.pageNote.globalTeamTitle}</h2>
-                        )}
-                        {aboutPageData.pageNote.cities?.map((city, index) => (
-                            <p key={index}>{city.cityTitle}</p>
-                        ))}
-                    </div>
 
                     {aboutPageData.pageNote.copyrightText && (
                     <div className="copyRight">
