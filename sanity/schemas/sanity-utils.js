@@ -271,6 +271,21 @@ export async function getProject(slug) {
     );
   }
 
+  
+export async function getHomeSEOData() {
+  return createClient(clientConfig).fetch(
+    groq`*[_type == "homepage"][0] {
+      keywords,
+      seoTitle,
+      seoDescription
+    }`
+  ).then(data => ({
+    keywords: data?.keywords || [],
+    seoTitle: data?.seoTitle || null,
+    seoDescription: data?.seoDescription || null
+  }));
+}
+
 
   export async function getAllPagesData() {
     return createClient(clientConfig).fetch(
