@@ -283,9 +283,6 @@ header.navBar.homeNavBar + main {
   margin-top: 50px;
 }
 
-.servicesDescription {
-  /* padding-bottom: 2%; */
-}
 
 .homePage section > *:not(.locationsNemail) {
   /* Target all direct children that are NOT .locationsNemail */
@@ -1638,11 +1635,11 @@ footer .contactLink:hover {
   will-change: transform;
 
   position: fixed; /* Lock to viewport */
-  top: 43; /* Stick to top */
+  top: 43px; /* To allows the nav to be visible, since it is fixed now */
   right: 0; /* Stick to right edge */
   width: 26.7%; /* Match parent width */
   height: 100vh; /* Full viewport height */
-  padding: 20px 20px 20px 85px;
+  padding: 20px 20px 20px 82px;
   background-color: #fff; /* Example background for visibility */
   color: #5F1B19;
   overflow-y: auto; /* Enable scrolling if content overflows */
@@ -1695,6 +1692,13 @@ p.copyRightText b {
   /* height: 135px; */
 }
 
+@media (max-height: 767px) {
+  .sideBar .workSection {
+    margin-top: 20%; /* Replaces 210px on short screens */
+    margin-top: 20px;
+  }
+}
+
 .sideBar .connectSection, .departmentsSection {
   margin-bottom: 35px;
 }
@@ -1718,6 +1722,15 @@ p.copyRightText b {
 .contactLink:hover {
   text-decoration: underline;
 }
+
+
+
+@media (min-width: 992px) and (max-width: 1441px) {
+  .sideBar {
+       padding: 20px 20px 20px 1.5%;
+  }
+}
+
 
 @media (min-width: 768px) and (max-width: 991px) {
   .sideBar {
