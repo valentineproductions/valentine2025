@@ -823,7 +823,7 @@ aside.sideBar .pageNoteText {
   font-weight: 500;
   white-space: pre-wrap;
   line-height: 95%;
-  letter-spacing: 0.70px;
+  letter-spacing: 0.32px;
 }
 
 .leftSide .pageNoteText, .leftSide a, aside.sideBar .connectSection a, aside.sideBar .departmentsSection a, .departmentsSection p {
@@ -833,7 +833,7 @@ aside.sideBar .pageNoteText {
   white-space: pre-wrap;
   text-wrap: balance;
   line-height: 95%;
-  letter-spacing: 0.70px;
+  letter-spacing: 0.32px;
 }
 
 aside.sideBar .departmentsSection a:hover {
@@ -1234,6 +1234,7 @@ footer .pageNoteTitle, aside .pageNoteTitle {
   margin-bottom: 5px;
   font-family: 'Baskerville', serif;
   line-height: 93%;
+  letter-spacing: -.32px;
 }
 
 /* .departmentsSection h2.pageNoteTitle {
@@ -1637,7 +1638,7 @@ footer .contactLink:hover {
   will-change: transform;
 
   position: fixed; /* Lock to viewport */
-  top: 0; /* Stick to top */
+  top: 43; /* Stick to top */
   right: 0; /* Stick to right edge */
   width: 26.7%; /* Match parent width */
   height: 100vh; /* Full viewport height */
@@ -1645,7 +1646,7 @@ footer .contactLink:hover {
   background-color: #fff; /* Example background for visibility */
   color: #5F1B19;
   overflow-y: auto; /* Enable scrolling if content overflows */
-  z-index: -100; /* Ensure it stays above other content */
+  z-index: 10; /* Ensure it stays above other content */
 }
 
 
@@ -1653,7 +1654,7 @@ footer .contactLink:hover {
 .sideBar .pageNote {
   max-width: 382px;
   width: 100%;
-  height: 90%; /* Take full height of sidebar */
+  height: 99%; /* Take full height of sidebar */
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* Push sections to top and bottom */
@@ -1661,7 +1662,7 @@ footer .contactLink:hover {
 
 .sideBar .copyRight {
   margin-top: auto; /* Push to bottom */
-  padding-bottom: 30px; /* Add some space at the bottom */
+  padding-bottom: 40px; /* Add some space at the bottom */
 }
 
 .copyRightText {
@@ -1688,7 +1689,8 @@ p.copyRightText b {
 }
 
 .sideBar .workSection {
-  margin-top: 40%;
+  /* margin-top: 40%; */
+  margin-top: 210px;
   margin-bottom: 42px;
   /* height: 135px; */
 }

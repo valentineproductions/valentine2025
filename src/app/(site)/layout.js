@@ -3,6 +3,8 @@ import { AppProvider } from "../components/AppContext";
 import HeaderNavigation from "../components/HeaderNavigation";
 import HomeChecker from "../components/HomeChecker";
 import { getAllPagesData, getHomeSEOData } from "../../../sanity/schemas/sanity-utils";
+import { Analytics } from "@vercel/analytics/next"
+
 
 // Default fallback keywords
 const DEFAULT_KEYWORDS = [
@@ -63,6 +65,7 @@ export default async function RootLayout({ children }) {
         
         <main>{children}</main>
         </AppProvider>
+        <Analytics />
       </body>
     </html>
   );
