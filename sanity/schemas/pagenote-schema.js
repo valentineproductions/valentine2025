@@ -37,15 +37,15 @@ const pageNote = {
               },
               {
                 name: 'linkUrl',
-                title: 'Link URL',
-                type: 'url',
-                description: 'The URL for the link.',
+                title: 'Link URL or Email Address',
+                type: 'string', 
+                description: 'The URL for the link or an email address (e.g., mail@example.com).',
               },
               {
                 name: 'openNewTab',
                 title: 'Open in New Tab',
                 type: 'boolean',
-                description: 'Check this box to open the link in a new tab.',
+                description: 'Check this box to open the link in a new tab (not applicable for email links).', // Updated description
               },
             ],
             preview: {

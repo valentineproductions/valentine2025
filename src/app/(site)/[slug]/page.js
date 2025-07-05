@@ -148,42 +148,64 @@ export default function Page() {
                 {/* Footer / Page Note */}
 
                 <footer>
-                    {allData?.pageNote && (
-                        <div className="pageNote">
-                            <div className="leftSide">
-                            {allData.pageNote.workTitle && (
-                                <div className="workSection">
-                                <h2 className="pageNoteTitle">{allData.pageNote.workTitle}</h2>
-                                {allData.pageNote.workDescription && (
-                                    <p className="pageNoteText">{allData.pageNote.workDescription}</p>
-                                )}
-                                </div>
-                            )}
-                            {allData.pageNote.connectTitle && (
-                                <div className="connectSection">
-                                <h2 className="pageNoteTitle">{allData.pageNote.connectTitle}</h2>
-                                {allData.pageNote.connectLinks &&
-                                    allData.pageNote.connectLinks.map((link, index) => (
+    {allData?.pageNote && (
+        <div className="pageNote">
+            <div className="leftSide">
+                {allData.pageNote.workTitle && (
+                    <div className="workSection">
+                        <h2 className="pageNoteTitle">{allData.pageNote.workTitle}</h2>
+                        {allData.pageNote.workDescription && (
+                            <p className="pageNoteText">{allData.pageNote.workDescription}</p>
+                        )}
+                    </div>
+                )}
+                {allData.pageNote.connectTitle && (
+                    <div className="connectSection">
+                        <h2 className="pageNoteTitle">{allData.pageNote.connectTitle}</h2>
+                        {allData.pageNote.connectLinks &&
+                            allData.pageNote.connectLinks.map((link, index) => {
+                                // Determine if the link is an email address
+                                // Check for '@' AND ensure it doesn't start with 'http://' or 'https://'
+                                const isEmail = link.linkUrl && 
+                                                link.linkUrl.includes('@') && 
+                                                !link.linkUrl.startsWith('http://') && 
+                                                !link.linkUrl.startsWith('https://');
+                                
+                                console.log("IS IT?", isEmail, link.linkUrl); // Keep this for debugging
+
+                                // Construct the href based on whether it's an email or a regular URL
+                                const href = isEmail ? `mailto:${link.linkUrl}` : link.linkUrl;
+
+                                // Determine target and rel attributes (only for non-email links that open in a new tab)
+                                // Only apply target/rel if it's not an email AND openNewTab is true
+                                const target = !isEmail && link.openNewTab ? "_blank" : undefined;
+                                const rel = !isEmail && link.openNewTab ? "noopener noreferrer" : undefined;
+
+                                return (
                                     <a
                                         key={index}
-                                        href={link.linkUrl}
+                                        href={href}
                                         className="contactLink"
-                                        target={link.openNewTab ? "_blank" : undefined}
-                                        rel={link.openNewTab ? "noopener noreferrer" : undefined}
+                                        target={target}
+                                        rel={rel}
                                     >
                                         {link.linkTitle}
                                     </a>
-                                    ))}
-                                </div>
-                            )}
-                            </div>
-                            {allData.pageNote.copyrightText && (
-                            <div className="copyRight"><p className="copyRightText"> <b>{allData.pageNote.copyrightBrandName}</b> {allData.pageNote.copyrightText} {allData.pageNote.copyrightYear} {allData.pageNote.copyrightBrandName}</p>
-                            </div>
-                            )}
-                        </div>
-                    )}
-                </footer>
+                                );
+                            })}
+                    </div>
+                )}
+            </div>
+            {allData.pageNote.copyrightText && (
+                <div className="copyRight">
+                    <p className="copyRightText"> 
+                        <b>{allData.pageNote.copyrightBrandName}</b> {allData.pageNote.copyrightText} {allData.pageNote.copyrightYear} {allData.pageNote.copyrightBrandName}
+                    </p>
+                </div>
+            )}
+        </div>
+    )}
+</footer>
             </div>
 
         </div>
