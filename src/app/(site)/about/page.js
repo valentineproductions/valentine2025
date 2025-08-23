@@ -6,6 +6,7 @@ import StickySidebar from '@/app/components/StickySidebar';
 import { useAppContext } from '@/app/components/AppContext';
 import AboutAnimations from '@/app/components/AboutAnimations';
 import AboutInitAnimation from '@/app/components/AboutInitAnimation';
+import { PortableText } from "@portabletext/react";
 // import TypeAnimation from '@/app/components/TypeAnimation';
 
 // Elements within AboutAnimations and with the attribute data-animate will get animated
@@ -16,7 +17,7 @@ export default function About() {
     // const aboutPageData = await getAboutPage()
     const { allData } = useAppContext();
     const aboutPageData = allData?.aboutPage || null;
-    //console.log("@AB------About Page Data:", aboutPageData); //is working
+    console.log("@AB------About Page Data:", aboutPageData); //is working
 
     if (!aboutPageData) {
         return <div>About Page Not Found</div>
@@ -33,7 +34,8 @@ export default function About() {
                     <div className="aboutContent">
                         <h2 className="aboutTitle" data-init-animate>{aboutPageData.philosophyTitle}</h2>
                             {aboutPageData.philosophyDescription1 && (
-                                <p className="aboutText" data-init-animate>{aboutPageData.philosophyDescription1}</p>
+                                // <p className="aboutText" data-init-animate>{aboutPageData.philosophyDescription1}</p>
+                                <span className="aboutText" data-init-animate><PortableText value={aboutPageData.philosophyDescription1} /></span>
                             )}
                     </div>
                     {aboutPageData.philosophyProjectData && (
@@ -67,7 +69,8 @@ export default function About() {
                             )}
                             <div className="projectIntro" data-animate>
                                 {aboutPageData.philosophyDescription2 && (
-                                <p className="projectDescription">{aboutPageData.philosophyDescription2}</p>
+                                // <p className="projectDescription">{aboutPageData.philosophyDescription2}</p>
+                                <span className="projectDescription"><PortableText value={aboutPageData.philosophyDescription2} /></span>
                                 )}
                                 {aboutPageData.philosophyFeaturedImage?.asset?.url && (
                                 <div className='featureAnimated' data-animate>
@@ -93,9 +96,12 @@ export default function About() {
                 {/* Our Story Section */}
                 <section className="sectionContainer">
                 <div className="aboutContent">
+                    {aboutPageData.storyTitle && (
                     <h2 className="aboutTitle" data-animate>{aboutPageData.storyTitle}</h2>
+                    )}
                     {aboutPageData.storyDescription1 && (
-                    <p className="aboutText" data-animate>{aboutPageData.storyDescription1}</p>
+                    // <p className="aboutText" data-animate>{aboutPageData.storyDescription1}</p>
+                    <span className="aboutText" data-animate><PortableText value={aboutPageData.storyDescription1} /></span>
                     )}
                 </div>
                 {aboutPageData.storyProjectData && (
@@ -123,7 +129,9 @@ export default function About() {
                         )}
                         <div className="projectIntro">
                             {aboutPageData.storyDescription2 && (
-                            <p className="projectDescription" data-animate>{aboutPageData.storyDescription2}</p>
+                            // <p className="projectDescription" data-animate>{aboutPageData.storyDescription2}</p>
+                            <span className="projectDescription" data-animate><PortableText value={aboutPageData.storyDescription2} /></span>
+                            
                             )}
                             {aboutPageData.storyFeaturedImage?.asset?.url && (
                             <div className='featureAnimated' data-animate>
@@ -147,9 +155,12 @@ export default function About() {
                 {/* Who We Are Section */}
                 <section className="sectionContainer lastSection">
                     <div className="aboutContent">
-                        <h2 className="aboutTitle" data-animate>{aboutPageData.whoTitle}</h2>
+                        {aboutPageData.storyTitle && (
+                            <h2 className="aboutTitle" data-animate>{aboutPageData.whoTitle}</h2>
+                        )}
                         {aboutPageData.whoDescription1 && (
-                        <p className="aboutText"data-animate>{aboutPageData.whoDescription1}</p>
+                        // <p className="aboutText"data-animate>{aboutPageData.whoDescription1}</p>
+                        <span className="aboutText" data-animate><PortableText value={aboutPageData.whoDescription1} /></span>
                         )}
                     </div>
                     {aboutPageData.whoProjectData && (
@@ -177,7 +188,8 @@ export default function About() {
                             )}
                             <div className="projectIntro">
                                 {aboutPageData.whoDescription2 && (
-                                <p className="projectDescription" data-animate>{aboutPageData.whoDescription2}</p>
+                                // <p className="projectDescription" data-animate>{aboutPageData.whoDescription2}</p>
+                                <span className="projectDescription" data-animate><PortableText value={aboutPageData.whoDescription2} /></span>
                                 )}
                                 {aboutPageData.whoFeaturedImage?.asset?.url && (
                                 <div className='featureAnimated' data-animate><Image

@@ -34,7 +34,8 @@ const aboutPage = {
       {
         name: 'philosophyDescription1',
         title: 'Philosophy Description 1',
-        type: 'text',
+        type: 'array',
+        of: [{ type: 'block' }],
         group: 'philosophy',
       },
       {
@@ -63,7 +64,8 @@ const aboutPage = {
       {
         name: 'philosophyDescription2',
         title: 'Philosophy Description 2',
-        type: 'text',
+        type: 'array',
+        of: [{ type: 'block' }],
         group: 'philosophy',
       },
       {
@@ -108,7 +110,8 @@ const aboutPage = {
       {
         name: 'storyDescription1',
         title: 'Story Description 1',
-        type: 'text',
+        type: 'array',
+        of: [{ type: 'block' }],
         group: 'story',
       },
       {
@@ -137,7 +140,8 @@ const aboutPage = {
       {
         name: 'storyDescription2',
         title: 'Story Description 2',
-        type: 'text',
+        type: 'array',
+        of: [{ type: 'block' }],
         group: 'story',
       },
       {
@@ -182,7 +186,8 @@ const aboutPage = {
       {
         name: 'whoDescription1',
         title: 'Who We Are Description 1',
-        type: 'text',
+        type: 'array',
+        of: [{ type: 'block' }],
         group: 'who',
       },
       {
@@ -211,7 +216,8 @@ const aboutPage = {
       {
         name: 'whoDescription2',
         title: 'Who We Are Description 2',
-        type: 'text',
+        type: 'array',
+        of: [{ type: 'block' }],
         group: 'who',
       },
       {
