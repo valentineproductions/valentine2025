@@ -493,9 +493,8 @@ header.navBar.homeNavBar a, .homeBody .menu-trigger, section.sloganVideo h2, .lo
     display: flex;
     justify-content: center; /* Center the images horizontally */
     align-items: center; /* Center the images vertically */
-    width: 100%;
-    margin-top: 50px; /* Add some space between the text and the logos */
-    margin-bottom: 50px;
+    width: 80%;
+    margin: 20px auto 10px auto;
 }
 
 .logos-image {
