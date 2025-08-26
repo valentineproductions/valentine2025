@@ -166,6 +166,26 @@ export default function Home() {
               <div className="approachDescription">
                 {/* <p><span>{homePageData?.aDescription || "We listen. We learn. We adapt. We execute. We finish what we start."}</span></p> */}
                 <span><PortableText value ={homePageData?.aDescription || "We listen."}/></span>
+                {homePageData?.logosImageDesktop && homePageData?.logosImageMobile && (
+                  <div className="logos-image-container">
+                    <Image
+                      src={homePageData.logosImageDesktop}
+                      alt={`${homePageData.approachTitle} logos`}
+                      width={1000} // Set a max width for the image
+                      height={60} // Set a max height for the image
+                      quality={100}
+                      className="logos-image desktop-logos"
+                    />
+                    <Image
+                      src={homePageData.logosImageMobile}
+                      alt={`${homePageData.approachTitle} logos`}
+                      width={500} // Set a max width for the image
+                      height={30} // Set a max height for the image
+                      quality={100}
+                      className="logos-image mobile-logos"
+                    />
+                  </div>
+                )}
               </div>
           </div>
             

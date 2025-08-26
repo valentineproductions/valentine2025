@@ -385,6 +385,8 @@ export async function getHomeSEOData() {
           approachTitle,
           aDescription,
           seoTitle,
+          "logosImageDesktop": logosImageDesktop.asset->url,
+"logosImageMobile": logosImageMobile.asset->url,
           seoDescription,
           keywords
         },

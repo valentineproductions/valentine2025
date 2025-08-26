@@ -265,7 +265,7 @@ const homepage = {
       description: 'Description for the fourth process step.',
       group: 'process',
     },
-    // Approach Section Group
+    // Approach Section Group > Partner Section
     {
       name: 'approachTitle',
       title: 'Approach Title',
@@ -281,6 +281,26 @@ const homepage = {
       description: 'Description for the "Approach" section.',
       group: 'approach',
     },
+    {
+  name: 'logosImageDesktop',
+  title: 'Logos Image (Desktop)',
+  type: 'image',
+  description: 'Desktop-specific image for the logos section.',
+  options: {
+    hotspot: true, // You can enable hotspot for better cropping control
+  },
+  group: 'approach',
+},
+{
+  name: 'logosImageMobile',
+  title: 'Logos Image (Mobile)',
+  type: 'image',
+  description: 'Mobile-specific image for the logos section.',
+  options: {
+    hotspot: true,
+  },
+  group: 'approach',
+},
     // SEO Group (Example - Add more SEO fields as needed)
     {
       name: 'seoTitle',

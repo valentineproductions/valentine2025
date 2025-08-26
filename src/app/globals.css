@@ -488,6 +488,49 @@ header.navBar.homeNavBar a, .homeBody .menu-trigger, section.sloganVideo h2, .lo
     
   }
 
+  /* Styling for the Logos Section */
+.logos-image-container {
+    display: flex;
+    justify-content: center; /* Center the images horizontally */
+    align-items: center; /* Center the images vertically */
+    width: 100%;
+    margin-top: 50px; /* Add some space between the text and the logos */
+    margin-bottom: 50px;
+}
+
+.logos-image {
+    width: 70%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Hide the mobile image by default and show the desktop one */
+.logos-image.mobile-logos {
+    display: none;
+}
+
+.logos-image.desktop-logos {
+    display: block;
+}
+
+/* Media Query to switch between images */
+@media (max-width: 575px) {
+    .logos-image-container {
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+
+    /* Show the mobile image and hide the desktop one on small screens */
+    .logos-image.mobile-logos {
+        display: block;
+    }
+
+    .logos-image.desktop-logos {
+        display: none;
+    }
+}
+
+
   span p:empty {
       /* height: 60px; */
       margin: 2% auto;
@@ -595,6 +638,7 @@ header.navBar.homeNavBar a, .homeBody .menu-trigger, section.sloganVideo h2, .lo
   .servicesContainer {
     margin-top: 50px !important;
 }
+
 }
   
   .serviceList1,
