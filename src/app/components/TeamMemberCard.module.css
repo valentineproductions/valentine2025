@@ -161,6 +161,7 @@
   
   .fullname {
     font-size: 31.5px; /* 30% reduction: 45px * 0.7 = 31.5px */
+    margin-top: 20px;
   }
   
   .panel:hover .memberTitle {
