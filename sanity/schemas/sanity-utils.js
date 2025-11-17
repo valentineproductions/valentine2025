@@ -229,11 +229,17 @@ export async function getProject(slug) {
         teamMembers[]->{
           _id,
           fullName,
+          "slug": slug.current,
           talentPosition,
           city,
           image{
             asset->{ _id, url },
             alt
+          },
+          bio,
+          videos[]{
+            embedCode,
+            title
           },
         },
         projects[]->{
@@ -286,6 +292,28 @@ export async function getHomeSEOData() {
   }));
 }
 
+export async function getTeamMemberBySlug(slug) {
+  return createClient(clientConfig).fetch(
+    groq`*[_type == "teamMember" && slug.current == $slug][0]{
+      _id,
+      fullName,
+      "slug": slug.current,
+      talentPosition,
+      city,
+      image{
+        asset->{ _id, url },
+        alt
+      },
+      bio,
+      videos[]{
+        embedCode,
+        title
+      },
+    }`,
+    { slug }
+  );
+}
+
 
   export async function getAllPagesData() {
     return createClient(clientConfig).fetch(
@@ -310,11 +338,17 @@ export async function getHomeSEOData() {
           teamMembers[]->{  // Added from getFullPagesData
             _id,
             fullName,
+            "slug": slug.current,
             talentPosition,
             city,
             image{
               asset->{ _id, url },
               alt
+            },
+            bio,
+            videos[]{
+              embedCode,
+              title
             },
           },
           projects[]->{   // Added from getFullPagesData

@@ -10,6 +10,17 @@ const teamMember = {
         description: 'The full name of the team member.',
       },
       {
+        name: 'slug',
+        title: 'Slug',
+        type: 'slug',
+        options: {
+          source: 'fullName',
+          maxLength: 96,
+        },
+        description: 'URL-friendly identifier for the team member page (e.g., /talent/john-doe).',
+        validation: Rule => Rule.required(),
+      },
+      {
         name: 'talentPosition',
         title: 'Talent Position',
         type: 'string',
@@ -37,6 +48,54 @@ const teamMember = {
           },
         ],
         description: 'Image of the team member.',
+      },
+      {
+        name: 'bio',
+        title: 'Bio',
+        type: 'array',
+        of: [
+          {
+            type: 'block',
+          },
+        ],
+        description: 'Biography or description of the team member (rich text).',
+      },
+      {
+        name: 'videos',
+        title: 'Videos',
+        type: 'array',
+        of: [
+          {
+            type: 'object',
+            fields: [
+              {
+                name: 'embedCode',
+                title: 'Simian Embed Code',
+                type: 'text',
+                description: 'Paste the Simian embed code here (iframe or embed HTML).',
+              },
+              {
+                name: 'title',
+                title: 'Video Title',
+                type: 'string',
+                description: 'Optional title for the video.',
+              },
+            ],
+            preview: {
+              select: {
+                title: 'title',
+                embed: 'embedCode',
+              },
+              prepare({ title, embed }) {
+                return {
+                  title: title || 'Untitled Video',
+                  subtitle: embed ? embed.substring(0, 50) + '...' : 'No embed code',
+                };
+              },
+            },
+          },
+        ],
+        description: 'Array of Simian video embeds for this team member.',
       },
       // You can add more fields here, like social media links, etc.
     ],

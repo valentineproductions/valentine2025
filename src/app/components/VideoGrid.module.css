@@ -1,0 +1,56 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 13px;
+  padding: 20px;
+  width: 100%;
+}
+
+.videoItem {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.videoItem:hover {
+  transform: translateY(0) scale(1.02);
+}
+
+.videoEmbed {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+}
+
+.videoEmbed iframe,
+.videoEmbed embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Mobile - still 2 columns */
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 13px;
+    padding: 20px;
+  }
+}
+

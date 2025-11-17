@@ -1,3 +1,10 @@
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+  cursor: pointer;
+}
+
 .panel {
   width: 393px;
   height: auto; /* Allow panel to grow to fit content */
