@@ -1,10 +1,39 @@
+'use client';
+
 import { PortableText } from "@portabletext/react";
 import { getTeamMemberBySlug } from "../../../../../sanity/schemas/sanity-utils";
+import { useAppContext } from "@/app/components/AppContext";
+import { useEffect, useState, use } from 'react';
 import VideoGrid from "@/app/components/VideoGrid";
 import styles from './page.module.css';
 
-export default async function TeamMemberPage({ params }) {
-  const member = await getTeamMemberBySlug(params.slug);
+export default function TeamMemberPage({ params }) {
+  const { allData } = useAppContext();
+  const resolvedParams = use(params);
+  const [member, setMember] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchMember() {
+      try {
+        const memberData = await getTeamMemberBySlug(resolvedParams.slug);
+        setMember(memberData);
+      } catch (error) {
+        console.error('Error fetching team member:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchMember();
+  }, [resolvedParams.slug]);
+
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.loading}>Loading...</div>
+      </div>
+    );
+  }
 
   if (!member) {
     return (
@@ -15,6 +44,7 @@ export default async function TeamMemberPage({ params }) {
   }
 
   return (
+    <div>
     <div className={styles.container}>
       <div className={styles.pageContainer}>
         <header className={styles.header}>
@@ -31,8 +61,65 @@ export default async function TeamMemberPage({ params }) {
             <VideoGrid videos={member.videos} />
           )}
         </div>
+
+        
       </div>
+      
     </div>
+    {/* Footer / Page Note */}
+    <footer>
+          {allData?.pageNote && (
+            <div className="pageNote">
+              <div className="leftSide">
+                {allData.pageNote.workTitle && (
+                  <div className="workSection">
+                    <h2 className="pageNoteTitle">{allData.pageNote.workTitle}</h2>
+                    {allData.pageNote.workDescription && (
+                      <p className="pageNoteText">{allData.pageNote.workDescription}</p>
+                    )}
+                  </div>
+                )}
+                {allData.pageNote.connectTitle && (
+                  <div className="connectSection">
+                    <h2 className="pageNoteTitle">{allData.pageNote.connectTitle}</h2>
+                    {allData.pageNote.connectLinks &&
+                      allData.pageNote.connectLinks.map((link, index) => {
+                        const isEmail = link.linkUrl && 
+                                        link.linkUrl.includes('@') && 
+                                        !link.linkUrl.startsWith('http://') && 
+                                        !link.linkUrl.startsWith('https://');
+                        
+                        const href = isEmail ? `mailto:${link.linkUrl}` : link.linkUrl;
+                        const target = !isEmail && link.openNewTab ? "_blank" : undefined;
+                        const rel = !isEmail && link.openNewTab ? "noopener noreferrer" : undefined;
+
+                        return (
+                          <a
+                            key={index}
+                            href={href}
+                            className="contactLink"
+                            target={target}
+                            rel={rel}
+                          >
+                            {link.linkTitle}
+                          </a>
+                        );
+                      })}
+                  </div>
+                )}
+              </div>
+              {allData.pageNote.copyrightText && (
+                <div className="copyRight">
+                  <p className="copyRightText"> 
+                    <b>{allData.pageNote.copyrightBrandName}</b> {allData.pageNote.copyrightText} {allData.pageNote.copyrightYear} {allData.pageNote.copyrightBrandName}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+        </footer>
+    </div>
+    
   );
 }
 
