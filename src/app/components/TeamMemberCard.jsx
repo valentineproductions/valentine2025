@@ -19,8 +19,8 @@ export default function TeamMemberCard({ member }) {
             <Image
               src={member.image.asset.url}
               alt={member.image.alt || member.fullName}
-              width={395}
-              height={600}
+              width={393}
+              height={537}
               className={styles.memberImage}
               style={{
                 width: '100%',

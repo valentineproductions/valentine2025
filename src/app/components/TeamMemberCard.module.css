@@ -1,6 +1,7 @@
 .panel {
-  width: 395px;
-  height: 53vh;
+  width: 393px;
+  height: auto; /* Allow panel to grow to fit content */
+  min-height: 587px; /* Title + Image (537px) + Name space (50px) = 587px */
   flex-shrink: 0;
   cursor: pointer;
   transition: width 0.5s ease-in-out;
@@ -8,20 +9,22 @@
   display: flex;
   flex-direction: column;
   background-color: #fff;
+  overflow: visible; /* Allow content to move up without clipping */
 }
 
 .panelContent {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  transition: transform 0.5s ease-in-out;
-  position: relative; /* For absolute positioning of textInfo */
+  position: relative;
+  overflow: visible; /* Allow content to move up and be visible */
+  padding-top: 50px; /* Reserve space at top for title when it moves up */
 }
 
 .memberTitle {
   transition: transform 0.5s ease-in-out;
+  -webkit-transition: transform 0.5s ease-in-out; /* Safari prefix */
   position: relative;
-  z-index: 2; /* Ensure title stays above image when image moves up */
+  z-index: 2;
 }
 
 .memberTitle span {
@@ -46,70 +49,93 @@
 }
 
 .imageWrapper {
-  flex: 1 1 auto;
-  min-height: 0;
+  flex-shrink: 0;
+  -webkit-flex-shrink: 0; /* Safari prefix */
+  height: 537px; /* Desktop: 393x537 dimensions */
   position: relative;
-  overflow: visible; /* Allow image to move up and show top */
-  height: 621px; /* Fixed height for desktop - maintains image size */
+  overflow: visible; /* IMPORTANT: Allow image to move up and show top */
+  min-height: 0;
 }
 
 .memberImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  -webkit-object-fit: cover; /* Safari prefix */
   transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out;
+  -webkit-transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out; /* Safari prefix */
   z-index: 1;
   position: relative;
+  display: block; /* Safari fix - ensure proper rendering */
 }
 
 .textInfo {
-  padding: 3px;
+  padding: 0;
   text-align: center;
   background-color: #fff;
-  z-index: 0;
-  position: absolute; /* Position absolutely so it doesn't affect layout */
-  bottom: -25px; /* Move down below the image wrapper so it's visible */
-  left: 0;
-  right: 0;
-  width: 100%;
+  height: 50px; /* Reserve space for name - matches the 50px movement */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Prevent shrinking */
+  -webkit-flex-shrink: 0; /* Safari prefix */
+  min-height: 50px; /* Ensure space is always reserved */
+  transition: transform 0.5s ease-in-out;
+  -webkit-transition: transform 0.5s ease-in-out; /* Safari prefix */
+  overflow: visible;
 }
 
 .fullname {
-  font-weight: bold;
-  font-size: 30px;
   opacity: 0;
-  visibility: hidden;
   height: 0;
-  overflow: hidden;
-  transform: translateY(10px); /* Start slightly below for fade-down effect */
-  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, height 0.5s ease-in-out, visibility 0.5s ease-in-out;
+  width: 100%;
+  overflow: visible;
+  transform: translateY(0) translateZ(0); /* Start at final position to match hover state */
+  -webkit-transform: translateY(0) translateZ(0); /* Safari prefix */
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, height 0.5s ease-in-out 0.5s; /* Delay height change until after opacity/transform */
+  -webkit-transition: opacity 0.5s ease-in-out, -webkit-transform 0.5s ease-in-out, height 0.5s ease-in-out 0.5s; /* Safari prefix */
   font-family: Sloop Script, cursive;
   font-weight: 100;
   font-size: 45px;
+  display: block; /* Safari fix */
+  margin-top: 30px;
 }
 
-/* Hover Effects - All controlled by .panel:hover */
+/* Hover Effects - Move both title and image up 50px, reveal name in gap */
 .panel:hover .memberTitle {
-  transform: translateY(-42px); /* Increased from -27px to -42px (+15px more) */
+  transform: translateY(-50px);
+  -webkit-transform: translateY(-50px); /* Safari prefix */
 }
 
 .panel:hover .imageWrapper {
   flex-shrink: 0; /* Prevent image wrapper from shrinking on hover */
+  -webkit-flex-shrink: 0; /* Safari prefix */
   flex-grow: 0; /* Prevent image wrapper from changing size */
-  height: 621px; /* Fixed height - same as non-hover state */
-  flex-basis: 621px; /* Lock flex basis to prevent recalculation */
+  -webkit-flex-grow: 0; /* Safari prefix */
+  height: 537px !important; /* Fixed height - same as non-hover state - Safari fix */
+  flex-basis: 537px; /* Lock flex basis to prevent recalculation */
+  -webkit-flex-basis: 537px; /* Safari prefix */
 }
 
 .panel:hover .imageWrapper .memberImage {
-  transform: translateY(-40px);
+  transform: translateY(-50px);
+  -webkit-transform: translateY(-50px); /* Safari prefix */
   height: 100%; /* Ensure image maintains its height */
+}
+
+.panel:hover .textInfo {
+  transform: translateY(-50px); /* Move name up with the image */
+  -webkit-transform: translateY(-50px); /* Safari prefix */
 }
 
 .panel:hover .fullname {
   opacity: 1;
-  visibility: visible;
   height: auto;
-  transform: translateY(0); /* Fade down to final position */
+  transform: translateY(0) translateZ(0); /* Stay at final position */
+  -webkit-transform: translateY(0) translateZ(0); /* Safari prefix */
+  overflow: visible;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, height 0.5s ease-in-out 0s; /* No delay on hover - immediate height change */
+  -webkit-transition: opacity 0.5s ease-in-out, -webkit-transform 0.5s ease-in-out, height 0.5s ease-in-out 0s; /* Safari prefix */
 }
 
 /* Grayscale effect for non-hovered panels when one is hovered */
@@ -117,27 +143,46 @@
 
 /* Media Queries */
 @media (max-width: 600px) {
+  .panel {
+    width: 275px; /* 30% reduction: 393 * 0.7 = 275.1 */
+    min-height: 426px; /* Title + Image (376px) + Name space (50px) = 426px */
+  }
+  
   .imageWrapper {
-    height: 445px; /* Fixed height for mobile - calculated: 485px panel - ~40px for title/padding */
+    height: 376px; /* 30% reduction: 537 * 0.7 = 375.9 */
+    flex-shrink: 0; /* Safari fix */
+    -webkit-flex-shrink: 0; /* Safari prefix */
+  }
+  
+  .textInfo {
+    height: 50px; /* Same 50px space for mobile */
+    min-height: 50px;
+  }
+  
+  .fullname {
+    font-size: 31.5px; /* 30% reduction: 45px * 0.7 = 31.5px */
   }
   
   .panel:hover .memberTitle {
-    transform: translateY(-42px);
+    transform: translateY(-50px);
+    -webkit-transform: translateY(-50px); /* Safari prefix */
   }
   
   .panel:hover .imageWrapper {
-    height: 445px; /* Same fixed height on hover for mobile */
-    flex-basis: 445px;
+    height: 376px !important; /* Same fixed height on hover for mobile - Safari fix */
+    flex-basis: 376px;
+    -webkit-flex-basis: 376px; /* Safari prefix */
+    flex-shrink: 0; /* Safari fix */
+    -webkit-flex-shrink: 0; /* Safari prefix */
   }
   
   .panel:hover .imageWrapper .memberImage {
-    transform: translateY(-30px);
+    transform: translateY(-50px);
+    -webkit-transform: translateY(-50px); /* Safari prefix */
   }
   
-  .panel:hover,
-  .panel {
-    width: 320px;
-    height: 485px;
+  .panel:hover .textInfo {
+    transform: translateY(-50px); /* Move name up with the image on mobile */
+    -webkit-transform: translateY(-50px); /* Safari prefix */
   }
 }
-
