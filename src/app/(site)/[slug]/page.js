@@ -1,12 +1,10 @@
 'use client';
 
 import { PortableText } from "@portabletext/react";
-import Image from 'next/image';
 import { useAppContext } from "@/app/components/AppContext";
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import ImagesAnimation from "@/app/components/ImagesAnimation";
 import TeamMembersGallery from "@/app/components/TeamMembersGallery";
+import WorkGallery from "@/app/components/WorkGallery";
 // import SoonAnimation from "@/app/components/SoonAnimation";
 
 export default function Page() {
@@ -17,23 +15,6 @@ export default function Page() {
 
     const pageTalent = pagesData.find(page => page.slug === 'talent');
     const pageWork = pagesData.find(page => page.slug === 'work');
-
-        // State for shuffled images to ensure consistency between server and client
-        const [shuffledImages, setShuffledImages] = useState([]);
-
-        useEffect(() => {
-            if (pageWork?.projects) {
-              const allProjectImages = [];
-              pageWork.projects.forEach((project) => {
-                const images = [project.mainImage, ...(project.projectImages || [])].filter(Boolean);
-                allProjectImages.push(...images);
-              });
-              
-              // Don't slice here - pass full array to animation component
-              const shuffled = [...allProjectImages].sort(() => Math.random() - 0.5);
-              setShuffledImages(shuffled); // Remove .slice(0, 16)
-            }
-          }, [pageWork]);
 
 
     if (!pageTalent || !pageWork) {
@@ -77,46 +58,9 @@ export default function Page() {
                 )}
                 */}
 
-                {/* Work Page  Content*/}
-                
-                {/* IF CURRENT PATH == /work do this */}
-                {isWorkPage && pageWork.projects && pageWork.projects.length > 0 && (
-                <ImagesAnimation 
-                    allImages={shuffledImages} // Pass FULL array here
-                    visibleCount={16}
-                    intervalTime={4000}
-                    fadeDuration={1000}
-                >
-                    {(visibleImages, fadingOut) => (
-                    <div className="workImages">
-                        {visibleImages.map((image, index) => (
-                        <div 
-                            key={`${image?.asset?.url}-${index}`}
-                            className={`image-container ${fadingOut.includes(index) ? 'fade-out' : 'fade-in'}`}
-                        >
-                            <Image
-                            src={image?.asset?.url || ''}
-                            alt={image?.alt || 'Valentine Work Content'}
-                            width={500}
-                            height={500}
-                            className="workProductImage"
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'cover',
-                                position: 'relative'
-                            }}
-                            quality={80}
-                            loading="lazy"
-                            unoptimized={image?.asset?.url?.endsWith('.gif')}
-                            placeholder={image?.asset?.metadata?.lqip ? 'blur' : 'empty'}
-                            blurDataURL={image?.asset?.metadata?.lqip || ''}
-                            />
-                        </div>
-                        ))}
-                    </div>
-                    )}
-                </ImagesAnimation>
+                {/* Work Page Content */}
+                {isWorkPage && (
+                    <WorkGallery projects={pageWork.projects} />
                 )}
 
                 {/* Footer / Page Note */}

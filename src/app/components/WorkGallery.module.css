@@ -1,0 +1,50 @@
+.workImages {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(24%, 1fr)); /* Creates responsive columns */
+  gap: 7px; /* Adjust the gap between images as needed */
+  padding-bottom: 50px;
+}
+
+.workProductImage {
+  width: 100%; /* Make images take up the full width of their grid cell */
+  height: 100%; /* Maintain aspect ratio */
+  display: block; /* Prevent extra space below inline elements */
+  object-fit: cover;
+  transition: opacity 1s ease;
+}
+
+.imageContainer {
+  position: relative;
+  transition: opacity 1s ease;
+  width: 100%;
+  aspect-ratio: 671/1000; /* For exact ratio (439/654) */
+  /* OR */
+  aspect-ratio: 2/3; /* Simplified ratio (close enough) */
+  min-height: 150px; /* Fallback for older browsers */
+}
+
+/* Modern aspect-ratio will override this, but it's good for fallback */
+@supports not (aspect-ratio: 2/3) {
+  .imageContainer::before {
+    content: "";
+    display: block;
+    padding-bottom: 149%; /* (654/439)*100 ≈ 149% */
+    /* This creates the same ratio using old-school padding technique */
+  }
+}
+
+.fadeOut {
+  opacity: 0;
+}
+
+.fadeIn {
+  opacity: 1;
+}
+
+/* Optional: Adjust for smaller screens if needed */
+@media (max-width: 575px) {
+  .workImages {
+    grid-template-columns: repeat(auto-fit, minmax(50%, 1fr)); /* Two columns on medium screens */
+  }
+}
+
