@@ -1,0 +1,43 @@
+'use client';
+
+import Image from 'next/image';
+import styles from './TeamMemberCard.module.css';
+
+export default function TeamMemberCard({ member }) {
+  if (!member) return null;
+
+  return (
+    <div className={styles.panel} data-team-panel>
+      <div className={styles.panelContent}>
+        <div className={styles.memberTitle}>
+          <span>
+            {member.talentPosition} <i>{member.city}</i>
+          </span>
+        </div>
+        {member.image?.asset?.url && (
+          <div className={styles.imageWrapper}>
+            <Image
+              src={member.image.asset.url}
+              alt={member.image.alt || member.fullName}
+              width={395}
+              height={600}
+              className={styles.memberImage}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover'
+              }}
+              quality={80}
+              loading="lazy"
+              unoptimized={member.image?.asset?.url?.endsWith('.gif')}
+            />
+          </div>
+        )}
+        <div className={styles.textInfo}>
+          <div className={styles.fullname}>{member.fullName}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+

@@ -971,30 +971,27 @@ header .contactInfo {
   letter-spacing: 0.16px;
 }
 
-/* Team Members Styles   -----TM Changes */
-  .pageContent .gallery {
-    overflow-y: clip; /*Was not working in the class bellow idk*/
-  } 
+/* Gallery Container Styles - Used for "Coming Soon" animation */
+/* Team member gallery styles are now in TeamMembersGallery.module.css */
+.pageContent .gallery {
+  overflow-y: clip;
+}
 
-  /* --- Gallery Container --- */
-  .gallery{
-    width: 100%; /* Takes full width */
-    max-width: 100%; /* Optional max-width */
-    margin-inline: auto;
-    display: flex;
-    gap: 7px;
-    overflow-x: auto; /* Enable horizontal scrolling */
-    padding: 40px 0px 40px 7px; /* Add padding for content spacing and scrollbar */
-    /* Optional: Add scrollbar styling / Firefox */
-    /* scrollbar-width: thin; 
-    scrollbar-color: #ccc #f0f0f0;  */
-    
-    /* Coming Soon Updates */
-    min-height: 90vh; /* 400px min before, this way call for a scroll*/
-    text-align: center;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+/* Gallery Container for "Coming Soon" */
+.gallery {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  display: flex;
+  gap: 7px;
+  padding: 40px 0px 40px 7px;
+  
+  /* Coming Soon specific styles */
+  min-height: 90vh;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .gallery h2 {
@@ -1006,120 +1003,9 @@ header .contactInfo {
   line-height: 65%;
 }
 
-
-/* End Comming Soon Changes */
-
-.gallery {
-  /* Other styles for your gallery */
-  overflow: auto; /* Or overflow-x: auto; or overflow-y: auto; depending on the scrolling direction */
-  scrollbar-width: none; /* For Firefox */
-  -ms-overflow-style: none; /* For Internet Explorer and Edge */
-}
-
-.gallery::-webkit-scrollbar {
-  display: none; /* For Chrome, Safari, and newer Edge */
-}
-
-.gallery-panel{
-    width: 395px; /* Fixed size for the team member pictures */ 
-    height: 62vh;
-    flex-shrink: 0; /* Prevent shrinking */
-    /* border-radius: 0.75rem; */
-    cursor: n-resize;
-    transition: width 0.5s ease-in-out;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    background-color: #fff;
-}
-
-.panel-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%; /* Let content fill available space */
-  transition: transform 0.5s ease-in-out;
-}
-.panel-content:hover {
-  transform: translateY(-40px); /* Move up on hover, but not all of it */
-}
-
-.member-title span {
-  text-transform: uppercase;
-  font-weight: 500;
-  font-size: 12px;
-  display: block;
-  padding: 7px;
-  text-align: center;
-  letter-spacing: 0.32px;
-  line-height: 93%;
-}
-
-.member-title span i {
-  text-transform: capitalize;
-  font-style: italic;
-  font-family: 'Baskerville', serif;
-  font-weight: 400;
-  font-size: 16px;
-  letter-spacing: 0;
-  line-height: 93%;
-}
-
-
-.gallery-panel img {
-    width: 100%;
-    height: 100%;
-    /* Allow image to take available vertical space */
-    /* flex-grow: 1;  */
-    object-fit: cover;
-    transition: transform 3s ease, filter 3s ease; /* Added filter transition */
-    z-index: 1; /* Ensure image is interactive */
-}
-
-.text-info {
-  padding: 3px;
-  text-align: center;
-  background-color: #fff; /* Match panel background */
-  z-index: 0;
-}
-
-.fullname {
-  font-weight: bold;
-  font-size: 30px;
-  opacity: 0; /* Initially hidden */
-  visibility: hidden;
-  height: 0; /* Collapse space when hidden */
-  overflow: hidden; /* Prevent content visibility when height is 0 */
-  /*  */
-  transform: translateY(-20px); /* Start 10px below its final position */
-  transition: opacity 3s ease, transform 1s ease, height 0.5s 0.4s; /* Add transform to transition */
-  font-family: Sloop Script, cursive;
-  font-weight: 100;
-  font-size: 45px;
-}
-
-/* --- Hover Effects --- */
-
-
-/* Move image up and reveal full name on hover */
-.gallery-panel:hover img {
-  transform: translateY(-6px); /* Adjust this value as needed */
-  /* height: auto; */
-}
-
-.gallery-panel:hover .fullname {
-  opacity: 1; /* Show full name */
-  visibility: visible;
-  height: auto; /* Allow it to take space */
-  /* Animation */
-  transform: translateY(0); /* Slide up to its current position */
-}
-
-.gallery-panel:hover .member-title {
-  transform: translateY(-7px); /* Slide up to its current position */
-}
-
-/* Grayscale effect for non-hovered panels */
-.gallery:has(.gallery-panel:hover) .gallery-panel:not(:hover) img{
+/* Grayscale effect for non-hovered team member panels */
+/* This is a cross-component effect that requires a global style */
+[data-team-gallery]:has([data-team-panel]:hover) [data-team-panel]:not(:hover) img {
     filter: grayscale(100%);
     height: 550px; /* Adjust height for non-hovered panels in desktop*/
 }
@@ -1127,20 +1013,6 @@ header .contactInfo {
 /* --- Media Queries --- */
 
 @media (max-width: 600px) {
-  /* Adjust hover image move on small screens */
-  .gallery-panel:hover img {
-    transform: translateY(-6px); /* Less movement */
-    width: 320px;
-  }
-  .gallery-panel:hover, .gallery-panel{
-      width: 320px; 
-      height: 485px; /*Helps with the mobile size of the other images*/
-  }
-
-  .panel-content:hover {
-    transform: translateY(-40px); /* Move up on hover, but not all of it */
-  }
-
   .pageContainer header {
     text-align: center;
     width: auto;
@@ -1157,7 +1029,7 @@ header .contactInfo {
   }
 }
 
-/* END Team Members Styles   -----TM */
+/* END Gallery Styles */
 
 
 /* Work Page Styles */

@@ -6,8 +6,8 @@ import { useAppContext } from "@/app/components/AppContext";
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ImagesAnimation from "@/app/components/ImagesAnimation";
-import StickyNav from "@/app/components/StickyNav";
-import SoonAnimation from "@/app/components/SoonAnimation";
+import TeamMembersGallery from "@/app/components/TeamMembersGallery";
+// import SoonAnimation from "@/app/components/SoonAnimation";
 
 export default function Page() {
     const pathname = usePathname();
@@ -66,42 +66,16 @@ export default function Page() {
             
             <div className="pageContent">
                 {/* Talent Page Content */}
-                
-                {/* {isTalentPage && pageTalent.teamMembers && pageTalent.teamMembers.length > 0 && ( */}
                 {isTalentPage && (
-                    
+                    <TeamMembersGallery teamMembers={pageTalent.teamMembers} />
+                )}
+                {/* SoonAnimation alternative:
+                {isTalentPage && (
                     <div className="gallery">
-                        <div className="stickNav">
-                            {/* <StickyNav></StickyNav>  */}
-                        </div>
-                        {/* <h2>Coming Soon</h2> */}
-                        {/* <SoonAnimation>{currentPage.tbd}</SoonAnimation> */}
                         <SoonAnimation>{currentPage.tbd}</SoonAnimation>
-
-                        {/*Coming Soon
-                        
-                        {pageTalent.teamMembers.map((member) => (
-                            <div className="gallery-panel" key={member._id}>
-                                <div className="panel-content">
-                                    <div className="member-title">
-                                        <span>
-                                            {member.talentPosition} <i>{member.city}</i>
-                                        </span>
-                                    </div>
-                                    {member.image?.asset?.url && (
-                                        <img
-                                            src={member.image.asset.url}
-                                            alt={member.image.alt || member.fullName}
-                                        />
-                                    )}
-                                    <div className="text-info">
-                                        <div className="fullname">{member.fullName}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))} */}
                     </div>
                 )}
+                */}
 
                 {/* Work Page  Content*/}
                 

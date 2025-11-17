@@ -1,0 +1,143 @@
+.panel {
+  width: 395px;
+  height: 53vh;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: width 0.5s ease-in-out;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}
+
+.panelContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.5s ease-in-out;
+  position: relative; /* For absolute positioning of textInfo */
+}
+
+.memberTitle {
+  transition: transform 0.5s ease-in-out;
+  position: relative;
+  z-index: 2; /* Ensure title stays above image when image moves up */
+}
+
+.memberTitle span {
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 12px;
+  display: block;
+  padding: 7px;
+  text-align: center;
+  letter-spacing: 0.32px;
+  line-height: 93%;
+}
+
+.memberTitle span i {
+  text-transform: capitalize;
+  font-style: italic;
+  font-family: 'Baskerville', serif;
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 93%;
+}
+
+.imageWrapper {
+  flex: 1 1 auto;
+  min-height: 0;
+  position: relative;
+  overflow: visible; /* Allow image to move up and show top */
+  height: 621px; /* Fixed height for desktop - maintains image size */
+}
+
+.memberImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out;
+  z-index: 1;
+  position: relative;
+}
+
+.textInfo {
+  padding: 3px;
+  text-align: center;
+  background-color: #fff;
+  z-index: 0;
+  position: absolute; /* Position absolutely so it doesn't affect layout */
+  bottom: -25px; /* Move down below the image wrapper so it's visible */
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+.fullname {
+  font-weight: bold;
+  font-size: 30px;
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
+  transform: translateY(10px); /* Start slightly below for fade-down effect */
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, height 0.5s ease-in-out, visibility 0.5s ease-in-out;
+  font-family: Sloop Script, cursive;
+  font-weight: 100;
+  font-size: 45px;
+}
+
+/* Hover Effects - All controlled by .panel:hover */
+.panel:hover .memberTitle {
+  transform: translateY(-42px); /* Increased from -27px to -42px (+15px more) */
+}
+
+.panel:hover .imageWrapper {
+  flex-shrink: 0; /* Prevent image wrapper from shrinking on hover */
+  flex-grow: 0; /* Prevent image wrapper from changing size */
+  height: 621px; /* Fixed height - same as non-hover state */
+  flex-basis: 621px; /* Lock flex basis to prevent recalculation */
+}
+
+.panel:hover .imageWrapper .memberImage {
+  transform: translateY(-40px);
+  height: 100%; /* Ensure image maintains its height */
+}
+
+.panel:hover .fullname {
+  opacity: 1;
+  visibility: visible;
+  height: auto;
+  transform: translateY(0); /* Fade down to final position */
+}
+
+/* Grayscale effect for non-hovered panels when one is hovered */
+/* This is handled via a global style in globals.css due to cross-component :has() selector */
+
+/* Media Queries */
+@media (max-width: 600px) {
+  .imageWrapper {
+    height: 445px; /* Fixed height for mobile - calculated: 485px panel - ~40px for title/padding */
+  }
+  
+  .panel:hover .memberTitle {
+    transform: translateY(-42px);
+  }
+  
+  .panel:hover .imageWrapper {
+    height: 445px; /* Same fixed height on hover for mobile */
+    flex-basis: 445px;
+  }
+  
+  .panel:hover .imageWrapper .memberImage {
+    transform: translateY(-30px);
+  }
+  
+  .panel:hover,
+  .panel {
+    width: 320px;
+    height: 485px;
+  }
+}
+
