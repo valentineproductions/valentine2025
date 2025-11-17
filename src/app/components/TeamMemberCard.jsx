@@ -9,6 +9,16 @@ export default function TeamMemberCard({ member }) {
 
   const memberUrl = `/talent/${member.slug}`;
 
+  // Format name to title case (first letter of each word uppercase, rest lowercase)
+  const formatName = (name) => {
+    if (!name) return '';
+    return name
+      .toLowerCase()
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
   return (
     <Link href={memberUrl} className={styles.cardLink}>
       <div className={styles.panel} data-team-panel>
@@ -37,9 +47,9 @@ export default function TeamMemberCard({ member }) {
               />
             </div>
           )}
-          <div className={styles.textInfo}>
-            <div className={styles.fullname}>{member.fullName}</div>
-          </div>
+        <div className={styles.textInfo}>
+          <div className={styles.fullname}>{formatName(member.fullName)}</div>
+        </div>
         </div>
       </div>
     </Link>

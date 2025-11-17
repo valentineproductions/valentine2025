@@ -21,6 +21,7 @@
   opacity: 0;
   transform: translateY(-20px);
   animation: fadeDown 0.8s ease-out forwards;
+  padding-top: 30px;
 }
 
 @keyframes fadeDown {
@@ -34,6 +35,7 @@
   font-family: 'Helvetica', Arial, sans-serif;
   font-size: 16px;
   line-height: 1.6;
+  color: #333;
   max-width: 800px;
   margin: 0 auto;
   text-align: center;
@@ -56,7 +58,6 @@
 .bio p:last-child {
   margin-bottom: 0;
   line-height: 93%;
-  letter-spacing: .32px;
 }
 
 .content {

@@ -13,6 +13,16 @@ export default function TeamMemberPage({ params }) {
   const [member, setMember] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Format name to title case (first letter of each word uppercase, rest lowercase)
+  const formatName = (name) => {
+    if (!name) return '';
+    return name
+      .toLowerCase()
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
   useEffect(() => {
     async function fetchMember() {
       try {
@@ -47,7 +57,7 @@ export default function TeamMemberPage({ params }) {
     <div className={styles.container}>
       <div className={styles.pageContainer}>
         <header className={styles.header}>
-          <h1 className={styles.memberName}>{member.fullName}</h1>
+          <h1 className={styles.memberName}>{formatName(member.fullName)}</h1>
           {member.bio && member.bio.length > 0 && (
             <div className={styles.bio}>
               <PortableText value={member.bio} />
