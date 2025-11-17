@@ -1,11 +1,11 @@
 .container {
   width: 100%;
   min-height: 100vh;
-  padding: 20px;
+  /* padding: 20px; */
 }
 
 .pageContainer {
-  max-width: 1200px;
+  max-width: 2000px;
   margin: 0 auto;
 }
 

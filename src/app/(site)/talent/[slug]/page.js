@@ -44,7 +44,6 @@ export default function TeamMemberPage({ params }) {
   }
 
   return (
-    <div>
     <div className={styles.container}>
       <div className={styles.pageContainer}>
         <header className={styles.header}>
@@ -62,12 +61,8 @@ export default function TeamMemberPage({ params }) {
           )}
         </div>
 
-        
-      </div>
-      
-    </div>
-    {/* Footer / Page Note */}
-    <footer>
+        {/* Footer / Page Note */}
+        <footer>
           {allData?.pageNote && (
             <div className="pageNote">
               <div className="leftSide">
@@ -118,8 +113,8 @@ export default function TeamMemberPage({ params }) {
             </div>
           )}
         </footer>
+      </div>
     </div>
-    
   );
 }
 
