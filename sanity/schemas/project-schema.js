@@ -48,6 +48,50 @@ const project = {
         ],
         description: 'All images for the project (first image will be used as preview).',
       },
+      {
+        name: 'videos',
+        title: 'Videos',
+        type: 'array',
+        of: [
+          {
+            type: 'object',
+            fields: [
+              {
+                name: 'embedCode',
+                title: 'Simian Embed Code',
+                type: 'text',
+                description: 'Paste the Simian embed code here (iframe or embed HTML).',
+              },
+              {
+                name: 'title',
+                title: 'Video Title',
+                type: 'string',
+                description: 'Optional title for the video.',
+              },
+              {
+                name: 'videoName',
+                title: 'Video Name',
+                type: 'string',
+                description: 'Name of the video.',
+              },
+            ],
+            preview: {
+              select: {
+                title: 'title',
+                videoName: 'videoName',
+                embed: 'embedCode',
+              },
+              prepare({ title, videoName, embed }) {
+                return {
+                  title: videoName || title || 'Untitled Video',
+                  subtitle: embed ? embed.substring(0, 50) + '...' : 'No embed code',
+                };
+              },
+            },
+          },
+        ],
+        description: 'Array of Simian video embeds for this project.',
+      },
     ],
     preview: {
       select: {

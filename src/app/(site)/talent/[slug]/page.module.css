@@ -50,9 +50,9 @@
   }
 }
 
-.bio p {
+/* .bio p {
   margin-bottom: 1em;
-}
+} */
 
 .bio p:last-child {
   margin-bottom: 0;

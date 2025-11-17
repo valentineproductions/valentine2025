@@ -4,7 +4,8 @@ import { PortableText } from "@portabletext/react";
 import { useAppContext } from "@/app/components/AppContext";
 import { usePathname } from 'next/navigation';
 import TeamMembersGallery from "@/app/components/TeamMembersGallery";
-import WorkGallery from "@/app/components/WorkGallery";
+import WorkGalleryV2 from "@/app/components/WorkGalleryV2";
+// import WorkGallery from "@/app/components/WorkGallery"; // Kept for future use
 // import SoonAnimation from "@/app/components/SoonAnimation";
 
 export default function Page() {
@@ -60,7 +61,7 @@ export default function Page() {
 
                 {/* Work Page Content */}
                 {isWorkPage && (
-                    <WorkGallery projects={pageWork.projects} />
+                    <WorkGalleryV2 projects={pageWork.projects} />
                 )}
 
                 {/* Footer / Page Note */}

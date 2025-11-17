@@ -254,6 +254,11 @@ export async function getProject(slug) {
               }
             },
             alt
+          },
+          videos[]{
+            embedCode,
+            title,
+            videoName
           }
         },
         pageNote->{ 
@@ -363,6 +368,11 @@ export async function getTeamMemberBySlug(slug) {
                 }
               },
               alt
+            },
+            videos[]{
+              embedCode,
+              title,
+              videoName
             }
           },
         },

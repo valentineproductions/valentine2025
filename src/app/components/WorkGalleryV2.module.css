@@ -1,0 +1,121 @@
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 7px;
+  padding-bottom: 50px;
+  width: 100%;
+}
+
+/* Video items - span 2 columns (2 videos per row) */
+.videoItem {
+  grid-column: span 2;
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+  overflow: hidden;
+}
+
+.videoItem:hover {
+  transform: scale(1.01);
+}
+
+.videoEmbed {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.videoEmbed iframe,
+.videoEmbed embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Loading state */
+.videoLoader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Image items - span 1 column (4 images per row) */
+.imageItem {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Square images */
+  min-height: 150px; /* Fallback for older browsers */
+  overflow: hidden;
+}
+
+.workImage {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.imageItem:hover .workImage {
+  transform: scale(1.03);
+}
+
+/* Modern aspect-ratio will override this, but it's good for fallback */
+@supports not (aspect-ratio: 1 / 1) {
+  .imageItem::before {
+    content: "";
+    display: block;
+    padding-bottom: 100%; /* Square */
+  }
+}
+
+/* Mobile - adjust to 2 columns */
+@media (max-width: 600px) {
+  .gallery {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 7px;
+    padding: 20px;
+  }
+
+  /* On mobile, videos still span 2 columns (full width) */
+  .videoItem {
+    grid-column: span 2;
+  }
+
+  /* On mobile, images span 1 column (2 per row) */
+  .imageItem {
+    grid-column: span 1;
+  }
+}
+
