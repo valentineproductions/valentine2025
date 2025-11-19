@@ -15,6 +15,26 @@ const shuffleArray = (array) => {
   return shuffled;
 };
 
+// Helper function to detect aspect ratio
+const getAspectRatio = (embedCode) => {
+  if (!embedCode) return '16-9';
+  if (embedCode.includes('padding-bottom:75.00000%') || embedCode.includes('padding-bottom:75%')) {
+    return '4-3';
+  }
+  if (embedCode.includes('padding-bottom:56.25000%') || embedCode.includes('padding-bottom:56.25%')) {
+    return '16-9';
+  }
+  // Check for portrait videos (padding-bottom > 100%, like 133.33% for 9:16 or 177.78% for 9:16)
+  if (embedCode.match(/padding-bottom:\s*1[0-9]{2}/i)) {
+    return 'portrait';
+  }
+  // Direct iframe without wrapper is likely portrait
+  if (embedCode.trim().startsWith('<iframe')) {
+    return 'portrait';
+  }
+  return '16-9'; // Default to 16-9 if unknown
+};
+
 // Video Item Component with Loading State
 function VideoItem({ video, index, onVideoClick }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -71,6 +91,7 @@ function VideoItem({ video, index, onVideoClick }) {
   return (
     <div
       className={styles.videoItem}
+      data-aspect={getAspectRatio(video.embedCode)}
       onClick={() => onVideoClick(video)}
     >
       {isLoading && (
