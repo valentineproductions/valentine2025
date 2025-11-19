@@ -72,6 +72,11 @@ export default function VideoModal({ video, onClose }) {
             dangerouslySetInnerHTML={{ __html: getAutoplayEmbed(video.embedCode) }}
           />
         </div>
+        {video.videoName && (
+          <div className={styles.videoName}>
+            {video.videoName}
+          </div>
+        )}
       </div>
     </div>
   );

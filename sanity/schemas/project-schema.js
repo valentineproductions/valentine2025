@@ -63,12 +63,6 @@ const project = {
                 description: 'Paste the Simian embed code here (iframe or embed HTML).',
               },
               {
-                name: 'title',
-                title: 'Video Title',
-                type: 'string',
-                description: 'Optional title for the video.',
-              },
-              {
                 name: 'videoName',
                 title: 'Video Name',
                 type: 'string',
@@ -77,13 +71,12 @@ const project = {
             ],
             preview: {
               select: {
-                title: 'title',
                 videoName: 'videoName',
                 embed: 'embedCode',
               },
-              prepare({ title, videoName, embed }) {
+              prepare({ videoName, embed }) {
                 return {
-                  title: videoName || title || 'Untitled Video',
+                  title: videoName || 'Untitled Video',
                   subtitle: embed ? embed.substring(0, 50) + '...' : 'No embed code',
                 };
               },

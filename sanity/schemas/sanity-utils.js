@@ -239,7 +239,7 @@ export async function getProject(slug) {
           bio,
           videos[]{
             embedCode,
-            title
+            videoName
           },
         },
         projects[]->{
@@ -257,7 +257,6 @@ export async function getProject(slug) {
           },
           videos[]{
             embedCode,
-            title,
             videoName
           }
         },
@@ -312,7 +311,7 @@ export async function getTeamMemberBySlug(slug) {
       bio,
       videos[]{
         embedCode,
-        title
+        videoName
       },
     }`,
     { slug }
@@ -353,7 +352,7 @@ export async function getTeamMemberBySlug(slug) {
             bio,
             videos[]{
               embedCode,
-              title
+              videoName
             },
           },
           projects[]->{   // Added from getFullPagesData
@@ -371,7 +370,6 @@ export async function getTeamMemberBySlug(slug) {
             },
             videos[]{
               embedCode,
-              title,
               videoName
             }
           },
