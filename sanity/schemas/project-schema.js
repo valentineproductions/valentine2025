@@ -68,6 +68,38 @@ const project = {
                 type: 'string',
                 description: 'Name of the video.',
               },
+              {
+                name: 'coverImage',
+                title: 'Custom Cover Image',
+                type: 'image',
+                description: 'Custom thumbnail/cover image for the video.',
+                options: {
+                  hotspot: true,
+                },
+                fields: [
+                  {
+                    name: 'alt',
+                    title: 'Alt Text',
+                    type: 'string',
+                  },
+                ],
+              },
+              {
+                name: 'logo',
+                title: 'Logo Overlay',
+                type: 'image',
+                description: 'Logo to overlay on the cover image.',
+                options: {
+                  hotspot: true,
+                },
+                fields: [
+                  {
+                    name: 'alt',
+                    title: 'Alt Text',
+                    type: 'string',
+                  },
+                ],
+              },
             ],
             preview: {
               select: {

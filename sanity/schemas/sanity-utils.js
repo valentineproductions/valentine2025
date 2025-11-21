@@ -257,7 +257,21 @@ export async function getProject(slug) {
           },
           videos[]{
             embedCode,
-            videoName
+            videoName,
+            coverImage{
+              asset->{
+                _id,
+                url
+              },
+              alt
+            },
+            logo{
+              asset->{
+                _id,
+                url
+              },
+              alt
+            }
           }
         },
         pageNote->{ 
@@ -370,7 +384,21 @@ export async function getTeamMemberBySlug(slug) {
             },
             videos[]{
               embedCode,
-              videoName
+              videoName,
+              coverImage{
+                asset->{
+                  _id,
+                  url
+                },
+                alt
+              },
+              logo{
+                asset->{
+                  _id,
+                  url
+                },
+                alt
+              }
             }
           },
         },

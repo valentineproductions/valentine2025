@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo, useRef } from 'react';
 import Image from 'next/image';
 import VideoModal from './VideoModal';
+import ImageGalleryModal from './ImageGalleryModal';
 import styles from './WorkGalleryV2.module.css';
 
 // Helper function to shuffle array
@@ -39,8 +40,15 @@ const getAspectRatio = (embedCode) => {
 function VideoItem({ video, index, onVideoClick }) {
   const [isLoading, setIsLoading] = useState(true);
   const videoRef = useRef(null);
+  const hasCustomCover = video.coverImage?.asset?.url;
 
   useEffect(() => {
+    // Only check for iframe loading if we don't have a custom cover
+    if (hasCustomCover) {
+      setIsLoading(false);
+      return;
+    }
+
     let loadTimeout;
     let checkTimer;
 
@@ -86,7 +94,7 @@ function VideoItem({ video, index, onVideoClick }) {
       if (checkTimer) clearTimeout(checkTimer);
       if (loadTimeout) clearTimeout(loadTimeout);
     };
-  }, []);
+  }, [hasCustomCover]);
 
   return (
     <div
@@ -94,23 +102,69 @@ function VideoItem({ video, index, onVideoClick }) {
       data-aspect={getAspectRatio(video.embedCode)}
       onClick={() => onVideoClick(video)}
     >
-      {isLoading && (
-        <div className={styles.videoLoader}>
-          <div className={styles.spinner}></div>
+      {hasCustomCover ? (
+        // Show custom cover image with logo and play button
+        <div className={styles.customVideoCover}>
+          <Image
+            src={video.coverImage.asset.url}
+            alt={video.coverImage.alt || video.videoName || 'Video cover'}
+            fill
+            className={styles.coverImage}
+            style={{ objectFit: 'cover' }}
+            quality={90}
+          />
+          {video.logo?.asset?.url && (
+            <div className={styles.logoOverlay}>
+              <Image
+                src={video.logo.asset.url}
+                alt={video.logo.alt || 'Logo'}
+                width={200}
+                height={200}
+                className={styles.logo}
+                style={{ 
+                  width: 'auto',
+                  height: 'auto',
+                  maxWidth: '30%',
+                  maxHeight: '30%',
+                  objectFit: 'contain'
+                }}
+              />
+            </div>
+          )}
+          <div className={styles.playButtonOverlay}>
+            <Image
+              src="/playValentineSimian.png"
+              alt="Play video"
+              width={25}
+              height={25}
+              className={styles.playButtonImage}
+            />
+          </div>
         </div>
+      ) : (
+        // Fallback to Simian embed if no custom cover
+        <>
+          {isLoading && (
+            <div className={styles.videoLoader}>
+              <div className={styles.spinner}></div>
+            </div>
+          )}
+          <div
+            ref={videoRef}
+            className={styles.videoEmbed}
+            style={{ opacity: isLoading ? 0 : 1 }}
+            dangerouslySetInnerHTML={{ __html: video.embedCode }}
+          />
+        </>
       )}
-      <div
-        ref={videoRef}
-        className={styles.videoEmbed}
-        style={{ opacity: isLoading ? 0 : 1 }}
-        dangerouslySetInnerHTML={{ __html: video.embedCode }}
-      />
     </div>
   );
 }
 
 export default function WorkGalleryV2({ projects }) {
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedImages, setSelectedImages] = useState(null);
+  const [initialImageIndex, setInitialImageIndex] = useState(0);
   const [contentItems, setContentItems] = useState([]);
 
   // Process projects to extract videos and images
@@ -207,8 +261,28 @@ export default function WorkGalleryV2({ projects }) {
     setSelectedVideo(video);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseVideoModal = () => {
     setSelectedVideo(null);
+  };
+
+  const handleImageClick = (clickedImage) => {
+    // Find all images from the same project
+    const projectImages = allImages.filter(
+      (image) => image.projectId === clickedImage.projectId
+    );
+    
+    // Find the index of the clicked image in the project's images
+    const clickedIndex = projectImages.findIndex(
+      (img) => img.asset.url === clickedImage.asset.url
+    );
+    
+    setSelectedImages(projectImages);
+    setInitialImageIndex(clickedIndex >= 0 ? clickedIndex : 0);
+  };
+
+  const handleCloseImageModal = () => {
+    setSelectedImages(null);
+    setInitialImageIndex(0);
   };
 
   if (contentItems.length === 0) {
@@ -233,6 +307,8 @@ export default function WorkGalleryV2({ projects }) {
               <div
                 key={`image-${item.index}`}
                 className={styles.imageItem}
+                onClick={() => handleImageClick(item.data)}
+                style={{ cursor: 'pointer' }}
               >
                 <Image
                   src={item.data.asset.url}
@@ -259,7 +335,14 @@ export default function WorkGalleryV2({ projects }) {
       {selectedVideo && (
         <VideoModal
           video={selectedVideo}
-          onClose={handleCloseModal}
+          onClose={handleCloseVideoModal}
+        />
+      )}
+      {selectedImages && selectedImages.length > 0 && (
+        <ImageGalleryModal
+          images={selectedImages}
+          initialIndex={initialImageIndex}
+          onClose={handleCloseImageModal}
         />
       )}
     </>

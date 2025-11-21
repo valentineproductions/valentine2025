@@ -39,16 +39,25 @@ export default function VideoModal({ video, onClose }) {
   const getAutoplayEmbed = (embedCode) => {
     if (!embedCode) return embedCode;
     
-    // If it's an iframe, add autoplay parameter
+    // If it's an iframe, ensure autoplay is enabled in the URL path
+    // Simian URL structure: /share/v/{videoId}/{autoplay}/{width}/{height}/{progressBarColor}/{backgroundColor}/
     if (embedCode.includes('<iframe')) {
-      // Check if src already has parameters
-      const hasParams = embedCode.includes('?');
-      const autoplayParam = hasParams ? '&autoplay=1' : '?autoplay=1';
-      
-      // Add autoplay to src
       return embedCode.replace(
         /src="([^"]+)"/,
-        `src="$1${autoplayParam}"`
+        (match, url) => {
+          // Always set autoplay to 'true' in the modal
+          // Match the pattern: /share/v/{videoId}/{autoplay}/...
+          // Replace /false/ or /true/ with /true/ to ensure autoplay
+          let modifiedUrl = url;
+          
+          // Check if URL matches Simian pattern
+          if (url.includes('/share/v/')) {
+            // Replace /false/ or /true/ with /true/ for autoplay
+            modifiedUrl = url.replace(/\/(false|true)(\/|$)/, '/true$2');
+          }
+          
+          return `src="${modifiedUrl}"`;
+        }
       );
     }
     

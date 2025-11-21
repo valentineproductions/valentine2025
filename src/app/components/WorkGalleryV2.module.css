@@ -95,6 +95,60 @@
   pointer-events: none; /* Allow clicks to pass through to parent container */
 }
 
+/* Custom video cover with logo and play button */
+.customVideoCover {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  background: #000;
+  cursor: pointer;
+}
+
+.coverImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logoOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.playButtonOverlay {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 2;
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+.videoItem:hover .playButtonOverlay {
+  transform: scale(1.1);
+}
+
+/* Adjust play button size */
+.playButtonImage {
+  width: auto;
+  height: auto;
+  max-width: 25px;
+  max-height: 25px;
+  object-fit: contain;
+}
+
 /* Loading state */
 .videoLoader {
   position: absolute;
@@ -171,6 +225,23 @@
   /* On mobile, images span 1 column (2 per row) */
   .imageItem {
     grid-column: span 1;
+  }
+
+  /* Mobile adjustments for custom cover */
+  .logoOverlay {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .playButtonOverlay {
+    bottom: 10px;
+    left: 10px;
+  }
+  
+  .playButtonImage {
+    max-width: 20px;
+    max-height: 20px;
   }
 }
 

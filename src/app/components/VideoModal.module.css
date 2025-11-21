@@ -10,15 +10,19 @@
   justify-content: center;
   z-index: 9999;
   padding: 20px;
+  overflow-y: auto;
 }
 
 .modal {
   position: relative;
-  width: 90%;
-  max-width: 1600px;
+  width: 85%;
+  max-width: 1200px;
+  max-height: 90vh;
   background-color: #000;
   border-radius: 8px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .closeButton {
@@ -50,6 +54,7 @@
   padding-bottom: 56.25%; /* 16:9 aspect ratio */
   height: 0;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .videoEmbed {
@@ -71,19 +76,41 @@
 }
 
 .videoName {
-  padding: 20px;
+  padding: 15px 20px;
   text-align: center;
   color: #fff;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
   background-color: #000;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+/* Smaller screens (13-inch MacBook Air, tablets) */
+@media (max-width: 1440px) {
+  .modal {
+    width: 80%;
+    max-width: 1000px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .modal {
+    width: 85%;
+    max-width: 900px;
+  }
+  
+  .videoName {
+    padding: 12px 15px;
+    font-size: 15px;
+  }
 }
 
 /* Mobile */
 @media (max-width: 600px) {
   .modal {
     width: 90%;
+    max-width: 100%;
   }
   
   .closeButton {
@@ -95,8 +122,8 @@
   }
 
   .videoName {
-    padding: 15px;
-    font-size: 16px;
+    padding: 12px;
+    font-size: 14px;
   }
 }
 
