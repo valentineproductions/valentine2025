@@ -133,7 +133,8 @@ function VideoItem({ video, index, onVideoClick }) {
           )}
           <div className={styles.playButtonOverlay}>
             <Image
-              src="/playValentineSimian.png"
+              // src="/playValentineSimian.png"
+              src="/modal-icon.png"
               alt="Play video"
               width={25}
               height={25}

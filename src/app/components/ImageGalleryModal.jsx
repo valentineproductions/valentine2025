@@ -44,7 +44,7 @@ export default function ImageGalleryModal({ images, initialIndex, onClose }) {
     if (scrollContainerRef.current && initialIndex !== undefined) {
       const imageElement = scrollContainerRef.current.children[initialIndex];
       if (imageElement) {
-        imageElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        imageElement.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
       }
     }
 
@@ -62,7 +62,7 @@ export default function ImageGalleryModal({ images, initialIndex, onClose }) {
       setCurrentIndex(newIndex);
       const imageElement = scrollContainerRef.current?.children[newIndex];
       if (imageElement) {
-        imageElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        imageElement.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
       }
     }
   };
@@ -73,7 +73,7 @@ export default function ImageGalleryModal({ images, initialIndex, onClose }) {
       setCurrentIndex(newIndex);
       const imageElement = scrollContainerRef.current?.children[newIndex];
       if (imageElement) {
-        imageElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        imageElement.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
       }
     }
   };

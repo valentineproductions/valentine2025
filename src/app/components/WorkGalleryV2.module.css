@@ -144,8 +144,8 @@
 .playButtonImage {
   width: auto;
   height: auto;
-  max-width: 25px;
-  max-height: 25px;
+  max-width: 50px;
+  max-height: 50px;
   object-fit: contain;
 }
 
