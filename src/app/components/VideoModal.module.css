@@ -20,15 +20,15 @@
   max-height: 90vh;
   background-color: #000;
   border-radius: 8px;
-  overflow: hidden;
+  overflow: visible; /* Allow close button to be visible above */
   display: flex;
   flex-direction: column;
 }
 
 .closeButton {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: -50px; /* Position above the modal */
+  right: 0;
   background-color: rgba(255, 255, 255, 0.9);
   border: none;
   width: 40px;
@@ -55,6 +55,7 @@
   height: 0;
   overflow: hidden;
   flex-shrink: 0;
+  border-radius: 8px 8px 0 0; /* Match modal border radius on top */
 }
 
 .videoEmbed {
@@ -111,14 +112,15 @@
   .modal {
     width: 90%;
     max-width: 100%;
+    overflow: visible; /* Ensure close button is visible above */
   }
   
   .closeButton {
     width: 35px;
     height: 35px;
     font-size: 24px;
-    top: 5px;
-    right: 5px;
+    top: -45px; /* Position above the modal on mobile */
+    right: 0;
   }
 
   .videoName {
