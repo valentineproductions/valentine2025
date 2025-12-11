@@ -39,6 +39,8 @@
   position: relative;
   width: 100%;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
 }
 
 .videoEmbed {
@@ -48,6 +50,7 @@
   height: 0;
   overflow: hidden;
   background: #000000; /* Black background for letterboxing */
+  flex-shrink: 0; /* Prevent shrinking to maintain aspect ratio */
 }
 
 /* 16:9 videos - fill the container normally */
@@ -116,14 +119,20 @@
 
 .videoName {
   padding: 12px 15px;
-  text-align: center;
-  color: #fff;
+  text-align: left; /* Left-aligned */
+  color: #5f1b19;
   font-size: 16px;
   font-weight: 500;
-  background-color: #000;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #fff;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
   width: 100%;
   box-sizing: border-box;
+  flex-shrink: 0; /* Prevent shrinking */
+  transition: color 0.2s ease-in-out;
+}
+
+.videoWrapper:hover .videoName {
+  color: #000;
 }
 
 /* Mobile - 1 column */

@@ -97,7 +97,7 @@ export default function VideoGridV2({ videos }) {
                 className={styles.videoEmbed}
                 dangerouslySetInnerHTML={{ __html: embedCode }}
               />
-              {isPlaying && video.videoName && (
+              {video.videoName && (
                 <div className={styles.videoName}>
                   {video.videoName}
                 </div>
