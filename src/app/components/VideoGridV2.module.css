@@ -1,0 +1,142 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px; /* Space between videos */
+  padding: 20px;
+  width: 100%;
+}
+
+.videoItem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out forwards;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.videoItem:hover {
+  transform: scale(1.01) !important;
+}
+
+.videoWrapper {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+}
+
+.videoEmbed {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  background: #000000; /* Black background for letterboxing */
+}
+
+/* 16:9 videos - fill the container normally */
+.videoEmbed > div[style*="56.25"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* 4:3 videos - scale to 75% width to fit height, center horizontally and vertically */
+.videoItem[data-aspect="4-3"] .videoEmbed > div[style*="padding-bottom"] {
+  position: absolute !important;
+  top: 67% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 75% !important;
+  margin: 0 !important;
+  height: 0 !important;
+  /* padding-bottom maintains 4:3 aspect ratio */
+}
+
+/* Portrait videos - scale to fit height, center horizontally and vertically */
+.videoItem[data-aspect="portrait"] .videoEmbed > div[style*="padding-bottom"] {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 31.64% !important; /* For 9:16, fits height of 16:9 container */
+  margin: 0 !important;
+  height: 0 !important;
+}
+
+/* Direct iframes (no wrapper div) - handle portrait iframes */
+.videoItem[data-aspect="portrait"] .videoEmbed > iframe[name="SimianEmbed"] {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 31.64% !important;
+  height: auto !important;
+  aspect-ratio: 9/16;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  pointer-events: auto; /* Allow interaction with video controls */
+}
+
+/* All iframes inside wrapper divs */
+.videoEmbed > div iframe,
+.videoEmbed > div embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  pointer-events: auto; /* Allow interaction with video controls */
+}
+
+/* Direct iframes (not wrapped in div) */
+.videoEmbed > iframe {
+  pointer-events: auto; /* Allow interaction with video controls */
+}
+
+.videoName {
+  padding: 12px 15px;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  background-color: #000;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Mobile - 1 column */
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 13px;
+    padding: 20px;
+  }
+
+  .videoName {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+}
+

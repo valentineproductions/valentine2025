@@ -3,7 +3,7 @@
 import { PortableText } from "@portabletext/react";
 import { useAppContext } from "@/app/components/AppContext";
 import { use } from 'react';
-import VideoGrid from "@/app/components/VideoGrid";
+import VideoGridV2 from "@/app/components/VideoGridV2";
 import styles from './page.module.css';
 
 export default function TeamMemberPage({ params }) {
@@ -48,7 +48,7 @@ export default function TeamMemberPage({ params }) {
 
         <div className={styles.content}>
           {member.videos && member.videos.length > 0 && (
-            <VideoGrid videos={member.videos} />
+            <VideoGridV2 videos={member.videos} />
           )}
         </div>
 
