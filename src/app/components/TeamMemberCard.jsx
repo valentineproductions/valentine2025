@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './TeamMemberCard.module.css';
+import { categoryToSlug } from '@/app/utils/categoryUtils';
 
 export default function TeamMemberCard({ member }) {
   if (!member || !member.slug) return null;
@@ -17,6 +18,11 @@ export default function TeamMemberCard({ member }) {
       .split(' ')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
+  };
+
+  const handleCategoryClick = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
   };
 
   return (
@@ -47,9 +53,23 @@ export default function TeamMemberCard({ member }) {
               />
             </div>
           )}
-        <div className={styles.textInfo}>
-          <div className={styles.fullname}>{formatName(member.fullName)}</div>
-        </div>
+          <div className={styles.textInfo}>
+            <div className={styles.fullname}>{formatName(member.fullName)}</div>
+            {member.categories && member.categories.length > 0 && (
+              <div className={styles.categories}>
+                {member.categories.map((category, index) => (
+                  <Link
+                    key={index}
+                    href={`/talent/category/${categoryToSlug(category)}`}
+                    className={styles.categoryTag}
+                    onClick={handleCategoryClick}
+                  >
+                    {category}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </Link>

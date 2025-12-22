@@ -97,6 +97,14 @@ const teamMember = {
         ],
         description: 'Array of Simian video embeds for this team member.',
       },
+      {
+        name: 'categories',
+        title: 'Categories',
+        type: 'array',
+        of: [{ type: 'string' }],
+        validation: Rule => Rule.max(3).error('You can add a maximum of 3 categories.'),
+        description: 'Categories for this team member (e.g., Food, Fashion, Lifestyle). Maximum of 3 categories.',
+      },
       // You can add more fields here, like social media links, etc.
     ],
     preview: {

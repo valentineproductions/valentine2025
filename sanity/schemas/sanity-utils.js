@@ -238,6 +238,7 @@ export async function getProject(slug) {
             alt
           },
           bio,
+          categories,
           videos[]{
             embedCode,
             videoName
@@ -324,6 +325,7 @@ export async function getTeamMemberBySlug(slug) {
         alt
       },
       bio,
+      categories,
       videos[]{
         embedCode,
         videoName
@@ -366,6 +368,7 @@ export async function getTeamMemberBySlug(slug) {
               alt
             },
             bio,
+            categories,
             videos[]{
               embedCode,
               videoName

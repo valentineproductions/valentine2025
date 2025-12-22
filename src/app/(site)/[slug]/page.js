@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 import TeamMembersGallery from "@/app/components/TeamMembersGallery";
 import WorkGalleryV2 from "@/app/components/WorkGalleryV2";
 import TalentHorizontalHeader from "@/app/components/TalentHorizontalHeader";
+import DirectorsList from "@/app/components/DirectorsList";
 // import TalentPageHeaderOriginal from "@/app/components/TalentPageHeaderOriginal"; // Backup - original centered layout
 import WorkPageHeader from "@/app/components/WorkPageHeader";
 import PageFooter from "@/app/components/PageFooter";
@@ -62,6 +63,11 @@ export default function Page() {
             {/* PAGE CONTENT */}
             <div className="pageContent">
                 {/* Talent Page Content */}
+                {/* NEW MEMBERS SECTION / under "DIRECTORY" */}
+                {isTalentPage && (
+                    <DirectorsList directors={pageTalent.teamMembers} />
+                )}
+                
                 {/* {isTalentPage && (
                     <TeamMembersGallery teamMembers={pageTalent.teamMembers} />
                 )} */}

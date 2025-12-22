@@ -1,0 +1,167 @@
+/* DirectorsList Component - 3-column layout */
+.directorsList {
+  width: 100%;
+  margin-top: 50px;
+  margin-bottom: 60px;
+}
+
+.container {
+  max-width: 2000px;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+}
+
+.directorRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* 3 columns, 33.3% each */
+  gap: 0;
+  align-items: flex-start;
+  padding: 20px 0;
+  border-bottom: 1px solid #5f1b19;
+}
+
+.directorRow:first-child {
+  border-top: 1px solid #5f1b19;
+}
+
+.directorRow:last-child {
+  border-bottom: 1px solid #5f1b19;
+}
+
+/* Left Column: Picture + Name */
+.leftColumn {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.imageWrapper {
+  width: 150px;
+  height: 200px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.directorImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.directorName {
+  font-family: Sloop Script, cursive;
+  font-weight: 500;
+  font-size: 45px;
+  line-height: 65%;
+  color: #5F1B19;
+  padding: 20px 0 0 0;
+}
+
+/* Middle Column: Categories */
+.middleColumn {
+  text-align: left;
+}
+
+.categoriesList {
+  list-style: disc;
+  padding-left: 20px;
+  margin: 0;
+  margin: 0 30px;
+}
+
+.categoryItem:last-child {
+  margin-bottom: 0;
+}
+
+.categoryLink {
+  font-family: 'Baskerville', serif;
+  font-size: 14px;
+  font-weight: 500;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.32px;
+  color: #5F1B19;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.categoryLink:hover {
+  opacity: 0.7;
+}
+
+.noCategories {
+  color: rgba(95, 27, 25, 0.3);
+  font-style: italic;
+}
+
+/* Right Column: Position, City, Projects CTA */
+.rightColumn {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.positionInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.position {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.32px;
+  color: #5F1B19;
+}
+
+.city {
+  font-family: 'Helvetica Neue', sans-serif;
+  /* font-style: italic; */
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #5F1B19;
+}
+
+.projectsCTA {
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.32px;
+  color: #5F1B19;
+  transition: opacity 0.3s ease;
+}
+
+.projectsCTA:hover {
+  opacity: 0.7;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 600px) {
+  .directorRow {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 30px 0;
+  }
+
+  .leftColumn {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .imageWrapper {
+    width: 100%;
+    height: 300px;
+  }
+
+  .middleColumn,
+  .rightColumn {
+    width: 100%;
+  }
+}
