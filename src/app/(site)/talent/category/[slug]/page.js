@@ -5,6 +5,7 @@ import { use } from 'react';
 import Link from 'next/link';
 import DirectorsList from "@/app/components/DirectorsList";
 import PageFooter from "@/app/components/PageFooter";
+import CategoryPageOpt3 from "@/app/components/CategoryPageOpt3";
 import { categoryToSlug, slugToCategoryName } from "@/app/utils/categoryUtils";
 import styles from './page.module.css';
 
@@ -38,13 +39,12 @@ export default function CategoryPage({ params }) {
           ← back to Talent Page
         </Link>
 
-        {/* Category Title and Subtitle */}
-        <header className={styles.header}>
-          <h1 className={styles.categoryTitle}>{categoryName}</h1>
-          <p className={styles.categorySubtitle}>
-            #{filteredDirectors.length} director{filteredDirectors.length !== 1 ? 's' : ''} in this category
-          </p>
-        </header>
+        {/* Category Header */}
+        <CategoryPageOpt3 
+          categoryName={categoryName}
+          directorsCount={filteredDirectors.length}
+          pageDescription={talentPage?.pageDescription}
+        />
 
         {/* Directors List */}
         {filteredDirectors.length > 0 ? (

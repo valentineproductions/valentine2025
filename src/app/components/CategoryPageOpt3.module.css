@@ -1,4 +1,4 @@
-/* Talent Horizontal Header Layout - matches nav pattern */
+/* Category Page Header Layout - matches TalentHorizontalHeader pattern */
 .header {
   width: 100% !important; /* Override global .pageContainer header width: 70% */
   text-align: left !important; /* Override global .pageContainer header text-align: center */
@@ -31,7 +31,7 @@
   align-items: center;
 }
 
-.pageTitle {
+.categoryTitle {
   margin: 0 !important; /* Override global .pageContainer header h1 margin: 70px 0 0 */
   text-align: left;
   font-family: Sloop Script, cursive;
@@ -41,7 +41,7 @@
   line-height: 65%;
 }
 
-.pageTitleText {
+.directorsCount {
   margin: 0;
   font-family: 'Baskerville', serif;
   font-style: italic;
@@ -57,7 +57,7 @@
   text-transform: none;
   margin: 0;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 15px;
   text-wrap: balance;
   white-space: pre-wrap;
   line-height: 125%;
@@ -68,11 +68,7 @@
 }
 
 /* Mobile Responsive Styles */
-@media (max-width: 768px) {
-  .header {
-    margin-top: 190px !important;
-  }
-
+@media (max-width: 600px) {
   .container {
     grid-template-columns: 1fr;
     gap: 30px;
@@ -89,7 +85,7 @@
     width: 100%;
   }
 
-  .pageTitleText {
+  .directorsCount {
     text-align: left;
   }
 
@@ -97,3 +93,4 @@
     text-align: left;
   }
 }
+
