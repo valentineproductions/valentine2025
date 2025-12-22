@@ -222,6 +222,7 @@ export async function getProject(slug) {
       groq`*[_type == "page" && slug.current == $slug][0]{
         _id,
         _createdAt,
+        indexTitle,
         pageTitle,
         "slug": slug.current,
         pageDescription,
@@ -340,6 +341,7 @@ export async function getTeamMemberBySlug(slug) {
           _id,
           _createdAt,
           navTitle,
+          indexTitle,
           pageTitle,
           "slug": slug.current,
           pageCompanyLogo{

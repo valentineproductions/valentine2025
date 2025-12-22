@@ -40,6 +40,12 @@ const page = {
         description: 'This is the title of the navigation.',
       },
       {
+        name: 'indexTitle',
+        title: 'Index Title',
+        type: 'string',
+        description: 'This is the title displayed on the talent page header.',
+      },
+      {
         name: 'pageTitle',
         title: 'Page Title',
         type: 'string',

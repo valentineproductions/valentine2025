@@ -5,7 +5,8 @@ import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import TeamMembersGallery from "@/app/components/TeamMembersGallery";
 import WorkGalleryV2 from "@/app/components/WorkGalleryV2";
-import TalentPageHeader from "@/app/components/TalentPageHeader";
+import TalentHorizontalHeader from "@/app/components/TalentHorizontalHeader";
+// import TalentPageHeaderOriginal from "@/app/components/TalentPageHeaderOriginal"; // Backup - original centered layout
 import WorkPageHeader from "@/app/components/WorkPageHeader";
 import PageFooter from "@/app/components/PageFooter";
 import PageErrorState from "@/app/components/PageErrorState";
@@ -37,13 +38,15 @@ export default function Page() {
     }
 
     return(
+        // HEADERS
         <div className="pageContainer">
             {/* Dynamic Header based on current page */}
+            {/* <TalentPageHeader Original - centered layout> */}
             {isTalentPage && (
-                <TalentPageHeader 
+                <TalentHorizontalHeader 
+                    indexTitle={pageTalent.indexTitle}
                     pageTitle={pageTalent.pageTitle}
                     pageDescription={pageTalent.pageDescription}
-                    contactInfo={pageTalent.contactInfo}
                 />
             )}
             {isWorkPage && (
@@ -53,12 +56,16 @@ export default function Page() {
                     contactInfo={pageWork.contactInfo}
                 />
             )}
+
             
+
+            {/* PAGE CONTENT */}
             <div className="pageContent">
                 {/* Talent Page Content */}
-                {isTalentPage && (
+                {/* {isTalentPage && (
                     <TeamMembersGallery teamMembers={pageTalent.teamMembers} />
-                )}
+                )} */}
+
                 {/* SoonAnimation alternative:
                 {isTalentPage && (
                     <div className="gallery">

@@ -2,8 +2,8 @@
 
 import { PortableText } from "@portabletext/react";
 
-// Original centered/vertical layout - backup version
-export default function TalentPageHeader({ pageTitle, pageDescription, contactInfo }) {
+// Original centered/vertical layout - kept as backup
+export default function TalentPageHeaderOriginal({ pageTitle, pageDescription, contactInfo }) {
   return (
     <header className="talent-page">
       <h1 className="pageTitle">{pageTitle}</h1>

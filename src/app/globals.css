@@ -950,6 +950,7 @@ header.talent-page, .pageContainer header, .pageContent .aboutMain{
   margin: 190px auto 0;
 }
 
+/* Legacy styles for other headers */
 header .pageDescription {
   text-transform: uppercase;
   margin-bottom: 20px;
