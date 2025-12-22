@@ -1,23 +1,25 @@
 'use client';
 
+import styles from './PageFooter.module.css';
+
 export default function PageFooter({ pageNote }) {
   if (!pageNote) return null;
 
   return (
-    <footer>
-      <div className="pageNote">
-        <div className="leftSide">
+    <footer className={styles.footer}>
+      <div className={styles.pageNote}>
+        <div className={styles.leftSide}>
           {pageNote.workTitle && (
-            <div className="workSection">
-              <h2 className="pageNoteTitle">{pageNote.workTitle}</h2>
+            <div className={styles.workSection}>
+              <h2 className={styles.pageNoteTitle}>{pageNote.workTitle}</h2>
               {pageNote.workDescription && (
-                <p className="pageNoteText">{pageNote.workDescription}</p>
+                <p className={styles.pageNoteText}>{pageNote.workDescription}</p>
               )}
             </div>
           )}
           {pageNote.connectTitle && (
-            <div className="connectSection">
-              <h2 className="pageNoteTitle">{pageNote.connectTitle}</h2>
+            <div className={styles.connectSection}>
+              <h2 className={styles.pageNoteTitle}>{pageNote.connectTitle}</h2>
               {pageNote.connectLinks &&
                 pageNote.connectLinks.map((link, index) => {
                   // Determine if the link is an email address
@@ -37,7 +39,7 @@ export default function PageFooter({ pageNote }) {
                     <a
                       key={index}
                       href={href}
-                      className="contactLink"
+                      className={styles.contactLink}
                       target={target}
                       rel={rel}
                     >
@@ -49,8 +51,8 @@ export default function PageFooter({ pageNote }) {
           )}
         </div>
         {pageNote.copyrightText && (
-          <div className="copyRight">
-            <p className="copyRightText"> 
+          <div className={styles.copyRight}>
+            <p className={styles.copyRightText}> 
               <b>{pageNote.copyrightBrandName}</b> {pageNote.copyrightText} {pageNote.copyrightYear} {pageNote.copyrightBrandName}
             </p>
           </div>

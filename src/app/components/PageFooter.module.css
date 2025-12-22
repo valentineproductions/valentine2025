@@ -1,0 +1,122 @@
+/* PageFooter Component - CSS Module */
+/* Override global footer styles */
+
+.footer {
+  width: 100%;
+  padding: 20px;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.pageNote {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 2000px;
+  margin: 0 auto;
+}
+
+.leftSide {
+  display: flex;
+  gap: 40px;
+  /* padding-left: 30px; */
+}
+
+.workSection {
+  text-align: left;
+  width: 330px;
+}
+
+.connectSection {
+  text-align: left;
+  width: 120px;
+}
+
+.copyRight {
+  text-align: left;
+  width: 300px;
+}
+
+.pageNoteTitle {
+  font-size: 16px;
+  font-weight: 500;
+  font-style: italic;
+  margin-bottom: 5px;
+  font-family: 'Baskerville', serif;
+  line-height: 93%;
+  letter-spacing: -0.32px;
+}
+
+.pageNoteText {
+  margin-bottom: 15px;
+  line-height: 95%;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: pre-wrap;
+  letter-spacing: .32px;
+}
+
+.contactLink {
+  display: block;
+  margin-bottom: 0;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 95%;
+  letter-spacing: .32px;
+}
+
+.contactLink:hover {
+  text-decoration: underline;
+}
+
+.copyRightText {
+  font-size: 8px;
+  line-height: 107%;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  font-weight: 500;
+}
+
+.copyRightText b {
+  font-style: italic;
+  font-family: 'Baskerville', serif;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: -.27px;
+}
+
+/* Responsive Styles */
+@media (max-width: 767px) {
+  .pageNote {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .leftSide {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding-left: 0;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  .connectSection {
+    width: auto;
+  }
+
+  .workSection {
+    width: auto;
+  }
+
+  .copyRight {
+    width: auto;
+    text-align: left;
+    flex-grow: 1;
+  }
+}
+
