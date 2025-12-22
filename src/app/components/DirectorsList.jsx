@@ -31,27 +31,31 @@ export default function DirectorsList({ directors }) {
             {/* Left Column: Picture + Name */}
             <div className={styles.leftColumn}>
               {director.image?.asset?.url && (
-                <div className={styles.imageWrapper}>
-                  <Image
-                    src={director.image.asset.url}
-                    alt={director.image.alt || director.fullName}
-                    width={200}
-                    height={250}
-                    className={styles.directorImage}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover'
-                    }}
-                    quality={80}
-                    loading="lazy"
-                    unoptimized={director.image?.asset?.url?.endsWith('.gif')}
-                  />
-                </div>
+                <Link href={directorUrl} className={styles.imageLink}>
+                  <div className={styles.imageWrapper}>
+                    <Image
+                      src={director.image.asset.url}
+                      alt={director.image.alt || director.fullName}
+                      width={200}
+                      height={250}
+                      className={styles.directorImage}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover'
+                      }}
+                      quality={80}
+                      loading="lazy"
+                      unoptimized={director.image?.asset?.url?.endsWith('.gif')}
+                    />
+                  </div>
+                </Link>
               )}
-              <div className={styles.directorName}>
-                {formatName(director.fullName)}
-              </div>
+              <Link href={directorUrl} className={styles.nameLink}>
+                <div className={styles.directorName}>
+                  {formatName(director.fullName)}
+                </div>
+              </Link>
             </div>
 
             {/* Middle Column: Categories */}
