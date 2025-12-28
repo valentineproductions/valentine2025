@@ -1,6 +1,6 @@
 .categoryPage {
   width: 100%;
-  padding: 40px 20px;
+  padding: 40px 0;
 }
 
 .container {
@@ -11,7 +11,7 @@
 
 .backLink {
   display: inline-block;
-  margin-bottom: 40px;
+  margin: 0px 0px 40px 20px;;
   color: #5F1B19;
   text-decoration: none;
   font-size: 14px;
@@ -57,10 +57,15 @@
 }
 
 /* Mobile Responsive Styles */
-@media (max-width: 600px) {
+@media (max-width: 767px) {
   .categoryPage {
-    padding: 20px;
+    /* padding: 20px; */
   }
+  
+  .backLink {
+    margin: 0px 0px 40px 10px;
+  }
+  
 
   .categoryTitle {
     font-size: 45px;
