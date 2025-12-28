@@ -7,10 +7,11 @@ import TeamMembersGallery from "@/app/components/TeamMembersGallery";
 import WorkGalleryV2 from "@/app/components/WorkGalleryV2";
 import TalentHorizontalHeader from "@/app/components/TalentHorizontalHeader";
 import DirectorsList from "@/app/components/DirectorsList";
-// import TalentPageHeaderOriginal from "@/app/components/TalentPageHeaderOriginal"; // Backup - original centered layout
+import TalentPageHeaderOriginal from "@/app/components/TalentPageHeaderOriginal"; // Backup - original centered layout
 import WorkPageHeader from "@/app/components/WorkPageHeader";
 import PageFooter from "@/app/components/PageFooter";
 import PageErrorState from "@/app/components/PageErrorState";
+import TalentPageHeader from "@/app/components/TalentPageHeader";
 // import WorkGallery from "@/app/components/WorkGallery"; // Kept for future use
 // import SoonAnimation from "@/app/components/SoonAnimation";
 
@@ -42,14 +43,23 @@ export default function Page() {
         // HEADERS
         <div className="pageContainer">
             {/* Dynamic Header based on current page */}
-            {/* <TalentPageHeader Original - centered layout> */}
+            
             {isTalentPage && (
+                <TalentPageHeader 
+                    pageTitle={pageTalent.pageTitle}
+                    pageDescription={pageTalent.pageDescription}
+                    // contactInfo={pageTalent.contactInfo}
+                />
+            )}
+            
+            {/* {isTalentPage && (
                 <TalentHorizontalHeader 
                     indexTitle={pageTalent.indexTitle}
                     pageTitle={pageTalent.pageTitle}
                     pageDescription={pageTalent.pageDescription}
                 />
-            )}
+            )} */}
+            
             {isWorkPage && (
                 <WorkPageHeader 
                     pageTitle={pageWork.pageTitle}
@@ -63,10 +73,15 @@ export default function Page() {
             {/* PAGE CONTENT */}
             <div className="pageContent">
                 {/* Talent Page Content */}
-                {/* NEW MEMBERS SECTION / under "DIRECTORY" */}
-                {isTalentPage && (
+                
+                {/* MEMBERS SECTION v4 / this one will be a grid of 3 columns, each column will have a team member */}
+                {/* TODO: Implement this */}
+
+
+                {/* MEMBERS SECTION v3 / under "DIRECTORY" */}
+                {/* {isTalentPage && (
                     <DirectorsList directors={pageTalent.teamMembers} />
-                )}
+                )} */}
                 
                 {/* {isTalentPage && (
                     <TeamMembersGallery teamMembers={pageTalent.teamMembers} />
