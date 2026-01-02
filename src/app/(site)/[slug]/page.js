@@ -50,7 +50,7 @@ export default function Page() {
                 <TalentPageHeader 
                     pageTitle={pageTalent.pageTitle}
                     pageDescription={pageTalent.pageDescription}
-                    // contactInfo={pageTalent.contactInfo}
+                    contactInfo={pageTalent.contactInfo}
                 />
             )}
             
