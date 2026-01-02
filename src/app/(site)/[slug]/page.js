@@ -8,6 +8,7 @@ import WorkGalleryV2 from "@/app/components/WorkGalleryV2";
 import TalentHorizontalHeader from "@/app/components/TalentHorizontalHeader";
 import DirectorsList from "@/app/components/DirectorsList";
 import DirectorsListv4 from "@/app/components/DirectorsListv4";
+import DirectorsListOpt2v4 from "@/app/components/DirectorsListOpt2v4";
 import TalentPageHeaderOriginal from "@/app/components/TalentPageHeaderOriginal"; // Backup - original centered layout
 import WorkPageHeader from "@/app/components/WorkPageHeader";
 import PageFooter from "@/app/components/PageFooter";
@@ -76,8 +77,13 @@ export default function Page() {
                 {/* Talent Page Content */}
                 
                 {/* MEMBERS SECTION v4 / this one will be a grid of 3 columns, each column will have a team member */}
-                {isTalentPage && (
+                {/* {isTalentPage && (
                     <DirectorsListv4 directors={pageTalent.teamMembers} />
+                )} */}
+
+                {/* MEMBERS SECTION Opt2v4 / 30/70 split with updated styling */}
+                {isTalentPage && (
+                    <DirectorsListOpt2v4 directors={pageTalent.teamMembers} />
                 )}
 
                 {/* MEMBERS SECTION v3 / under "DIRECTORY" */}

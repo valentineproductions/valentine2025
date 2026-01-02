@@ -25,3 +25,6 @@ export default function CategoryPageOpt3({ categoryName, directorsCount, pageDes
   );
 }
 
+
+
+

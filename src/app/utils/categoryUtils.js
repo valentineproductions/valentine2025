@@ -25,3 +25,6 @@ export function slugToCategoryName(slug) {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 }
+
+
+

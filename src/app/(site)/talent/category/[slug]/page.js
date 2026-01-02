@@ -5,6 +5,7 @@ import { use } from 'react';
 import Link from 'next/link';
 import DirectorsList from "@/app/components/DirectorsList";
 import DirectorsListv4 from "@/app/components/DirectorsListv4";
+import DirectorsListOpt2v4 from "@/app/components/DirectorsListOpt2v4";
 import PageFooter from "@/app/components/PageFooter";
 import CategoryPageOpt3 from "@/app/components/CategoryPageOpt3";
 import CategoryPageOpt4 from "@/app/components/CategoryPageOpt4";
@@ -57,8 +58,17 @@ export default function CategoryPage({ params }) {
 
         {/* Directors List */}
         {/* This is the v4 list */}
-        {filteredDirectors.length > 0 ? (
+        {/* {filteredDirectors.length > 0 ? (
           <DirectorsListv4 directors={filteredDirectors} />
+        ) : (
+          <div className={styles.noResults}>
+            <p>No directors found in this category.</p>
+          </div>
+        )} */}
+
+        {/* This is the Opt2v4 list */}
+        {filteredDirectors.length > 0 ? (
+          <DirectorsListOpt2v4 directors={filteredDirectors} />
         ) : (
           <div className={styles.noResults}>
             <p>No directors found in this category.</p>
