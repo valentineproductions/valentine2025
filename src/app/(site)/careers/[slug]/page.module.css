@@ -1,6 +1,8 @@
 .container {
   width: 100%;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .pageEnter {
@@ -18,6 +20,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 40px;
   padding: 40px 20px;
+  flex: 1 0 auto;
 }
 
 .leftPane, .rightPane {

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { use, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
+import PageFooter from "@/app/components/PageFooter";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const ACCEPT_TYPES = [
@@ -143,6 +144,7 @@ export default function CareerJobPage({ params }) {
   };
 
   return (
+    <>
     <div className={`${styles.container} ${entered ? styles.pageEnter : ''} ${exiting ? styles.pageExit : ''}`}>
       <div className={styles.pageWrapper}>
         <section className={styles.leftPane}>
@@ -271,5 +273,7 @@ export default function CareerJobPage({ params }) {
         </section>
       </div>
     </div>
+    <PageFooter pageNote={allData?.pageNote} />
+    </>
   );
 }

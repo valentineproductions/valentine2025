@@ -61,9 +61,10 @@ const application = {
     { name: 'createdAt', title: 'Created At', type: 'datetime', initialValue: () => new Date().toISOString() },
   ],
   preview: {
-    select: { title: 'applicantName', status: 'status', job: 'job.positionTitle' },
-    prepare({ title, status, job }) {
-      return { title, subtitle: `${status || 'Needs Review'} • ${job || 'Unknown Job'}` };
+    select: { title: 'applicantName', status: 'status', job: 'job.positionTitle', rating: 'rating' },
+    prepare({ title, status, job, rating }) {
+      const left = typeof rating === 'number' ? `${rating.toFixed(1)}/5` : (status || 'Needs Review');
+      return { title, subtitle: `${left} • ${job || 'Unknown Job'}` };
     },
   },
 };

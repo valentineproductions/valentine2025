@@ -2,6 +2,8 @@
   width: 100%;
   min-height: 100vh;
   animation: pageFadeIn 0.7s cubic-bezier(0.2, 0.6, 0.2, 1) both;
+  display: flex;
+  flex-direction: column;
 }
 
 .pageWrapper {
@@ -11,6 +13,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 40px;
   padding: 40px 20px;
+  flex: 1 0 auto;
 }
 
 .leftPane, .rightPane {

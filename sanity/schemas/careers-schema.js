@@ -13,7 +13,7 @@ const careersPage = {
       title: 'Description',
       type: 'array',
       of: [{ type: 'block' }],
-      description: 'Supports links and line breaks',
+      description: 'Supports links and line breaks, second line should be a quote to get the proper style.',
     },
     {
       name: 'locations',
