@@ -62,17 +62,19 @@ export default function HeaderNavigation() { // Default empty array
                     {menuOpen && (
                         <MenuAnimation isOpen={menuOpen}>
                             <div className="mobileNavLinks">
-                                {pages.slice().reverse().map((page) => (
-                                    <Link key={page._id} href={`/${page.slug}`} onClick={toggleMenu}>
-                                        {pathname === `/${page.slug}` ? (
-                                            <b>{page.navTitle}</b>
-                                        ) : (
-                                            page.navTitle
-                                        )}
-                                    </Link>
-                                ))}
+                                {[ 'work', 'talent' ].map((slug) => {
+                                    const page = pages.find(p => p.slug === slug);
+                                    return page ? (
+                                        <Link key={page._id} href={`/${page.slug}`} onClick={toggleMenu}>
+                                            {pathname === `/${page.slug}` ? <b>{page.navTitle}</b> : page.navTitle}
+                                        </Link>
+                                    ) : null;
+                                })}
                                 <Link href="/about" className="homeNavLink" onClick={toggleMenu}>
                                     {pathname === "/about" ? <b>About</b> : "About"}
+                                </Link>
+                                <Link href="/careers" className="homeNavLink" onClick={toggleMenu}>
+                                    {pathname === "/careers" ? <b>Careers</b> : "Careers"}
                                 </Link>
                             </div>
                         </MenuAnimation>
@@ -80,13 +82,19 @@ export default function HeaderNavigation() { // Default empty array
                 </div>
             ) : (
                 <div className="homeNavLinksContainer">
-                    {pages.slice().reverse().map((page) => (
-                        <Link key={page._id} href={`/${page.slug}`}>
-                            {pathname === `/${page.slug}` ? <b>{page.navTitle}</b> : page.navTitle}
-                        </Link>
-                    ))}
+                    {[ 'work', 'talent' ].map((slug) => {
+                        const page = pages.find(p => p.slug === slug);
+                        return page ? (
+                            <Link key={page._id} href={`/${page.slug}`}>
+                                {pathname === `/${page.slug}` ? <b>{page.navTitle}</b> : page.navTitle}
+                            </Link>
+                        ) : null;
+                    })}
                     <Link href="/about" className="homeNavLink">
                         {pathname === "/about" ? <b>About</b> : "About"}
+                    </Link>
+                    <Link href="/careers" className="homeNavLink">
+                        {pathname === "/careers" ? <b>Careers</b> : "Careers"}
                     </Link>
                 </div>
             )}

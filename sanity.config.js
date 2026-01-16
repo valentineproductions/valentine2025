@@ -1,5 +1,6 @@
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
+import deskStructure from './sanity/deskStructure'
 import schemas from './sanity/schemas'; //Barrel file
 
 const config = defineConfig({
@@ -12,7 +13,7 @@ const config = defineConfig({
     apiVersion: "2025-05-19",
     basePath: "/admin", 
   
-    plugins: [structureTool()],
+    plugins: [deskStructure],
     schema: {
         types: schemas
     },

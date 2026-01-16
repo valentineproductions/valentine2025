@@ -5,7 +5,10 @@ import homePage from './homepage-schema';
 import pageNote from './pagenote-schema';
 import teamMember from './teammember-schema';
 import aboutPage from './aboutpage-schema';
+import careersPage from './careers-schema';
+import jobPosting from './jobposting-schema';
+import application from './application-schema';
 
-const schemas = [project, page, homePage, pageNote, teamMember, aboutPage]
+const schemas = [project, page, homePage, pageNote, teamMember, aboutPage, careersPage, jobPosting, application]
 
 export default schemas

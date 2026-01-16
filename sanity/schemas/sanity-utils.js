@@ -407,6 +407,32 @@ export async function getTeamMemberBySlug(slug) {
             }
           },
         },
+        "careersPage": *[_type == "careersPage"][0]{
+          title,
+          description,
+          locations,
+          commitments,
+          allOpeningsTitle,
+          successMessage,
+          selectedJobs[]->{
+            _id,
+            positionTitle,
+            "slug": slug.current,
+            location,
+            commitment,
+            description,
+            applyCtaLabel
+          }
+        },
+        "jobs": *[_type == "jobPosting"]{
+          _id,
+          positionTitle,
+          "slug": slug.current,
+          location,
+          commitment,
+          description,
+          applyCtaLabel
+        },
         "homepage": *[_type == "homepage"][0]{
           companyLogo{
             asset->{
