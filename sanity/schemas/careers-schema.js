@@ -50,6 +50,13 @@ const careersPage = {
       initialValue: "Thanks for your interest. We'll be in touch shortly.",
     },
     {
+      name: 'showAllJobs',
+      title: 'Show All Jobs',
+      type: 'boolean',
+      description: 'If on, all jobs will be displayed and Selected Jobs is ignored.',
+      initialValue: false,
+    },
+    {
       name: 'selectedJobs',
       title: 'Selected Jobs',
       type: 'array',

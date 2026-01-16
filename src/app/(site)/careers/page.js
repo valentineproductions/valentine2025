@@ -10,12 +10,13 @@ export default function CareersPage() {
   const { allData } = useAppContext();
   const careers = allData?.careersPage || null;
   const jobs = allData?.jobs || [];
+  const selectedJobs = careers?.selectedJobs || [];
 
   if (!careers) {
     return <div className={styles.container}><div className={styles.pageWrapper}>Careers Page Not Found</div></div>;
   }
 
-  const jobsToShow = jobs;
+  const jobsToShow = careers?.showAllJobs ? jobs : selectedJobs;
 
   const grouped = jobsToShow.reduce((acc, job) => {
     const code = job.location?.code || 'Unknown';

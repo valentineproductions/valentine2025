@@ -414,6 +414,7 @@ export async function getTeamMemberBySlug(slug) {
           commitments,
           allOpeningsTitle,
           successMessage,
+          showAllJobs,
           selectedJobs[]->{
             _id,
             positionTitle,
