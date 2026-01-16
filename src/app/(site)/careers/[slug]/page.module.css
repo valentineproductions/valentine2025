@@ -41,8 +41,9 @@
 }
 
 .portableText h2 {
-  font-family: 'Baskerville', serif;
-  padding: 15px 0;
+  /* font-family: 'Baskerville', serif; */
+  padding: 25px 0;
+  font-size: 16px;
 }
 
 .portableText p {
