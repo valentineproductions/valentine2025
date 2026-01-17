@@ -1,0 +1,233 @@
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.panel {
+  width: 393px;
+  height: auto; /* Allow panel to grow to fit content */
+  min-height: 587px; /* Title + Image (537px) + Name space (50px) = 587px */
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: width 0.5s ease-in-out;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  overflow: visible; /* Allow content to move up without clipping */
+}
+
+.panelContent {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: visible; /* Allow content to move up and be visible */
+  padding-top: 50px; /* Reserve space at top for title when it moves up */
+}
+
+.memberTitle {
+  transition: transform 0.5s ease-in-out;
+  -webkit-transition: transform 0.5s ease-in-out; /* Safari prefix */
+  position: relative;
+  z-index: 2;
+}
+
+.memberTitle span {
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 12px;
+  display: block;
+  padding: 7px;
+  text-align: center;
+  letter-spacing: 0.32px;
+  line-height: 93%;
+}
+
+.memberTitle span i {
+  text-transform: capitalize;
+  font-style: italic;
+  font-family: 'Baskerville', serif;
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 93%;
+}
+
+.imageWrapper {
+  flex-shrink: 0;
+  -webkit-flex-shrink: 0; /* Safari prefix */
+  height: 537px; /* Desktop: 393x537 dimensions */
+  position: relative;
+  overflow: visible; /* IMPORTANT: Allow image to move up and show top */
+  min-height: 0;
+}
+
+.memberImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-object-fit: cover; /* Safari prefix */
+  transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out;
+  -webkit-transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out; /* Safari prefix */
+  z-index: 1;
+  position: relative;
+  display: block; /* Safari fix - ensure proper rendering */
+}
+
+.textInfo {
+  padding: 0;
+  text-align: center;
+  background-color: #fff;
+  height: 50px; /* Reserve space for name - matches the 50px movement */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Prevent shrinking */
+  -webkit-flex-shrink: 0; /* Safari prefix */
+  min-height: 50px; /* Ensure space is always reserved */
+  transition: transform 0.5s ease-in-out;
+  -webkit-transition: transform 0.5s ease-in-out; /* Safari prefix */
+  overflow: visible;
+}
+
+.fullname {
+  opacity: 0;
+  height: 0;
+  width: 100%;
+  overflow: visible;
+  transform: translateY(0) translateZ(0); /* Start at final position to match hover state */
+  -webkit-transform: translateY(0) translateZ(0); /* Safari prefix */
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, height 0.5s ease-in-out 0.5s; /* Delay height change until after opacity/transform */
+  -webkit-transition: opacity 0.5s ease-in-out, -webkit-transform 0.5s ease-in-out, height 0.5s ease-in-out 0.5s; /* Safari prefix */
+  font-family: Sloop Script, cursive;
+  font-weight: 100;
+  font-size: 45px;
+  display: block; /* Safari fix */
+  margin-top: 30px;
+}
+
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 15px;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transition: opacity 0.5s ease-in-out, height 0.5s ease-in-out 0.5s;
+}
+
+.categoryTag {
+  padding: 4px 12px;
+  background-color: rgba(95, 27, 25, 0.1);
+  color: #5F1B19;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.32px;
+  border-radius: 2px;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+}
+
+.categoryTag:hover {
+  background-color: rgba(95, 27, 25, 0.2);
+}
+
+/* Hover Effects - Move both title and image up 50px, reveal name in gap */
+.panel:hover .memberTitle {
+  transform: translateY(-50px);
+  -webkit-transform: translateY(-50px); /* Safari prefix */
+}
+
+.panel:hover .imageWrapper {
+  flex-shrink: 0; /* Prevent image wrapper from shrinking on hover */
+  -webkit-flex-shrink: 0; /* Safari prefix */
+  flex-grow: 0; /* Prevent image wrapper from changing size */
+  -webkit-flex-grow: 0; /* Safari prefix */
+  height: 537px !important; /* Fixed height - same as non-hover state - Safari fix */
+  flex-basis: 537px; /* Lock flex basis to prevent recalculation */
+  -webkit-flex-basis: 537px; /* Safari prefix */
+}
+
+.panel:hover .imageWrapper .memberImage {
+  transform: translateY(-50px);
+  -webkit-transform: translateY(-50px); /* Safari prefix */
+  height: 100%; /* Ensure image maintains its height */
+}
+
+.panel:hover .textInfo {
+  transform: translateY(-50px); /* Move name up with the image */
+  -webkit-transform: translateY(-50px); /* Safari prefix */
+}
+
+.panel:hover .fullname {
+  opacity: 1;
+  height: auto;
+  transform: translateY(0) translateZ(0); /* Stay at final position */
+  -webkit-transform: translateY(0) translateZ(0); /* Safari prefix */
+  overflow: visible;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, height 0.5s ease-in-out 0s; /* No delay on hover - immediate height change */
+  -webkit-transition: opacity 0.5s ease-in-out, -webkit-transform 0.5s ease-in-out, height 0.5s ease-in-out 0s; /* Safari prefix */
+}
+
+.panel:hover .categories {
+  opacity: 1;
+  height: auto;
+  transition: opacity 0.5s ease-in-out, height 0.5s ease-in-out 0s;
+}
+
+/* Grayscale effect for non-hovered panels when one is hovered */
+/* This is handled via a global style in globals.css due to cross-component :has() selector */
+
+/* Media Queries */
+@media (max-width: 600px) {
+  .panel {
+    width: 275px; /* 30% reduction: 393 * 0.7 = 275.1 */
+    min-height: 426px; /* Title + Image (376px) + Name space (50px) = 426px */
+  }
+  
+  .imageWrapper {
+    height: 376px; /* 30% reduction: 537 * 0.7 = 375.9 */
+    flex-shrink: 0; /* Safari fix */
+    -webkit-flex-shrink: 0; /* Safari prefix */
+  }
+  
+  .textInfo {
+    height: 50px; /* Same 50px space for mobile */
+    min-height: 50px;
+  }
+  
+  .fullname {
+    font-size: 31.5px; /* 30% reduction: 45px * 0.7 = 31.5px */
+    margin-top: 20px;
+  }
+  
+  .panel:hover .memberTitle {
+    transform: translateY(-50px);
+    -webkit-transform: translateY(-50px); /* Safari prefix */
+  }
+  
+  .panel:hover .imageWrapper {
+    height: 376px !important; /* Same fixed height on hover for mobile - Safari fix */
+    flex-basis: 376px;
+    -webkit-flex-basis: 376px; /* Safari prefix */
+    flex-shrink: 0; /* Safari fix */
+    -webkit-flex-shrink: 0; /* Safari prefix */
+  }
+  
+  .panel:hover .imageWrapper .memberImage {
+    transform: translateY(-50px);
+    -webkit-transform: translateY(-50px); /* Safari prefix */
+  }
+  
+  .panel:hover .textInfo {
+    transform: translateY(-50px); /* Move name up with the image on mobile */
+    -webkit-transform: translateY(-50px); /* Safari prefix */
+  }
+}

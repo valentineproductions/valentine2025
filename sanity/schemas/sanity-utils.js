@@ -222,6 +222,7 @@ export async function getProject(slug) {
       groq`*[_type == "page" && slug.current == $slug][0]{
         _id,
         _createdAt,
+        indexTitle,
         pageTitle,
         "slug": slug.current,
         pageDescription,
@@ -229,11 +230,18 @@ export async function getProject(slug) {
         teamMembers[]->{
           _id,
           fullName,
+          "slug": slug.current,
           talentPosition,
           city,
           image{
             asset->{ _id, url },
             alt
+          },
+          bio,
+          categories,
+          videos[]{
+            embedCode,
+            videoName
           },
         },
         projects[]->{
@@ -248,6 +256,24 @@ export async function getProject(slug) {
               }
             },
             alt
+          },
+          videos[]{
+            embedCode,
+            videoName,
+            coverImage{
+              asset->{
+                _id,
+                url
+              },
+              alt
+            },
+            logo{
+              asset->{
+                _id,
+                url
+              },
+              alt
+            }
           }
         },
         pageNote->{ 
@@ -286,6 +312,29 @@ export async function getHomeSEOData() {
   }));
 }
 
+export async function getTeamMemberBySlug(slug) {
+  return createClient(clientConfig).fetch(
+    groq`*[_type == "teamMember" && slug.current == $slug][0]{
+      _id,
+      fullName,
+      "slug": slug.current,
+      talentPosition,
+      city,
+      image{
+        asset->{ _id, url },
+        alt
+      },
+      bio,
+      categories,
+      videos[]{
+        embedCode,
+        videoName
+      },
+    }`,
+    { slug }
+  );
+}
+
 
   export async function getAllPagesData() {
     return createClient(clientConfig).fetch(
@@ -294,6 +343,7 @@ export async function getHomeSEOData() {
           _id,
           _createdAt,
           navTitle,
+          indexTitle,
           pageTitle,
           "slug": slug.current,
           pageCompanyLogo{
@@ -310,11 +360,18 @@ export async function getHomeSEOData() {
           teamMembers[]->{  // Added from getFullPagesData
             _id,
             fullName,
+            "slug": slug.current,
             talentPosition,
             city,
             image{
               asset->{ _id, url },
               alt
+            },
+            bio,
+            categories,
+            videos[]{
+              embedCode,
+              videoName
             },
           },
           projects[]->{   // Added from getFullPagesData
@@ -329,8 +386,53 @@ export async function getHomeSEOData() {
                 }
               },
               alt
+            },
+            videos[]{
+              embedCode,
+              videoName,
+              coverImage{
+                asset->{
+                  _id,
+                  url
+                },
+                alt
+              },
+              logo{
+                asset->{
+                  _id,
+                  url
+                },
+                alt
+              }
             }
           },
+        },
+        "careersPage": *[_type == "careersPage"][0]{
+          title,
+          description,
+          locations,
+          commitments,
+          allOpeningsTitle,
+          successMessage,
+          showAllJobs,
+          selectedJobs[]->{
+            _id,
+            positionTitle,
+            "slug": slug.current,
+            location,
+            commitment,
+            description,
+            applyCtaLabel
+          }
+        },
+        "jobs": *[_type == "jobPosting"]{
+          _id,
+          positionTitle,
+          "slug": slug.current,
+          location,
+          commitment,
+          description,
+          applyCtaLabel
         },
         "homepage": *[_type == "homepage"][0]{
           companyLogo{

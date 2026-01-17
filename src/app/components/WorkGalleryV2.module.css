@@ -1,0 +1,247 @@
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 7px;
+  padding-bottom: 50px;
+  width: 100%;
+}
+
+/* Video items - span 2 columns (2 videos per row) */
+.videoItem {
+  grid-column: span 2;
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+  overflow: hidden;
+}
+
+.videoItem:hover {
+  transform: scale(1.01);
+}
+
+.videoEmbed {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease-in-out;
+  background: #000000; /* Black background for letterboxing */
+}
+
+/* 16:9 videos - fill the container normally */
+.videoEmbed > div[style*="56.25"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* 4:3 videos - scale to 75% width to fit height, center horizontally and vertically */
+.videoItem[data-aspect="4-3"] .videoEmbed > div[style*="padding-bottom"] {
+  position: absolute !important;
+  top: 67% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 75% !important;
+  margin: 0 !important;
+  height: 0 !important;
+  /* padding-bottom maintains 4:3 aspect ratio */
+}
+
+/* Portrait videos - scale to fit height, center horizontally and vertically */
+.videoItem[data-aspect="portrait"] .videoEmbed > div[style*="padding-bottom"] {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 31.64% !important; /* For 9:16, fits height of 16:9 container */
+  margin: 0 !important;
+  height: 0 !important;
+}
+
+/* Direct iframes (no wrapper div) - handle portrait iframes */
+.videoItem[data-aspect="portrait"] .videoEmbed > iframe[name="SimianEmbed"] {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 31.64% !important;
+  height: auto !important;
+  aspect-ratio: 9/16;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  pointer-events: none; /* Allow clicks to pass through to parent container */
+}
+
+/* All iframes inside wrapper divs */
+.videoEmbed > div iframe,
+.videoEmbed > div embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  pointer-events: none; /* Allow clicks to pass through to parent container */
+}
+
+/* Direct iframes (not wrapped in div) */
+.videoEmbed > iframe {
+  pointer-events: none; /* Allow clicks to pass through to parent container */
+}
+
+/* Custom video cover with logo and play button */
+.customVideoCover {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  background: #000;
+  cursor: pointer;
+}
+
+.coverImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logoOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.playButtonOverlay {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 2;
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+.videoItem:hover .playButtonOverlay {
+  transform: scale(1.1);
+}
+
+/* Adjust play button size */
+.playButtonImage {
+  width: auto;
+  height: auto;
+  max-width: 50px;
+  max-height: 50px;
+  object-fit: contain;
+}
+
+/* Loading state */
+.videoLoader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Image items - span 1 column (4 images per row) */
+.imageItem {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Square images */
+  min-height: 150px; /* Fallback for older browsers */
+  overflow: hidden;
+}
+
+.workImage {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.imageItem:hover .workImage {
+  transform: scale(1.03);
+}
+
+/* Modern aspect-ratio will override this, but it's good for fallback */
+@supports not (aspect-ratio: 1 / 1) {
+  .imageItem::before {
+    content: "";
+    display: block;
+    padding-bottom: 100%; /* Square */
+  }
+}
+
+/* Mobile - adjust to 2 columns */
+@media (max-width: 600px) {
+  .gallery {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 7px;
+    padding: 20px;
+  }
+
+  /* On mobile, videos still span 2 columns (full width) */
+  .videoItem {
+    grid-column: span 2;
+  }
+
+  /* On mobile, images span 1 column (2 per row) */
+  .imageItem {
+    grid-column: span 1;
+  }
+
+  /* Mobile adjustments for custom cover */
+  .logoOverlay {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .playButtonOverlay {
+    bottom: 10px;
+    left: 10px;
+  }
+  
+  .playButtonImage {
+    max-width: 20px;
+    max-height: 20px;
+  }
+}
+

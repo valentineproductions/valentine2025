@@ -1,0 +1,131 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.modal {
+  position: relative;
+  width: 85%;
+  max-width: 1200px;
+  max-height: 90vh;
+  background-color: #000;
+  border-radius: 8px;
+  overflow: visible; /* Allow close button to be visible above */
+  display: flex;
+  flex-direction: column;
+}
+
+.closeButton {
+  position: absolute;
+  top: -50px; /* Position above the modal */
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.closeButton:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.videoContainer {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  flex-shrink: 0;
+  border-radius: 8px 8px 0 0; /* Match modal border radius on top */
+}
+
+.videoEmbed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.videoEmbed iframe,
+.videoEmbed embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.videoName {
+  padding: 15px 20px;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  background-color: #000;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+/* Smaller screens (13-inch MacBook Air, tablets) */
+@media (max-width: 1440px) {
+  .modal {
+    width: 80%;
+    max-width: 1000px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .modal {
+    width: 85%;
+    max-width: 900px;
+  }
+  
+  .videoName {
+    padding: 12px 15px;
+    font-size: 15px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .modal {
+    width: 90%;
+    max-width: 100%;
+    overflow: visible; /* Ensure close button is visible above */
+  }
+  
+  .closeButton {
+    width: 35px;
+    height: 35px;
+    font-size: 24px;
+    top: -45px; /* Position above the modal on mobile */
+    right: 0;
+  }
+
+  .videoName {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+

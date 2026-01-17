@@ -1,0 +1,27 @@
+.gallery {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  overflow-y: clip;
+  padding: 40px 0px 40px 7px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.gallery::-webkit-scrollbar {
+  display: none;
+}
+
+/* Grayscale effect for non-hovered panels when one is hovered */
+/* Note: This requires the panel class to be accessible, handled via CSS variable or global class */
+
+/* Media Queries */
+@media (max-width: 600px) {
+  .gallery {
+    padding: 40px 0px 40px 7px;
+  }
+}
+

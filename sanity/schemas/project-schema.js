@@ -48,6 +48,75 @@ const project = {
         ],
         description: 'All images for the project (first image will be used as preview).',
       },
+      {
+        name: 'videos',
+        title: 'Videos',
+        type: 'array',
+        of: [
+          {
+            type: 'object',
+            fields: [
+              {
+                name: 'embedCode',
+                title: 'Simian Embed Code',
+                type: 'text',
+                description: 'Paste the Simian embed code here (iframe or embed HTML).',
+              },
+              {
+                name: 'videoName',
+                title: 'Video Name',
+                type: 'string',
+                description: 'Name of the video.',
+              },
+              {
+                name: 'coverImage',
+                title: 'Custom Cover Image',
+                type: 'image',
+                description: 'Custom thumbnail/cover image for the video.',
+                options: {
+                  hotspot: true,
+                },
+                fields: [
+                  {
+                    name: 'alt',
+                    title: 'Alt Text',
+                    type: 'string',
+                  },
+                ],
+              },
+              {
+                name: 'logo',
+                title: 'Logo Overlay',
+                type: 'image',
+                description: 'Logo to overlay on the cover image.',
+                options: {
+                  hotspot: true,
+                },
+                fields: [
+                  {
+                    name: 'alt',
+                    title: 'Alt Text',
+                    type: 'string',
+                  },
+                ],
+              },
+            ],
+            preview: {
+              select: {
+                videoName: 'videoName',
+                embed: 'embedCode',
+              },
+              prepare({ videoName, embed }) {
+                return {
+                  title: videoName || 'Untitled Video',
+                  subtitle: embed ? embed.substring(0, 50) + '...' : 'No embed code',
+                };
+              },
+            },
+          },
+        ],
+        description: 'Array of Simian video embeds for this project.',
+      },
     ],
     preview: {
       select: {
