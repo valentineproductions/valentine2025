@@ -151,16 +151,19 @@
   border-radius: 22px;
   background: #fff;
   color: inherit;
+  font-size: 14px;
   font-family: 'Baskerville', serif;
 }
 
 .input::placeholder {
   color: #5F1B19;
+  font-size: 14px;
 }
 
 .optionalInput::placeholder {
   font-style: italic;
   font-family: 'Baskerville', serif;
+  font-size: 14px;
 }
 
 .fileRow {
@@ -182,7 +185,7 @@
 
 .filePlaceholder {
   color: #5F1B19;
-  font-size: 16px;
+  font-size: 14px;
   white-space: nowrap;
   display: inline-block;
   flex: 0 0 auto;
@@ -208,6 +211,7 @@
   font-family: 'Baskerville', serif;
   font-style: italic;
   color: inherit;
+  font-size: 14px;
 }
 
 .fileInput::file-selector-button:hover {
