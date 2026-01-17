@@ -14,8 +14,8 @@ import WorkPageHeader from "@/app/components/WorkPageHeader";
 import PageFooter from "@/app/components/PageFooter";
 import PageErrorState from "@/app/components/PageErrorState";
 import TalentPageHeader from "@/app/components/TalentPageHeader";
-// import WorkGallery from "@/app/components/WorkGallery"; // Kept for future use
-// import SoonAnimation from "@/app/components/SoonAnimation";
+import WorkGallery from "@/app/components/WorkGallery"; // Kept for future use
+import SoonAnimation from "@/app/components/SoonAnimation";
 
 export default function Page() {
     const pathname = usePathname();
@@ -35,6 +35,7 @@ export default function Page() {
     // Determine current page type based on pathname
     const isTalentPage = pathname === '/talent';
     const isWorkPage = pathname === '/work';
+    const currentPage = isTalentPage ? pageTalent : pageWork;
 
     // Error state
     if (missingPages.length > 0) {
@@ -81,10 +82,10 @@ export default function Page() {
                     <DirectorsListv4 directors={pageTalent.teamMembers} />
                 )} */}
 
-                {/* MEMBERS SECTION Opt2v4 / 30/70 split with updated styling */}
-                {isTalentPage && (
+                {/* MEMBERS SECTION Opt2v4 / 30/70 split with updated styling 2026*/}
+                {/* {isTalentPage && (
                     <DirectorsListOpt2v4 directors={pageTalent.teamMembers} />
-                )}
+                )} */}
 
                 {/* MEMBERS SECTION v3 / under "DIRECTORY" */}
                 {/* {isTalentPage && (
@@ -95,17 +96,20 @@ export default function Page() {
                     <TeamMembersGallery teamMembers={pageTalent.teamMembers} />
                 )} */}
 
-                {/* SoonAnimation alternative:
+                {/* SoonAnimation alternative: */}
                 {isTalentPage && (
                     <div className="gallery">
                         <SoonAnimation>{currentPage.tbd}</SoonAnimation>
                     </div>
                 )}
-                */}
+               
 
                 {/* Work Page Content */}
-                {isWorkPage && (
+                {/* {isWorkPage && (
                     <WorkGalleryV2 projects={pageWork.projects} />
+                )} */}
+                {isWorkPage && (
+                    <WorkGallery projects={pageWork.projects} />
                 )}
 
                 {/* Footer / Page Note */}
