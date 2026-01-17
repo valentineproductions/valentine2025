@@ -349,6 +349,7 @@
     max-width: none;
     min-width: 0;
     margin: 0;
+    width: 100%;
   }
   .input,
   .fileInput {
