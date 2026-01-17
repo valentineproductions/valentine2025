@@ -1,7 +1,7 @@
 .container {
   width: 100%;
   min-height: 100vh;
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
 }
 
@@ -19,7 +19,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px;
-  padding: 40px 20px;
+  padding: 140px 20px 40px 20px;
   flex: 1 0 auto;
 }
 
@@ -30,14 +30,24 @@
   align-items: flex-start;
 }
 
+.leftPane { justify-self: start; 
+  width: 100%;
+}
+.rightPane { justify-self: end; }
+
 .rightPane {
   align-items: flex-end;
 }
 
+.leftPane .content { margin-right: auto; }
+.rightPane .content { margin-left: auto; }
+
 .content {
-  width: 100%;
-  max-width: 680px;
+  width: auto;
+  min-width: 60%;
+  max-width: none;
   text-align: left;
+  font-size: 14px;
 }
 
 .portableText h2 {
@@ -330,9 +340,15 @@
 @media (max-width: 900px) {
   .pageWrapper {
     grid-template-columns: 1fr;
+    padding: 100px 20px 40px 20px;
   }
   .rightPane {
     align-items: flex-start;
+  }
+  .content {
+    max-width: none;
+    min-width: 0;
+    margin: 0;
   }
   .input,
   .fileInput {
