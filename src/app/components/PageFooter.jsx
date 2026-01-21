@@ -4,6 +4,8 @@ import styles from './PageFooter.module.css';
 
 export default function PageFooter({ pageNote }) {
   if (!pageNote) return null;
+  const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
+  const isProdDomain = hostname && hostname.includes('valentine.global');
 
   return (
     <footer className={styles.footer}>
@@ -20,7 +22,23 @@ export default function PageFooter({ pageNote }) {
           {pageNote.connectTitle && (
             <div className={styles.connectSection}>
               <h2 className={styles.pageNoteTitle}>{pageNote.connectTitle}</h2>
-              {pageNote.connectLinks && pageNote.connectLinks.map((link, index) => {
+              {pageNote.connectLinks && (() => {
+                const filteredLinks = isProdDomain
+                  ? pageNote.connectLinks.filter(l => {
+                      const title = (l.linkTitle || '').toLowerCase();
+                      const url = (l.linkUrl || '').toLowerCase();
+                      const isPolicyPath =
+                        url === '/policy' ||
+                        url.endsWith('/policy') ||
+                        url.includes('/policy?') ||
+                        url.includes('/policy#') ||
+                        url.includes('/privacy');
+                      const isPrivacyTitle =
+                        title.includes('privacy') || title.includes('policy');
+                      return !(isPolicyPath || isPrivacyTitle);
+                    })
+                  : pageNote.connectLinks;
+                return filteredLinks.map((link, index) => {
                   // Determine if the link is an email address
                   const isEmail = link.linkUrl && 
                                   link.linkUrl.includes('@') && 
@@ -43,7 +61,8 @@ export default function PageFooter({ pageNote }) {
                       {link.linkTitle}
                     </a>
                   );
-              })}
+                });
+              })()}
             </div>
           )}
         </div>
