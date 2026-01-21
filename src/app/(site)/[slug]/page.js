@@ -2,7 +2,7 @@
 
 import { useAppContext } from "@/app/components/AppContext";
 import { usePathname } from 'next/navigation';
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import TeamMembersGallery from "@/app/components/TeamMembersGallery";
 import WorkGalleryV2 from "@/app/components/WorkGalleryV2";
 import TalentHorizontalHeader from "@/app/components/TalentHorizontalHeader";
@@ -16,6 +16,9 @@ import PageErrorState from "@/app/components/PageErrorState";
 import TalentPageHeader from "@/app/components/TalentPageHeader";
 import WorkGallery from "@/app/components/WorkGallery"; // Kept for future use
 import SoonAnimation from "@/app/components/SoonAnimation";
+import LegalContent from "@/app/components/LegalContent";
+import { getLegalBySlug } from "../../../../sanity/schemas/sanity-utils";
+import { PortableText } from "@portabletext/react";
 
 export default function Page() {
     const pathname = usePathname();
@@ -33,9 +36,31 @@ export default function Page() {
     }, [pagesData]);
 
     // Determine current page type based on pathname
+    const slug = useMemo(() => pathname?.split('/').filter(Boolean)[0] || '', [pathname]);
     const isTalentPage = pathname === '/talent';
     const isWorkPage = pathname === '/work';
+    const isLegalPage = !isTalentPage && !isWorkPage && !!slug;
     const currentPage = isTalentPage ? pageTalent : pageWork;
+
+    // Legal data state
+    const [legal, setLegal] = useState(null);
+    const [legalLoading, setLegalLoading] = useState(false);
+
+    useEffect(() => {
+        let active = true;
+        const fetchLegal = async () => {
+            if (!isLegalPage) return;
+            setLegalLoading(true);
+            try {
+                const doc = await getLegalBySlug(slug);
+                if (active) setLegal(doc || null);
+            } finally {
+                if (active) setLegalLoading(false);
+            }
+        };
+        fetchLegal();
+        return () => { active = false; };
+    }, [isLegalPage, slug]);
 
     // Error state
     if (missingPages.length > 0) {
@@ -71,6 +96,21 @@ export default function Page() {
                 />
             )}
 
+            {isLegalPage && (
+                <header>
+                    <h1 className="pageTitle">{legal?.title || (legalLoading ? '' : 'Page Not Found')}</h1>
+                    {(!legalLoading && legal?.titleDescription) && (
+                        <div className="pageDescription">
+                            <PortableText value={legal.titleDescription} />
+                        </div>
+                    )}
+                    {(!legalLoading && legal?.moreInfo) && (
+                        <div className="contactInfo">
+                            <PortableText value={legal.moreInfo} />
+                        </div>
+                    )}
+                </header>
+            )}
             
 
             {/* PAGE CONTENT */}
@@ -111,6 +151,8 @@ export default function Page() {
                 {isWorkPage && (
                     <WorkGallery projects={pageWork.projects} />
                 )}
+
+                {isLegalPage && (!legalLoading) && (legal?.content ? <LegalContent value={legal.content} /> : <PageErrorState missingPages={['Legal']} />)}
 
                 {/* Footer / Page Note */}
                 <PageFooter pageNote={allData?.pageNote} />

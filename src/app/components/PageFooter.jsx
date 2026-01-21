@@ -44,10 +44,8 @@ export default function PageFooter({ pageNote }) {
                                   link.linkUrl.includes('@') && 
                                   !link.linkUrl.startsWith('http://') && 
                                   !link.linkUrl.startsWith('https://');
-
                   // Construct the href based on whether it's an email or a regular URL
                   const href = isEmail ? `mailto:${link.linkUrl}` : link.linkUrl;
-
                   // Determine target and rel attributes (only for non-email links that open in a new tab)
                   const target = !isEmail && link.openNewTab ? "_blank" : undefined;
                   const rel = !isEmail && link.openNewTab ? "noopener noreferrer" : undefined;
