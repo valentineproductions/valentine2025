@@ -85,7 +85,7 @@ export default function CategoryPage({ params }) {
         )} */}
 
         {/* Footer */}
-        <PageFooter pageNote={allData?.pageNote} />
+        <PageFooter pageNote={allData?.pageNote || allData?.homepage?.pageNote || allData?.aboutPage?.pageNote} />
       </div>
     </div>
   );

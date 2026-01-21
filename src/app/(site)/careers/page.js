@@ -70,7 +70,7 @@ export default function CareersPage() {
           </section>
         </div>
       </div>
-      <PageFooter pageNote={allData?.pageNote} />
+      <PageFooter pageNote={allData?.pageNote || allData?.homepage?.pageNote || allData?.aboutPage?.pageNote} />
     </>
   );
 }

@@ -155,7 +155,7 @@ export default function Page() {
                 {isLegalPage && (!legalLoading) && (legal?.content ? <LegalContent value={legal.content} /> : <PageErrorState missingPages={['Legal']} />)}
 
                 {/* Footer / Page Note */}
-                <PageFooter pageNote={allData?.pageNote} />
+                <PageFooter pageNote={allData?.pageNote || allData?.homepage?.pageNote || allData?.aboutPage?.pageNote} />
             </div>
         </div>
     )

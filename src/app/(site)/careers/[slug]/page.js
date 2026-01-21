@@ -273,7 +273,7 @@ export default function CareerJobPage({ params }) {
         </section>
       </div>
     </div>
-    <PageFooter pageNote={allData?.pageNote} />
+    <PageFooter pageNote={allData?.pageNote || allData?.homepage?.pageNote || allData?.aboutPage?.pageNote} />
     </>
   );
 }
