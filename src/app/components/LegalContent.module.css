@@ -14,13 +14,13 @@
 .content {
   width: 100%;
   margin: 0 auto;
-  text-align: left;
-  font-size: 14px;
+  text-align: center;
+  font-size: 12px;
 }
 
 .portableText h2 {
   font-family: 'Helvetica Neue', sans-serif;
-  font-size: 18px;
+  font-size: 14px;
   margin-top: 20px;
   margin-bottom: 12px;
   font-weight: 600;
