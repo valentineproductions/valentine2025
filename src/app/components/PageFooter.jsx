@@ -1,9 +1,17 @@
 'use client';
 
 import styles from './PageFooter.module.css';
+import { useState } from 'react';
 
 export default function PageFooter({ pageNote }) {
   if (!pageNote) return null;
+  const [showPolicy, setShowPolicy] = useState(false);
+  const [connectClicks, setConnectClicks] = useState(0);
+  const onConnectTitleClick = () => {
+    const next = connectClicks + 1;
+    setConnectClicks(next);
+    if (next >= 3) setShowPolicy(true);
+  };
 
   return (
     <footer className={styles.footer}>
@@ -19,9 +27,20 @@ export default function PageFooter({ pageNote }) {
           )}
           {pageNote.connectTitle && (
             <div className={styles.connectSection}>
-              <h2 className={styles.pageNoteTitle}>{pageNote.connectTitle}</h2>
-              {pageNote.connectLinks &&
-                pageNote.connectLinks.map((link, index) => {
+              <h2 className={styles.pageNoteTitle} onClick={onConnectTitleClick}>{pageNote.connectTitle}</h2>
+              {pageNote.connectLinks && (() => {
+                const filteredLinks = showPolicy
+                  ? pageNote.connectLinks
+                  : pageNote.connectLinks.filter(l => {
+                      const url = (l.linkUrl || '').toLowerCase();
+                      const isPolicyPath =
+                        url === '/policy' ||
+                        url.endsWith('/policy') ||
+                        url.includes('/policy?') ||
+                        url.includes('/policy#');
+                      return !isPolicyPath;
+                    });
+                return filteredLinks.map((link, index) => {
                   // Determine if the link is an email address
                   const isEmail = link.linkUrl && 
                                   link.linkUrl.includes('@') && 
@@ -46,7 +65,8 @@ export default function PageFooter({ pageNote }) {
                       {link.linkTitle}
                     </a>
                   );
-                })}
+                });
+              })()}
             </div>
           )}
         </div>
