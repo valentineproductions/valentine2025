@@ -8,7 +8,8 @@ import aboutPage from './aboutpage-schema';
 import careersPage from './careers-schema';
 import jobPosting from './jobposting-schema';
 import application from './application-schema';
+import legal from './legal'
 
-const schemas = [project, page, homePage, pageNote, teamMember, aboutPage, careersPage, jobPosting, application]
+const schemas = [project, page, homePage, pageNote, teamMember, aboutPage, careersPage, jobPosting, application, legal]
 
 export default schemas

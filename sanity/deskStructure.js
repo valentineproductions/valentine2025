@@ -49,8 +49,13 @@ export const deskStructure = (S) =>
                 ),
             ])
         ),
+      S.listItem()
+        .title('Legal Pages')
+        .child(
+          S.documentTypeList('legal').title('Legal Pages')
+        ),
       ...S.documentTypeListItems().filter(
-        (item) => !['careersPage', 'jobPosting', 'application'].includes(item.getId())
+        (item) => !['careersPage', 'jobPosting', 'application', 'legal'].includes(item.getId())
       ),
     ]);
 

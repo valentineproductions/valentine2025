@@ -335,6 +335,19 @@ export async function getTeamMemberBySlug(slug) {
   );
 }
 
+export async function getLegalBySlug(slug) {
+  return createClient(clientConfig).fetch(
+    groq`*[_type == "legal" && slug.current == $slug][0]{
+      title,
+      "slug": slug.current,
+      titleDescription,
+      moreInfo,
+      content
+    }`,
+    { slug }
+  );
+}
+
 
   export async function getAllPagesData() {
     return createClient(clientConfig).fetch(

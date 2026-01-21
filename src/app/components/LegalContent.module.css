@@ -1,0 +1,49 @@
+.pageWrapper {
+  max-width: 2000px;
+  margin: 0 auto;
+  padding: 140px 20px 40px 20px;
+}
+
+.content {
+  width: 100%;
+  margin: 0 auto;
+  text-align: left;
+  font-size: 14px;
+}
+
+.portableText h2 {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 18px;
+  margin-top: 20px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.portableText p {
+  margin-bottom: 12px;
+}
+
+.portableText br {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.portableText ul {
+  margin-bottom: 12px;
+}
+
+.portableText li {
+  margin-left: 7px;
+}
+
+@media (max-width: 900px) {
+  .content {
+    width: 85%;
+  }
+}
+
+@media (max-width: 600px) {
+  .content {
+    width: 92%;
+  }
+}

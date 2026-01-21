@@ -120,3 +120,10 @@
   }
 }
 
+/* To have the footer match the nav */
+@media (min-width: 2001px) {
+  .pageNote {
+    padding: 0 20px;
+  } 
+}
+
