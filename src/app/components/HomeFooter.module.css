@@ -1,0 +1,36 @@
+.root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0 20px 0;
+  text-transform: uppercase;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.32px;
+  line-height: 95%;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.column {
+  flex-direction: column;
+  gap: 6px;
+}
+
+.left,
+.right {
+  margin: 0 35px;
+  text-align: center;
+}
+
+.right a {
+  text-decoration: none;
+}
+
+.right a:hover {
+  text-decoration: underline;
+}

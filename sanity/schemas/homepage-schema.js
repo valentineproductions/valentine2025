@@ -74,7 +74,7 @@ const homepage = {
 
     {
       name: 'locations',
-      title: 'Locations',
+      title: 'Locations or Info',
       type: 'string',
       description: 'A list of locations to be displayed in the footer of home videos.',
       group: 'pageNoteGroup',
@@ -119,6 +119,34 @@ const homepage = {
       title: 'Slogan',
       type: 'string',
       description: 'The main slogan for the homepage.',
+      group: 'hero',
+    },
+    {
+      name: 'showSlogan',
+      title: 'Show Slogan',
+      type: 'boolean',
+      group: 'hero',
+    },
+    {
+      name: 'showLogoSlogan',
+      title: 'Show Logo Slogan',
+      type: 'boolean',
+      group: 'hero',
+    },
+    {
+      name: 'logoSlogan',
+      title: 'Logo Slogan',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        {
+          name: 'alt',
+          title: 'Logo Slogan Alt Text',
+          type: 'string',
+        },
+      ],
       group: 'hero',
     },
     {
@@ -207,6 +235,12 @@ const homepage = {
       title: 'Process Title',
       type: 'string',
       description: 'Title for the "Process" section.',
+      group: 'process',
+    },
+    {
+      name: 'showProcess',
+      title: 'Show Process Section',
+      type: 'boolean',
       group: 'process',
     },
     {

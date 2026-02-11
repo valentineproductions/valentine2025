@@ -31,6 +31,15 @@ export async function getHomePage() {
         alt
       },
       slogan,
+      showSlogan,
+      showLogoSlogan,
+      logoSlogan{
+        asset->{
+          _id,
+          url
+        },
+        alt
+      },
       backgroundColor,
       homeVideo1{
         asset->{
@@ -47,6 +56,7 @@ export async function getHomePage() {
         osItems
       },
       processTitle,
+      showProcess,
       opTitle1,
       opText1,
       opTitle2,
@@ -477,6 +487,10 @@ export async function getLegalBySlug(slug) {
             alt
           },
           slogan,
+          showSlogan,
+          showLogoSlogan,
+          "logoSlogan": logoSlogan.asset->url,
+          "logoSloganAlt": logoSlogan.alt,
           backgroundColor,
           homeVideo1{
             asset->{
@@ -493,6 +507,7 @@ export async function getLegalBySlug(slug) {
             osItems
           },
           processTitle,
+          showProcess,
           opTitle1,
           opText1,
           opTitle2,

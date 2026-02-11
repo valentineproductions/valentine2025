@@ -320,34 +320,36 @@ header.navBar.homeNavBar + main {
 }
 
 .locationsNemail {
-  display: flex; /* Enable flexbox for horizontal arrangement of children */
-  justify-content: center; /* Center the content horizontally within this container */
-  align-items: center; /* Vertically align items in case they have different heights */
-  width: 100%; /* Ensure it takes the full width of the section */
-  padding: 10px 0 20px 0; /* Removed top because of the frame, only if I apply the bg per sectino approach */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0 20px 0;
   font-family: 'Helvetica Neue', sans-serif;
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 500;
-  height: 50px;
+  gap: 6px;
 }
 
 .locationsNemail2 {
-  display: flex; /* Enable flexbox for horizontal arrangement of children */
-  justify-content: center; /* Center the content horizontally within this container */
-  align-items: center; /* Vertically align items in case they have different heights */
-  width: 100%; /* Ensure it takes the full width of the section */
-  padding: 10px 0 20px 0; /* Removed top because of the frame, only if I apply the bg per sectino approach */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0 20px 0;
   font-family: 'Helvetica Neue', sans-serif;
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 500;
+  gap: 6px;
 }
 
 .locationsCodes,
 .homeEmail {
-  /* Add some horizontal margin to create space between them */
-  margin: 0 35px; /* Adjust the value as needed for the desired space */
+  margin: 0;
 }
 
 .homeEmail a {
@@ -361,7 +363,7 @@ header.navBar.homeNavBar + main {
   width: 100%;
   height: 100%;
   object-fit: cover; 
-  z-index: -1; /* Place behind text */
+  z-index: -2; /* Place behind frame and text */
   touch-action: none;
 }
 
@@ -683,35 +685,7 @@ header.navBar.homeNavBar a, .homeBody .menu-trigger, section.sloganVideo h2, .lo
   flex-direction: column; /* Arrange divs vertically */
 }
 
-.processDescription .animatedDivs > div {
-  /* Styles for the normal state */
-  height: 90px; /* Adjust as needed for your initial content height */
-  display: flex; /* Enable flexbox for vertical centering on hover */
-  flex-direction: column; /* Stack content within the div initially */
-  justify-content: flex-start; /* Align content to the top initially */
-  align-items: center; /* Center content horizontally */
-  text-align: center; /* Center text within the paragraph */
-  transition: height 1s ease-in-out; /* Smooth transition for the height change */
-}
-
-.processDescription .animatedDivs > div:hover {
-  /* Styles for the hover state */
-  height: 200px;
-  justify-content: center; /* Vertically center content on hover */
-  font-size: 20px;
-  width: auto;
-  margin: 0 auto;
-  /* transition: height 3s ease-in-out;  */
-}
-
-.processDescription .animatedDivs > div h3 {
-  margin-top: 0; /* Reset default margin for the heading */
-  font-family: 'Baskerville', serif;
-  font-weight: 400;
-  font-style: italic;
-  line-height: 93%;
-  letter-spacing: -0.32px;
-}
+ 
 
 .pinyon-script-regular, .processContainer span {
   font-family: "Pinyon Script", cursive;
@@ -728,8 +702,13 @@ header.navBar.homeNavBar a, .homeBody .menu-trigger, section.sloganVideo h2, .lo
   
 }
 
+.logo-slogan-image {
+  width: 15%;
+  height: auto;
+  object-fit: contain;
+}
+
 @media (max-width: 1199px) {
-  /* Styles for large screens go here */
   .coolBG {
       display: none;
   }
@@ -833,12 +812,32 @@ header.navBar.homeNavBar a, .homeBody .menu-trigger, section.sloganVideo h2, .lo
   height: 100vh;
 }
 
+@media (min-width: 1200px) {
+  .approachContainer h2:first-child,
+  .approachContainer > div {
+    margin-top: 0px;
+  }
+}
+
 .homeLastVideoFooter {
+  display: none;
   width: 100%;
   padding: 20px 20px 50px 20px;
   bottom: 0;
   left: 0;
   z-index: 10;
+}
+
+.homeLastVideoFooter.footerVisible {
+  display: block;
+}
+
+.homeLastVideoFooter.footerFixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
 }
 
 .homeLastVideoFooter .pageNote {
