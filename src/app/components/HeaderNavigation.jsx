@@ -54,7 +54,10 @@ export default function HeaderNavigation() { // Default empty array
                 />
             </Link>
             {isMobile && menuOpen && (
-                <div className={`menuOverlay visible`} onClick={() => setMenuOpen(false)} />
+                <div
+                    className={`menuOverlay ${isHomePage ? 'homeOverlay' : 'pageOverlay'} visible`}
+                    onClick={() => setMenuOpen(false)}
+                />
             )}
             {isMobile ? (
                 <div className="mobileNavContainer">
