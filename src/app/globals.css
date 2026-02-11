@@ -79,6 +79,7 @@ a {
   margin-left: auto;
   margin-right: auto;
   max-width: 2000px;
+  position: relative; /* Create stacking context for children */
   z-index: 10; /* Ensure it's above other content */
   text-transform: uppercase;
   font-weight: 500;
@@ -199,10 +200,35 @@ a {
 
 .menu-trigger {
   cursor: pointer; /* Make it clear it's clickable */
+  position: relative;
+  z-index: 12; /* Above overlay */
 }
 
 .menu-trigger:hover {
   color: #5F1B19; /* Add a hover effect if desired */
+}
+
+.menuOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 8;
+}
+
+.menuOverlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobileNavContainer, .mobileNavLinks, .homeNavLink {
+  position: relative;
+  z-index: 12; /* Ensure menu and logo render above overlay */
 }
 
 
@@ -500,7 +526,7 @@ header.navBar.homeNavBar a, .homeBody .menu-trigger, section.sloganVideo h2, .lo
 }
 
 .logos-image {
-    width: 70%;
+    width: 90%;
     height: auto;
     object-fit: contain;
 }
@@ -706,6 +732,12 @@ header.navBar.homeNavBar a, .homeBody .menu-trigger, section.sloganVideo h2, .lo
   width: 15%;
   height: auto;
   object-fit: contain;
+}
+
+@media (max-width: 575px) {
+  .logo-slogan-image {
+    width: 45%;
+  }
 }
 
 @media (max-width: 1199px) {

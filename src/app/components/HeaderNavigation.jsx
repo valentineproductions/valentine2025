@@ -38,9 +38,13 @@ export default function HeaderNavigation() { // Default empty array
         ? pages[0]?.pageCompanyLogoWhite 
         : pages[0]?.pageCompanyLogo) || {};
 
+    const handleLogoClick = () => {
+        if (menuOpen) setMenuOpen(false);
+    };
+
     return (
         <header className={headerClasses}>
-            <Link href="/" className="homeNavLink">
+            <Link href="/" className="homeNavLink" onClick={handleLogoClick}>
                 <Image
                     src={logoData?.url || "/glove.svg"}
                     alt={logoData?.alt || "Valentine Logo"} 
@@ -49,6 +53,9 @@ export default function HeaderNavigation() { // Default empty array
                     priority
                 />
             </Link>
+            {isMobile && menuOpen && (
+                <div className={`menuOverlay visible`} onClick={() => setMenuOpen(false)} />
+            )}
             {isMobile ? (
                 <div className="mobileNavContainer">
                     <span 
