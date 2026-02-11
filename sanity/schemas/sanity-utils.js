@@ -435,7 +435,9 @@ export async function getLegalBySlug(slug) {
             location,
             commitment,
             description,
-            applyCtaLabel
+            applyCtaLabel,
+            Listed,
+            postedAt
           }
         },
         "jobs": *[_type == "jobPosting"]{
@@ -445,7 +447,9 @@ export async function getLegalBySlug(slug) {
           location,
           commitment,
           description,
-          applyCtaLabel
+          applyCtaLabel,
+          Listed,
+          postedAt
         },
         "homepage": *[_type == "homepage"][0]{
           companyLogo{

@@ -34,6 +34,19 @@ const jobPosting = {
       }
     },
     {
+      name: 'Listed',
+      title: 'Listed',
+      type: 'boolean',
+      description: 'Controls public visibility of this job posting',
+      initialValue: true,
+    },
+    {
+      name: 'postedAt',
+      title: 'Posted Date',
+      type: 'datetime',
+      description: 'Use for sorting jobs by newest first',
+    },
+    {
       name: 'slug',
       title: 'Slug',
       type: 'slug',

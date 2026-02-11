@@ -23,11 +23,14 @@ export async function POST(req) {
       useCdn: false,
     });
 
-    // Find job by slug and location code
+    // Find job by slug and location code and ensure it's listed
     const job = await serverClient.fetch(
-      `*[_type == "jobPosting" && slug.current == $slug && location.code == $code][0]{ _id }`,
+      `*[_type == "jobPosting" && slug.current == $slug && location.code == $code][0]{ _id, Listed }`,
       { slug: jobSlug, code: locationCode }
     );
+    if (!job || job.Listed === false) {
+      return new NextResponse('Job is not listed', { status: 400 });
+    }
 
     // Upload resume
     const resumeBuffer = Buffer.from(await resume.arrayBuffer());

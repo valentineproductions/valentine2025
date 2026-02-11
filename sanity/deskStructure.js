@@ -16,6 +16,18 @@ export const deskStructure = (S) =>
                 .title('All Applications')
                 .child(S.documentTypeList('application').title('All Applications')),
               S.listItem()
+                .title('Applications By Job Post')
+                .child(
+                  S.documentTypeList('jobPosting')
+                    .title('Job Postings')
+                    .child(jobId =>
+                      S.documentTypeList('application')
+                        .title('Applications')
+                        .filter('_type == "application" && references($jobId)')
+                        .params({ jobId })
+                    )
+                ),
+              S.listItem()
                 .title('Needs Review')
                 .child(
                   S.documentTypeList('application')
