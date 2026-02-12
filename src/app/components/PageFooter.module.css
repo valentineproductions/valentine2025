@@ -30,7 +30,37 @@
 
 .connectSection {
   text-align: left;
-  width: 120px;
+  width: auto;
+}
+
+.centerSide {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
+  flex: 1 1 auto;
+}
+
+.centerInline {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 95%;
+  letter-spacing: .32px;
+  white-space: nowrap;
+}
+
+.workInline {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 95%;
+  letter-spacing: .32px;
+  white-space: nowrap;
+}
+
+.centerItem {
+  display: inline;
 }
 
 .copyRight {
@@ -73,6 +103,19 @@
   text-decoration: underline;
 }
 
+.connectInline {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 95%;
+  letter-spacing: .32px;
+  white-space: nowrap;
+}
+
+.connectInline a {
+  display: inline;
+}
+
 .copyRightText {
   font-size: 8px;
   line-height: 107%;
@@ -105,6 +148,18 @@
     width: 100%;
   }
 
+  .centerSide {
+    width: 100%;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+    margin-bottom: 20px;
+  }
+
+  .centerInline {
+    white-space: normal;
+  }
+
   .connectSection {
     width: auto;
   }
@@ -126,4 +181,3 @@
     padding: 0 20px;
   } 
 }
-

@@ -7,6 +7,7 @@ import { useAppContext } from '@/app/components/AppContext';
 import AboutAnimations from '@/app/components/AboutAnimations';
 import AboutInitAnimation from '@/app/components/AboutInitAnimation';
 import { PortableText } from "@portabletext/react";
+import PageFooter from '@/app/components/PageFooter';
 // import TypeAnimation from '@/app/components/TypeAnimation';
 
 // Elements within AboutAnimations and with the attribute data-animate will get animated
@@ -215,11 +216,13 @@ export default function About() {
                 {/* Interested in working together? */}
                 {aboutPageData.pageNote && (
                 <div className="pageNote">
-                    {aboutPageData.pageNote.workTitle && (
+                    {(aboutPageData.pageNote.workTitle || aboutPageData.pageNote.workDescription) && (
                     <div className="workSection">
-                        <h2 className="pageNoteTitle">{aboutPageData.pageNote.workTitle}</h2>
+                        {aboutPageData.pageNote.workTitle && (
+                          <h2 className="pageNoteTitle">{aboutPageData.pageNote.workTitle}</h2>
+                        )}
                         {aboutPageData.pageNote.workDescription && (
-                        <p className="pageNoteText">{aboutPageData.pageNote.workDescription}</p>
+                          <p className="pageNoteText">{aboutPageData.pageNote.workDescription}</p>
                         )}
                     </div>
                     )}
@@ -293,35 +296,21 @@ export default function About() {
                     </div>
                     )}
                     {/* Connect Section */}
-                    {aboutPageData.pageNote.connectTitle && (
+                    {Array.isArray(aboutPageData.pageNote.connectLinks) && aboutPageData.pageNote.connectLinks.length > 0 && (
                     <div className="connectSection">
-                        <h2 className="pageNoteTitle">{aboutPageData.pageNote.connectTitle}</h2>
-                        {aboutPageData.pageNote.connectLinks &&
-                        aboutPageData.pageNote.connectLinks.map((link, index) => {
-                            // Determine if the link is an email address
-                            const isEmail = link.linkUrl && 
-                                            link.linkUrl.includes('@') && 
-                                            !link.linkUrl.startsWith('http://') && 
-                                            !link.linkUrl.startsWith('https://');
-                            
-                            // Construct the href based on whether it's an email or a regular URL
-                            const href = isEmail ? `mailto:${link.linkUrl}` : link.linkUrl;
-
-                            // Determine target and rel attributes (only for non-email links that open in a new tab)
-                            const target = !isEmail && link.openNewTab ? "_blank" : undefined;
-                            const rel = !isEmail && link.openNewTab ? "noopener noreferrer" : undefined;
-
-                            return (
-                                <a
-                                key={index}
-                                href={href}
-                                className="contactLink"
-                                target={target}
-                                rel={rel}
-                                >
-                                {link.linkTitle}
-                                </a>
-                            );
+                        {aboutPageData.pageNote.connectTitle && (
+                          <h2 className="pageNoteTitle">{aboutPageData.pageNote.connectTitle}</h2>
+                        )}
+                        {aboutPageData.pageNote.connectLinks.map((link, index) => {
+                          const isEmail = link.linkUrl && link.linkUrl.includes('@') && !link.linkUrl.startsWith('http://') && !link.linkUrl.startsWith('https://');
+                          const href = isEmail ? `mailto:${link.linkUrl}` : link.linkUrl;
+                          const target = !isEmail && link.openNewTab ? "_blank" : undefined;
+                          const rel = !isEmail && link.openNewTab ? "noopener noreferrer" : undefined;
+                          return (
+                            <a key={index} href={href} className="contactLink" target={target} rel={rel}>
+                              {link.linkTitle}
+                            </a>
+                          );
                         })}
                     </div>
                     )}
@@ -336,59 +325,7 @@ export default function About() {
             </StickySidebar>
             
         </div>
-        <footer className="aboutFooter">
-                    {aboutPageData?.pageNote && (
-                        <div className="pageNote">
-                            <div className="leftSide">
-                            {aboutPageData.pageNote.workTitle && (
-                                <div className="workSection">
-                                <h2 className="pageNoteTitle">{aboutPageData.pageNote.workTitle}</h2>
-                                {aboutPageData.pageNote.workDescription && (
-                                    <p className="pageNoteText">{aboutPageData.pageNote.workDescription}</p>
-                                )}
-                                </div>
-                            )}
-                            {/* Connect Section */}
-                    {aboutPageData.pageNote.connectTitle && (
-                    <div className="connectSection">
-                        <h2 className="pageNoteTitle">{aboutPageData.pageNote.connectTitle}</h2>
-                        {aboutPageData.pageNote.connectLinks &&
-                        aboutPageData.pageNote.connectLinks.map((link, index) => {
-                            // Determine if the link is an email address
-                            const isEmail = link.linkUrl && 
-                                            link.linkUrl.includes('@') && 
-                                            !link.linkUrl.startsWith('http://') && 
-                                            !link.linkUrl.startsWith('https://');
-                            
-                            // Construct the href based on whether it's an email or a regular URL
-                            const href = isEmail ? `mailto:${link.linkUrl}` : link.linkUrl;
-
-                            // Determine target and rel attributes (only for non-email links that open in a new tab)
-                            const target = !isEmail && link.openNewTab ? "_blank" : undefined;
-                            const rel = !isEmail && link.openNewTab ? "noopener noreferrer" : undefined;
-
-                            return (
-                                <a
-                                key={index}
-                                href={href}
-                                className="contactLink"
-                                target={target}
-                                rel={rel}
-                                >
-                                {link.linkTitle}
-                                </a>
-                            );
-                        })}
-                    </div>
-                    )}
-                            </div>
-                            {aboutPageData.pageNote.copyrightText && (
-                            <div className="copyRight"><p className="copyRightText"> <b>{aboutPageData.pageNote.copyrightBrandName}</b> {aboutPageData.pageNote.copyrightText} {aboutPageData.pageNote.copyrightYear} {aboutPageData.pageNote.copyrightBrandName}</p>
-                            </div>
-                            )}
-                        </div>
-                    )}
-                </footer>
+        {aboutPageData?.pageNote && <PageFooter pageNote={aboutPageData.pageNote} />}
         </div>
         </AboutAnimations>
         

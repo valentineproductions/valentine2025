@@ -1,23 +1,45 @@
 'use client';
+import styles from './PageFooter.module.css';
 const PageNoteFooter = ({ pageNote }) => {
   if (!pageNote) return null;
+  const hasWork = (pageNote.workTitle && pageNote.workTitle.trim() !== '') || (pageNote.workDescription && pageNote.workDescription.trim() !== '');
+  const hasConnect = Array.isArray(pageNote.connectLinks) && pageNote.connectLinks.length > 0;
+  const tokens = (pageNote.workDescription || '')
+    .split(/[,\n/]+/)
+    .map(s => s.trim())
+    .filter(Boolean);
   return (
     <div className="homeLastVideoFooter">
-      <div className="pageNote">
-        <div className="leftSide">
-          {pageNote.workTitle && (
-            <div className="workSection">
-              <h2 className="pageNoteTitle">{pageNote.workTitle}</h2>
+      <div className={styles.pageNote}>
+        <div className={styles.leftSide}>
+          {hasWork && (
+            <div className={styles.workSection}>
+              {pageNote.workTitle && (
+                <h2 className={styles.pageNoteTitle}>{pageNote.workTitle}</h2>
+              )}
               {pageNote.workDescription && (
-                <p className="pageNoteText">{pageNote.workDescription}</p>
+                <p className={styles.workInline}>
+                  {tokens.length > 0
+                    ? tokens.map((t, idx) => (
+                        <span key={idx} className={styles.centerItem}>
+                          {t}
+                          {idx !== tokens.length - 1 ? ' / ' : ''}
+                        </span>
+                      ))
+                    : pageNote.workDescription}
+                </p>
               )}
             </div>
           )}
-          {pageNote.connectTitle && (
-            <div className="connectSection">
-              <h2 className="pageNoteTitle">{pageNote.connectTitle}</h2>
-              {pageNote.connectLinks &&
-                pageNote.connectLinks.map((link, index) => {
+        </div>
+        <div className={styles.centerSide}>
+          {hasConnect && (
+            <div className={styles.connectSection}>
+              {pageNote.connectTitle && (
+                <h2 className={styles.pageNoteTitle}>{pageNote.connectTitle}</h2>
+              )}
+              <p className={styles.connectInline}>
+                {pageNote.connectLinks.map((link, index) => {
                   const isEmail =
                     link.linkUrl &&
                     link.linkUrl.includes('@') &&
@@ -27,25 +49,28 @@ const PageNoteFooter = ({ pageNote }) => {
                   const target = !isEmail && link.openNewTab ? '_blank' : undefined;
                   const rel = !isEmail && link.openNewTab ? 'noopener noreferrer' : undefined;
                   return (
-                    <a
-                      key={index}
-                      href={href}
-                      className="contactLink"
-                      target={target}
-                      rel={rel}
-                    >
-                      {link.linkTitle}
-                    </a>
+                    <>
+                      <a
+                        key={index}
+                        href={href}
+                        className={styles.contactLink}
+                        target={target}
+                        rel={rel}
+                      >
+                        {link.linkTitle}
+                      </a>
+                      {index !== pageNote.connectLinks.length - 1 ? ' / ' : ''}
+                    </>
                   );
                 })}
+              </p>
             </div>
           )}
         </div>
         {pageNote.copyrightText && (
-          <div className="copyRight">
-            <p className="copyRightText">
-              <b>{pageNote.copyrightBrandName}</b> {pageNote.copyrightText}{' '}
-              {pageNote.copyrightYear} {pageNote.copyrightBrandName}
+          <div className={styles.copyRight}>
+            <p className={styles.copyRightText}>
+              <b>{pageNote.copyrightBrandName}</b> {pageNote.copyrightText} {pageNote.copyrightYear} {pageNote.copyrightBrandName}
             </p>
           </div>
         )}

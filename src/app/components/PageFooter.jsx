@@ -9,49 +9,70 @@ export default function PageFooter({ pageNote }) {
     <footer className={styles.footer}>
       <div className={styles.pageNote}>
         <div className={styles.leftSide}>
-          {pageNote.workTitle && (
+          {(pageNote.workTitle || pageNote.workDescription) && (
             <div className={styles.workSection}>
-              <h2 className={styles.pageNoteTitle}>{pageNote.workTitle}</h2>
-              {pageNote.workDescription && (
-                <p className={styles.pageNoteText}>{pageNote.workDescription}</p>
+              {pageNote.workTitle && (
+                <h2 className={styles.pageNoteTitle}>{pageNote.workTitle}</h2>
               )}
+              {pageNote.workDescription && (() => {
+                const tokens = (pageNote.workDescription || '')
+                  .split(/[,\n/]+/)
+                  .map(s => s.trim())
+                  .filter(Boolean);
+                return (
+                  <p className={styles.workInline}>
+                    {tokens.length > 0
+                      ? tokens.map((t, idx) => (
+                          <span key={idx} className={styles.centerItem}>
+                            {t}
+                            {idx !== tokens.length - 1 ? ' / ' : ''}
+                          </span>
+                        ))
+                      : pageNote.workDescription}
+                  </p>
+                );
+              })()}
             </div>
           )}
-          {pageNote.connectTitle && (
+        </div>
+        <div className={styles.centerSide}>
+          {Array.isArray(pageNote.connectLinks) && pageNote.connectLinks.length > 0 && (
             <div className={styles.connectSection}>
-              <h2 className={styles.pageNoteTitle}>{pageNote.connectTitle}</h2>
-              {pageNote.connectLinks && (() => {
-                return pageNote.connectLinks.map((link, index) => {
-                  // Determine if the link is an email address
-                  const isEmail = link.linkUrl && 
-                                  link.linkUrl.includes('@') && 
-                                  !link.linkUrl.startsWith('http://') && 
-                                  !link.linkUrl.startsWith('https://');
-                  // Construct the href based on whether it's an email or a regular URL
+              {pageNote.connectTitle && (
+                <h2 className={styles.pageNoteTitle}>{pageNote.connectTitle}</h2>
+              )}
+              <p className={styles.connectInline}>
+                {pageNote.connectLinks.map((link, index) => {
+                  const isEmail =
+                    link.linkUrl &&
+                    link.linkUrl.includes('@') &&
+                    !link.linkUrl.startsWith('http://') &&
+                    !link.linkUrl.startsWith('https://');
                   const href = isEmail ? `mailto:${link.linkUrl}` : link.linkUrl;
-                  // Determine target and rel attributes (only for non-email links that open in a new tab)
-                  const target = !isEmail && link.openNewTab ? "_blank" : undefined;
-                  const rel = !isEmail && link.openNewTab ? "noopener noreferrer" : undefined;
-
+                  const target = !isEmail && link.openNewTab ? '_blank' : undefined;
+                  const rel = !isEmail && link.openNewTab ? 'noopener noreferrer' : undefined;
                   return (
-                    <a
-                      key={index}
-                      href={href}
-                      className={styles.contactLink}
-                      target={target}
-                      rel={rel}
-                    >
-                      {link.linkTitle}
-                    </a>
+                    <>
+                      <a
+                        key={index}
+                        href={href}
+                        className={styles.contactLink}
+                        target={target}
+                        rel={rel}
+                      >
+                        {link.linkTitle}
+                      </a>
+                      {index !== pageNote.connectLinks.length - 1 ? ' / ' : ''}
+                    </>
                   );
-                });
-              })()}
+                })}
+              </p>
             </div>
           )}
         </div>
         {pageNote.copyrightText && (
           <div className={styles.copyRight}>
-            <p className={styles.copyRightText}> 
+            <p className={styles.copyRightText}>
               <b>{pageNote.copyrightBrandName}</b> {pageNote.copyrightText} {pageNote.copyrightYear} {pageNote.copyrightBrandName}
             </p>
           </div>
