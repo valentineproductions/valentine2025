@@ -43,7 +43,7 @@ const page = {
         name: 'indexTitle',
         title: 'Index Title',
         type: 'string',
-        description: 'This is the title displayed on the talent page header.',
+        description: 'This is the title displayed on the directors page header.',
       },
       {
         name: 'pageTitle',

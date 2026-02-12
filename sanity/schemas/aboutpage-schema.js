@@ -1,27 +1,27 @@
 const aboutPage = {
     name: 'aboutPage',
-    title: 'About Pages',
+    title: 'Information Pages',
     type: 'document',
     fields: [
       {
         name: 'title',
         title: 'Page Title',
         type: 'string',
-        description: 'The main title of the About Page (for internal use).',
+        description: 'The main title of the Information Page (for internal use).',
       },
       {
         name: 'status',
         title: 'Status',
         type: 'boolean',
         description:
-          'If on, this about page will be rendered. Useful for switching between available about pages.',
+          'If on, this information page will be rendered. Useful for switching between available information pages.',
       },
       {
         name: 'pageNote',
         title: 'Page Note',
         type: 'reference',
         to: { type: 'pageNote' },
-        description: 'The page note to associate with this about page.',
+        description: 'The page note to associate with this information page.',
         validation: Rule => Rule.required(),
       },
       // Philosophy Section

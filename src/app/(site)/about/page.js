@@ -18,10 +18,10 @@ export default function About() {
     // const aboutPageData = await getAboutPage()
     const { allData } = useAppContext();
     const aboutPageData = allData?.aboutPage || null;
-    console.log("@AB------About Page Data:", aboutPageData); //is working
+    console.log("@AB------Information Page Data:", aboutPageData); //is working
 
     if (!aboutPageData) {
-        return <div>About Page Not Found</div>
+        return <div>Information Page Not Found</div>
     }
     return (
         <AboutAnimations>

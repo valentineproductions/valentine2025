@@ -80,8 +80,8 @@ export default function HeaderNavigation() { // Default empty array
                                         </Link>
                                     ) : null;
                                 })}
-                                <Link href="/about" className="homeNavLink" onClick={toggleMenu}>
-                                    {pathname === "/about" ? <b>About</b> : "About"}
+                                <Link href="/information" className="homeNavLink" onClick={toggleMenu}>
+                                    {pathname === "/information" ? <b>Information</b> : "Information"}
                                 </Link>
                                 <Link href="/careers" className="homeNavLink" onClick={toggleMenu}>
                                     {pathname === "/careers" ? <b>Careers</b> : "Careers"}
@@ -100,8 +100,8 @@ export default function HeaderNavigation() { // Default empty array
                             </Link>
                         ) : null;
                     })}
-                    <Link href="/about" className="homeNavLink">
-                        {pathname === "/about" ? <b>About</b> : "About"}
+                    <Link href="/information" className="homeNavLink">
+                        {pathname === "/information" ? <b>Information</b> : "Information"}
                     </Link>
                     <Link href="/careers" className="homeNavLink">
                         {pathname === "/careers" ? <b>Careers</b> : "Careers"}

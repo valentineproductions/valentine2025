@@ -23,6 +23,16 @@ export const nextConfig = {
           destination: '/directors/:path*',
           permanent: true,
         },
+        {
+          source: '/about',
+          destination: '/information',
+          permanent: true,
+        },
+        {
+          source: '/about/:path*',
+          destination: '/information/:path*',
+          permanent: true,
+        },
       ];
     },
   };
