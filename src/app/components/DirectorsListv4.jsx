@@ -24,7 +24,7 @@ export default function DirectorsListv4({ directors }) {
     <div className={styles.directorsList}>
       <div className={styles.container}>
         {directors.map((director) => {
-          const directorUrl = `/talent/${director.slug}`;
+          const directorUrl = `/directors/${director.slug}`;
           
           return (
             <div key={director._id} className={styles.directorColumn}>
@@ -77,7 +77,7 @@ export default function DirectorsListv4({ directors }) {
                     <div className={styles.categoriesContainer}>
                       {director.categories.map((category, index) => {
                         const categorySlug = categoryToSlug(category);
-                        const categoryUrl = `/talent/category/${categorySlug}`;
+                        const categoryUrl = `/directors/category/${categorySlug}`;
                         return (
                           <Link
                             key={index}
@@ -103,4 +103,3 @@ export default function DirectorsListv4({ directors }) {
     </div>
   );
 }
-

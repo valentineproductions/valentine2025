@@ -1,0 +1,76 @@
+ .container {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.pageContainer {
+  max-width: 2000px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+}
+
+.memberName {
+  font-family: 'Sloop Script', cursive;
+  font-weight: 100;
+  font-size: 45px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: fadeDown 0.8s ease-out forwards;
+  padding-top: 30px;
+}
+
+@keyframes fadeDown {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bio {
+  font-family: 'Helvetica', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: fadeDownBio 1.8s ease-out forwards;
+}
+
+@keyframes fadeDownBio {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bio p:last-child {
+  margin-bottom: 0;
+  line-height: 93%;
+}
+
+.content {
+  width: 100%;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+}
+
+@media (max-width: 600px) {
+  .memberName {
+    font-size: 31.5px;
+  }
+  
+  .bio {
+    font-size: 14px;
+  }
+}

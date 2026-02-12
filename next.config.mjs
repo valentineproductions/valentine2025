@@ -11,6 +11,20 @@ export const nextConfig = {
         },
       ],
     },
+    async redirects() {
+      return [
+        {
+          source: '/talent',
+          destination: '/directors',
+          permanent: true,
+        },
+        {
+          source: '/talent/:path*',
+          destination: '/directors/:path*',
+          permanent: true,
+        },
+      ];
+    },
   };
 
 export default nextConfig;

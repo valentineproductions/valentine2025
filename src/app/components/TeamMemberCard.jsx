@@ -8,7 +8,7 @@ import { categoryToSlug } from '@/app/utils/categoryUtils';
 export default function TeamMemberCard({ member }) {
   if (!member || !member.slug) return null;
 
-  const memberUrl = `/talent/${member.slug}`;
+  const memberUrl = `/directors/${member.slug}`;
 
   // Format name to title case (first letter of each word uppercase, rest lowercase)
   const formatName = (name) => {
@@ -60,7 +60,7 @@ export default function TeamMemberCard({ member }) {
                 {member.categories.map((category, index) => (
                   <Link
                     key={index}
-                    href={`/talent/category/${categoryToSlug(category)}`}
+                    href={`/directors/category/${categoryToSlug(category)}`}
                     className={styles.categoryTag}
                     onClick={handleCategoryClick}
                   >
@@ -75,4 +75,3 @@ export default function TeamMemberCard({ member }) {
     </Link>
   );
 }
-

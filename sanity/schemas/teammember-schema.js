@@ -17,7 +17,7 @@ const teamMember = {
           source: 'fullName',
           maxLength: 96,
         },
-        description: 'URL-friendly identifier for the team member page (e.g., /talent/john-doe).',
+        description: 'URL-friendly identifier for the team member page (e.g., /directors/john-doe).',
         validation: Rule => Rule.required(),
       },
       {

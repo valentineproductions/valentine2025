@@ -27,17 +27,17 @@ export default function Page() {
 
     // Memoize page lookups for better performance
     const { pageTalent, pageWork, missingPages } = useMemo(() => {
-        const talent = pagesData.find(page => page.slug === 'talent');
+        const talent = pagesData.find(page => page.slug === 'directors');
         const work = pagesData.find(page => page.slug === 'work');
         const missing = [];
-        if (!talent) missing.push('Talent');
+        if (!talent) missing.push('Directors');
         if (!work) missing.push('Work');
         return { pageTalent: talent, pageWork: work, missingPages: missing };
     }, [pagesData]);
 
     // Determine current page type based on pathname
     const slug = useMemo(() => pathname?.split('/').filter(Boolean)[0] || '', [pathname]);
-    const isTalentPage = pathname === '/talent';
+    const isTalentPage = pathname === '/directors';
     const isWorkPage = pathname === '/work';
     const isLegalPage = !isTalentPage && !isWorkPage && !!slug;
     const currentPage = isTalentPage ? pageTalent : pageWork;

@@ -72,7 +72,7 @@ export default function HeaderNavigation() { // Default empty array
                     {menuOpen && (
                         <MenuAnimation isOpen={menuOpen}>
                             <div className="mobileNavLinks">
-                                {[ 'work', 'talent' ].map((slug) => {
+                                {[ 'work', 'directors' ].map((slug) => {
                                     const page = pages.find(p => p.slug === slug);
                                     return page ? (
                                         <Link key={page._id} href={`/${page.slug}`} onClick={toggleMenu}>
@@ -92,7 +92,7 @@ export default function HeaderNavigation() { // Default empty array
                 </div>
             ) : (
                 <div className="homeNavLinksContainer">
-                    {[ 'work', 'talent' ].map((slug) => {
+                    {[ 'work', 'directors' ].map((slug) => {
                         const page = pages.find(p => p.slug === slug);
                         return page ? (
                             <Link key={page._id} href={`/${page.slug}`}>
