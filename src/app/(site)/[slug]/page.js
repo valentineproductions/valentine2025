@@ -72,21 +72,21 @@ export default function Page() {
         <div className="pageContainer">
             {/* Dynamic Header based on current page */}
             
-            {isTalentPage && (
+            {/* {isTalentPage && (
                 <TalentPageHeader 
                     pageTitle={pageTalent.pageTitle}
                     pageDescription={pageTalent.pageDescription}
                     contactInfo={pageTalent.contactInfo}
                 />
-            )}
+            )} */}
             
-            {/* {isTalentPage && (
+            {isTalentPage && (
                 <TalentHorizontalHeader 
                     indexTitle={pageTalent.indexTitle}
                     pageTitle={pageTalent.pageTitle}
                     pageDescription={pageTalent.pageDescription}
                 />
-            )} */}
+            )}
             
             {isWorkPage && (
                 <WorkPageHeader 
@@ -123,9 +123,9 @@ export default function Page() {
                 )} */}
 
                 {/* MEMBERS SECTION Opt2v4 / 30/70 split with updated styling 2026*/}
-                {/* {isTalentPage && (
+                {isTalentPage && (
                     <DirectorsListOpt2v4 directors={pageTalent.teamMembers} />
-                )} */}
+                )}
 
                 {/* MEMBERS SECTION v3 / under "DIRECTORY" */}
                 {/* {isTalentPage && (
@@ -137,11 +137,11 @@ export default function Page() {
                 )} */}
 
                 {/* SoonAnimation alternative: */}
-                {isTalentPage && (
+                {/* {isTalentPage && (
                     <div className="gallery">
                         <SoonAnimation>{currentPage.tbd}</SoonAnimation>
                     </div>
-                )}
+                )} */}
                
 
                 {/* Work Page Content */}
