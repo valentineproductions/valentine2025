@@ -98,7 +98,8 @@
 }
 
 .positionCity {
-  font-family: 'Helvetica Neue', sans-serif;
+  /* font-family: 'Helvetica Neue', sans-serif; */
+  font-family: 'Baskerville', serif;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.32px;

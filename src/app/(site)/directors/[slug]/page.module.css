@@ -65,12 +65,13 @@
   font-size: 18px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .memberName {
     font-size: 31.5px;
   }
   
   .bio {
     font-size: 14px;
+    padding: 20px;
   }
 }

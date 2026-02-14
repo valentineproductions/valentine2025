@@ -97,7 +97,7 @@ export default function DirectorsListOpt2v4({ directors }) {
                           >
                             {formatTitleCase(category)}
                           </Link>
-                          {isLast ? '.' : ', '}
+                          {isLast ? '' : ', '}
                         </span>
                       );
                     })}
@@ -117,5 +117,4 @@ export default function DirectorsListOpt2v4({ directors }) {
     </div>
   );
 }
-
 

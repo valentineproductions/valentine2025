@@ -102,8 +102,8 @@ const teamMember = {
         title: 'Categories',
         type: 'array',
         of: [{ type: 'string' }],
-        validation: Rule => Rule.max(5).error('You can add a maximum of 5 categories.'),
-        description: 'Categories for this team member (e.g., Food/Beverage, Fashion, Lifestyle). Maximum of 5 categories.',
+        validation: Rule => Rule.max(5).error('You can add a maximum of 5 categories'),
+        description: 'Categories for this team member (e.g., Food/Beverage, Fashion, Lifestyle). Maximum of 5 categories',
       },
       // You can add more fields here, like social media links, etc.
     ],
