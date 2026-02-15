@@ -123,12 +123,13 @@
   color: #5f1b19;
   font-size: 16px;
   font-weight: 500;
-  background-color: #fff;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  /* background-color: #fff; */
+  /* border-top: 1px solid rgba(0, 0, 0, 0.1); */
   width: 100%;
   box-sizing: border-box;
   flex-shrink: 0; /* Prevent shrinking */
   transition: color 0.2s ease-in-out;
+  /* border-style: none; */
 }
 
 .videoWrapper:hover .videoName {
