@@ -88,6 +88,13 @@
   line-height: 93%;
   color: #5F1B19;
   margin: 15px 0px 0px 0px;
+}
+
+.originalCaseName {
+  text-transform: none;
+}
+
+.uppercasedName {
   text-transform: uppercase;
 }
 
@@ -195,4 +202,3 @@
     align-items: stretch;
   }
 }
-

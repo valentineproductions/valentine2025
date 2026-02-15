@@ -11,15 +11,6 @@ export default function TeamMemberPage({ params }) {
   const { allData } = useAppContext();
   const resolvedParams = use(params);
   
-  const formatName = (name) => {
-    if (!name) return '';
-    return name
-      .toLowerCase()
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  };
-
   const member = allData?.pages
     ?.find(page => page.slug === 'directors')
     ?.teamMembers
@@ -37,7 +28,7 @@ export default function TeamMemberPage({ params }) {
     <div className={styles.container}>
       <div className={styles.pageContainer}>
         <header className={styles.header}>
-          <h1 className={styles.memberName}>{formatName(member.fullName)}</h1>
+          <h1 className={styles.memberName}>{member.fullName}</h1>
           {member.bio && member.bio.length > 0 && (
             <div className={styles.bio}>
               <PortableText value={member.bio} />
