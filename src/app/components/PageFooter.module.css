@@ -67,6 +67,18 @@
   display: inline;
 }
 
+.centerItem:not(:last-child)::after {
+  content: ' / ';
+}
+
+.contactItem {
+  display: inline;
+}
+
+.contactItem:not(:last-child)::after {
+  content: ' / ';
+}
+
 .copyRight {
   text-align: left;
   width: 300px;

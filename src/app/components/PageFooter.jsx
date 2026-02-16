@@ -23,9 +23,8 @@ export default function PageFooter({ pageNote }) {
                   <p className={styles.workInline}>
                     {tokens.length > 0
                       ? tokens.map((t, idx) => (
-                          <span key={idx} className={styles.centerItem}>
+                          <span key={`${t}-${idx}`} className={styles.centerItem}>
                             {t}
-                            {idx !== tokens.length - 1 ? ' / ' : ''}
                           </span>
                         ))
                       : pageNote.workDescription}
@@ -51,10 +50,10 @@ export default function PageFooter({ pageNote }) {
                   const href = isEmail ? `mailto:${link.linkUrl}` : link.linkUrl;
                   const target = !isEmail && link.openNewTab ? '_blank' : undefined;
                   const rel = !isEmail && link.openNewTab ? 'noopener noreferrer' : undefined;
+                  const key = link._key || `${link.linkUrl || ''}-${link.linkTitle || ''}-${index}`;
                   return (
-                    <>
+                    <span key={key} className={styles.contactItem}>
                       <a
-                        key={index}
                         href={href}
                         className={styles.contactLink}
                         target={target}
@@ -62,8 +61,7 @@ export default function PageFooter({ pageNote }) {
                       >
                         {link.linkTitle}
                       </a>
-                      {index !== pageNote.connectLinks.length - 1 ? ' / ' : ''}
-                    </>
+                    </span>
                   );
                 })}
               </p>
