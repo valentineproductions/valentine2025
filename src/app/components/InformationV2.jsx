@@ -70,7 +70,14 @@ export default function InformationV2() {
       <div className={styles.pageWrapper}>
         {/* Title */}
         {info.title && (
-          <h1 className={styles.pageTitle}>{info.title}</h1>
+          <h1 className={styles.pageTitle}>
+            {info.title.split('\n').map((line, idx) => (
+              <span key={idx}>
+                {line}
+                {idx < info.title.split('\n').length - 1 && <br />}
+              </span>
+            ))}
+          </h1>
         )}
 
         {/* Description */}
@@ -141,7 +148,7 @@ export default function InformationV2() {
                     <span
                       key={idx}
                       className={styles.partnerItem}
-                      style={{ animationDelay: `${idx * 0.7}s` }}
+                      style={{ animationDelay: `${idx * 0.1}s`, animationDuration: '0.1s' }}
                     >
                       {showLogo && (
                         <img
@@ -201,7 +208,7 @@ export default function InformationV2() {
                     <span
                       key={`g-${idx}`}
                       className={styles.globalItem}
-                      style={{ animationDelay: `${idx * 0.7}s` }}
+                      style={{ animationDelay: `${idx * 0.9}s`, animationDuration: '0.9s' }}
                     >
                       {loc}
                     </span>

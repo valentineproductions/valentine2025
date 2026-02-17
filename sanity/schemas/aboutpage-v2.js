@@ -6,7 +6,9 @@ const aboutPageV2 = {
     {
       name: 'title',
       title: 'Page Title',
-      type: 'string',
+      type: 'text',
+      rows: 3,
+      description: 'Multiline text; desktop respects line breaks, mobile collapses them.',
     },
     {
       name: 'pageDescription',

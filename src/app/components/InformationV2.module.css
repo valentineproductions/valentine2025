@@ -33,6 +33,7 @@
   line-height: 110%;
   color: #5F1B19;
   margin: 200px 0 20px;
+  white-space: pre-wrap;
 }
 .pageDescription {
   font-family: 'Baskerville', serif;
@@ -139,6 +140,7 @@
   text-decoration: none;
   position: relative; /* underline animation like nav */
   letter-spacing: 0.32px;
+  transition: font-weight 0.2s ease;
 }
 .richItem a[href^="mailto:"]::after {
   content: '';
@@ -152,6 +154,9 @@
 }
 .richItem a[href^="mailto:"]:hover::after {
   width: 100%;
+}
+.richItem a[href^="mailto:"]:hover {
+  font-weight: 500;
 }
 
 /* Keyframes */
@@ -167,6 +172,7 @@
 @media (max-width: 900px) {
   .pageTitle {
     font-size: 54px;
+    white-space: normal;
   }
   .sectionTitle {
     font-size: 32px;
