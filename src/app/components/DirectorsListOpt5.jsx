@@ -21,11 +21,15 @@ export default function DirectorsListOpt5({ directors }) {
   return (
     <div className={styles.directorsList}>
       <div className={styles.container}>
-        {directors.map((director) => {
+        {directors.map((director, idx) => {
           const directorUrl = `/directors/${director.slug}`;
 
           return (
-            <div key={director._id} className={styles.row}>
+            <div
+              key={director._id}
+              className={styles.row}
+              style={{ animationDelay: `${idx * 1.0}s` }}
+            >
               <div className={styles.left}>
                 <Link href={directorUrl} className={styles.nameLink}>
                   <div className={styles.nameUpper}>

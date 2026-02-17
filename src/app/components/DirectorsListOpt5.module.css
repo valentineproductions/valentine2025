@@ -19,6 +19,9 @@
   align-items: flex-start;
   padding: 25px 0;
   border-bottom: 1px solid #5f1b19;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: directorFadeIn 1s ease-out forwards;
 }
 .row:first-child {
   border-top: 1px solid #5f1b19;
@@ -73,6 +76,11 @@
 }
 .separator {
   color: #5F1B19;
+}
+
+@keyframes directorFadeIn {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 900px) {

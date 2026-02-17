@@ -4,6 +4,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  animation: pageFadeIn 0.7s cubic-bezier(0.2, 0.6, 0.2, 1) both;
 }
 .background {
   position: fixed;
@@ -64,6 +65,9 @@
 .partnerItem {
   display: inline-flex;
   align-items: center;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: itemFadeIn 0.6s ease-out forwards;
 }
 .partnerLogo {
   height: 20px;
@@ -77,6 +81,18 @@
   letter-spacing: 0.32px;
   text-transform: uppercase;
   font-weight: 500;
+}
+.globalNames {
+  display: inline-block;
+}
+.globalItem {
+  display: inline;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: itemFadeIn 0.6s ease-out forwards;
+}
+.globalItem:not(:last-child)::after {
+  content: ' / ';
 }
 .separator {
   margin: 0 6px;
@@ -136,6 +152,16 @@
 }
 .richItem a[href^="mailto:"]:hover::after {
   width: 100%;
+}
+
+/* Keyframes */
+@keyframes pageFadeIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes itemFadeIn {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 900px) {

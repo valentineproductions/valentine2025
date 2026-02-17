@@ -138,7 +138,11 @@ export default function InformationV2() {
                   const showLogo = !!p?.logoImage?.asset?.url;
                   const isLast = idx === partners.length - 1;
                   return (
-                    <span key={idx} className={styles.partnerItem}>
+                    <span
+                      key={idx}
+                      className={styles.partnerItem}
+                      style={{ animationDelay: `${idx * 0.7}s` }}
+                    >
                       {showLogo && (
                         <img
                           src={p.logoImage.asset.url}
@@ -193,7 +197,15 @@ export default function InformationV2() {
             {Array.isArray(info.globalSectionLocations) && info.globalSectionLocations.length > 0 && (
               <div className={styles.globalLine}>
                 <span className={styles.globalNames}>
-                  {info.globalSectionLocations.join(' / ')}
+                  {info.globalSectionLocations.map((loc, idx) => (
+                    <span
+                      key={`g-${idx}`}
+                      className={styles.globalItem}
+                      style={{ animationDelay: `${idx * 0.7}s` }}
+                    >
+                      {loc}
+                    </span>
+                  ))}
                 </span>
               </div>
             )}

@@ -157,6 +157,12 @@ a {
   width: 100%;
 }
 
+.homeNavLinksContainer {
+  opacity: 0;
+  transform: translateY(-4px);
+  animation: navFadeIn 1s ease-out 1s forwards;
+}
+
 .navBar a, span.menu-trigger {
   color: var(--foreground);
   text-decoration: none;
@@ -202,6 +208,9 @@ a {
   cursor: pointer; /* Make it clear it's clickable */
   position: relative;
   z-index: 12; /* Above overlay */
+  opacity: 0;
+  transform: translateY(-4px);
+  animation: navFadeIn 1s ease-out 1s forwards;
 }
 
 .menu-trigger:hover {
@@ -244,6 +253,10 @@ a {
 
 /* END Navigation Bar Styles      NAV */
 
+@keyframes navFadeIn {
+  0% { opacity: 0; transform: translateY(-4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
 
 
 /* Home Page Styles - - - - -  HOME  */
