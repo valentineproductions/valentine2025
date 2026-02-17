@@ -89,6 +89,10 @@
     width: 100%;
   }
 
+  .pageTitle {
+    font-size: 54px;
+  }
+
   .pageTitleText {
     text-align: left;
   }

@@ -524,6 +524,29 @@ export async function getLegalBySlug(slug) {
           seoDescription,
           keywords
         },
+        "aboutPageV2": *[_type == "aboutPageV2"][0]{
+          title,
+          pageDescription,
+          backgroundOpacity,
+          backgroundImage{
+            asset->{ _id, url },
+            alt
+          },
+          partnersTitle,
+          partners[]{
+            name,
+            logoImage{
+              asset->{ _id, url },
+              alt
+            }
+          },
+          contactInfoTitle,
+          contactInfoItems,
+          moreInfoTitle,
+          moreInfoItems,
+          globalSectionTitle,
+          globalSectionLocations
+        },
         "aboutPage": *[_type == "aboutPage" && status == true][0]{
           title,
           pageNote->{...},

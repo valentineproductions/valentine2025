@@ -85,6 +85,10 @@
     width: 100%;
   }
 
+  .categoryTitle {
+    font-size: 54px;
+  }
+
   .directorsCount {
     text-align: left;
   }
@@ -93,7 +97,6 @@
     text-align: left;
   }
 }
-
 
 
 
