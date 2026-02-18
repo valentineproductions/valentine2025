@@ -2,6 +2,10 @@ const aboutPageV2 = {
   name: 'aboutPageV2',
   title: 'Information Page v2',
   type: 'document',
+  groups: [
+    { name: 'content', title: 'Content' },
+    { name: 'infoFooter', title: 'Information Page Footer' },
+  ],
   fields: [
     {
       name: 'title',
@@ -9,6 +13,7 @@ const aboutPageV2 = {
       type: 'text',
       rows: 3,
       description: 'Multiline text; desktop respects line breaks, mobile collapses them.',
+      group: 'content',
     },
     {
       name: 'pageDescription',
@@ -16,6 +21,7 @@ const aboutPageV2 = {
       type: 'array',
       of: [{ type: 'block' }],
       description: 'Rich text description; line breaks will be respected.',
+      group: 'content',
     },
     {
       name: 'backgroundImage',
@@ -30,6 +36,7 @@ const aboutPageV2 = {
         },
       ],
       description: 'Large PNG “V” overlay for the whole page.',
+      group: 'content',
     },
     {
       name: 'backgroundOpacity',
@@ -38,12 +45,14 @@ const aboutPageV2 = {
       description: 'Opacity value between 0 and 1.',
       validation: Rule => Rule.min(0).max(1),
       initialValue: 0.2,
+      group: 'content',
     },
     {
       name: 'partnersTitle',
       title: 'Partners Title',
       type: 'string',
       initialValue: 'Partner',
+      group: 'content',
     },
     {
       name: 'partners',
@@ -71,11 +80,13 @@ const aboutPageV2 = {
         },
       ],
       description: 'List of partner names. Logos optional. Names rendered as “name1 / name2”.',
+      group: 'content',
     },
     {
       name: 'contactInfoTitle',
       title: 'Contact Info Title',
       type: 'string',
+      group: 'content',
     },
     {
       name: 'contactInfoItems',
@@ -83,11 +94,13 @@ const aboutPageV2 = {
       type: 'array',
       of: [{ type: 'block' }],
       description: 'Rich content items. Plain emails auto-linked to mailto on render.',
+      group: 'content',
     },
     {
       name: 'moreInfoTitle',
       title: 'More Info Title',
       type: 'string',
+      group: 'content',
     },
     {
       name: 'moreInfoItems',
@@ -95,11 +108,13 @@ const aboutPageV2 = {
       type: 'array',
       of: [{ type: 'block' }],
       description: 'Rich content items. Plain emails auto-linked to mailto on render.',
+      group: 'content',
     },
     {
       name: 'globalSectionTitle',
       title: 'Global Section Title',
       type: 'string',
+      group: 'infoFooter',
     },
     {
       name: 'globalSectionLocations',
@@ -107,6 +122,34 @@ const aboutPageV2 = {
       type: 'array',
       of: [{ type: 'string' }],
       description: 'Rendered as-is; joined with “ / ”.',
+      group: 'infoFooter',
+    },
+    {
+      name: 'infoFooterLinks',
+      title: 'Information Footer Links',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'labelText', title: 'Label Text', type: 'string' },
+            { name: 'linkUrl', title: 'Link (optional)', type: 'string' },
+            { name: 'openNewTab', title: 'Open in new tab', type: 'boolean', initialValue: false },
+          ],
+          preview: {
+            select: { title: 'labelText', url: 'linkUrl' },
+            prepare(selection) {
+              const { title, url } = selection;
+              return {
+                title: title || '(Label)',
+                subtitle: url ? url : 'No link',
+              };
+            },
+          },
+        },
+      ],
+      description: 'Footer labels separated by “ / ”. Links optional; choose new/current tab.',
+      group: 'infoFooter',
     },
   ],
   preview: {

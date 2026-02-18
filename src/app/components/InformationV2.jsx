@@ -32,10 +32,24 @@ const richComponents = {
   },
 };
 
+const isNonEmptyText = (val) => typeof val === 'string' && val.trim() !== '';
+const hasNonEmptyPortableText = (blocks) =>
+  Array.isArray(blocks) &&
+  blocks.some(
+    (b) =>
+      Array.isArray(b?.children) &&
+      b.children.some((ch) => typeof ch?.text === 'string' && ch.text.trim() !== '')
+  );
+
 export default function InformationV2() {
   const { allData } = useAppContext();
   const info = allData?.aboutPageV2 || null;
   const [isMobile, setIsMobile] = useState(false);
+  const resolveInfoLink = (url) => {
+    if (!url || typeof url !== 'string') return null;
+    if (url.startsWith('/')) return `https://valentine.global${url}`;
+    return url;
+  };
 
   useEffect(() => {
     const check = () => setIsMobile(typeof window !== 'undefined' && window.innerWidth <= 900);
@@ -51,6 +65,12 @@ export default function InformationV2() {
   const bgOpacity = typeof info.backgroundOpacity === 'number' ? info.backgroundOpacity : 0.2;
   const partners = Array.isArray(info.partners) ? info.partners : [];
   const partnerNames = partners.map(p => p?.name).filter(Boolean);
+  const hasContactTitle = isNonEmptyText(info.contactInfoTitle);
+  const hasContactItems = hasNonEmptyPortableText(info.contactInfoItems);
+  const showContactSection = hasContactTitle || hasContactItems;
+  const hasMoreTitle = isNonEmptyText(info.moreInfoTitle);
+  const hasMoreItems = hasNonEmptyPortableText(info.moreInfoItems);
+  const showMoreSection = hasMoreTitle || hasMoreItems;
 
   return (
     <div className={styles.container}>
@@ -137,7 +157,7 @@ export default function InformationV2() {
         {(info.partnersTitle || partnerNames.length > 0) && (
           <section className={styles.section}>
             {info.partnersTitle && (
-              <h2 className={styles.sectionTitle}>{info.partnersTitle}</h2>
+              <h2 className={styles.partnersSectionTitle}>{info.partnersTitle}</h2>
             )}
             {partnerNames.length > 0 && (
               <div className={styles.partnerLine}>
@@ -158,7 +178,6 @@ export default function InformationV2() {
                         />
                       )}
                       <span className={styles.partnerName}>{p?.name}</span>
-                      {!isLast && <span className={styles.separator}> / </span>}
                     </span>
                   );
                 })}
@@ -168,12 +187,12 @@ export default function InformationV2() {
         )}
 
         {/* Contact Info */}
-        {(info.contactInfoTitle || info.contactInfoItems) && (
+        {showContactSection && (
           <section className={styles.section}>
-            {info.contactInfoTitle && (
+            {hasContactTitle && (
               <h2 className={styles.sectionTitle}>{info.contactInfoTitle}</h2>
             )}
-            {info.contactInfoItems && (
+            {hasContactItems && (
               <div className={styles.richList}>
                 <PortableText value={info.contactInfoItems} components={richComponents} />
               </div>
@@ -182,12 +201,12 @@ export default function InformationV2() {
         )}
 
         {/* More Info */}
-        {(info.moreInfoTitle || info.moreInfoItems) && (
+        {showMoreSection && (
           <section className={styles.section}>
-            {info.moreInfoTitle && (
+            {hasMoreTitle && (
               <h2 className={styles.sectionTitle}>{info.moreInfoTitle}</h2>
             )}
-            {info.moreInfoItems && (
+            {hasMoreItems && (
               <div className={styles.richList}>
                 <PortableText value={info.moreInfoItems} components={richComponents} />
               </div>
@@ -195,33 +214,54 @@ export default function InformationV2() {
           </section>
         )}
 
-        {/* Global Section */}
-        {(info.globalSectionTitle || (Array.isArray(info.globalSectionLocations) && info.globalSectionLocations.length > 0)) && (
-          <section className={styles.section}>
-            {info.globalSectionTitle && (
-              <h2 className={styles.sectionTitle}>{info.globalSectionTitle}</h2>
-            )}
-            {Array.isArray(info.globalSectionLocations) && info.globalSectionLocations.length > 0 && (
-              <div className={styles.globalLine}>
-                <span className={styles.globalNames}>
-                  {info.globalSectionLocations.map((loc, idx) => (
-                    <span
-                      key={`g-${idx}`}
-                      className={styles.globalItem}
-                      style={{ animationDelay: `${idx * 0.9}s`, animationDuration: '0.9s' }}
-                    >
-                      {loc}
-                    </span>
-                  ))}
-                </span>
+        {/* Information Page Footer */}
+        {(info.globalSectionTitle ||
+          (Array.isArray(info.globalSectionLocations) && info.globalSectionLocations.length > 0) ||
+          (Array.isArray(info.infoFooterLinks) && info.infoFooterLinks.length > 0)) && (
+          <footer className={styles.infoFooter}>
+            <div className={styles.infoFooterGrid}>
+              <div className={styles.footerLeft}>
+                {info.globalSectionTitle && (
+                  <h2 className={styles.footerTitle}>{info.globalSectionTitle}</h2>
+                )}
+                {Array.isArray(info.globalSectionLocations) && info.globalSectionLocations.length > 0 && (
+                  <div className={styles.footerCities}>
+                    {info.globalSectionLocations.map((loc, idx) => (
+                      <span key={`city-${idx}`} className={styles.footerCityItem}>
+                        {loc}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
-          </section>
+              <div className={styles.footerRight}>
+                {Array.isArray(info.infoFooterLinks) && info.infoFooterLinks.length > 0 && (
+                  <div className={styles.footerLinks}>
+                    {info.infoFooterLinks.map((item, idx) => {
+                      const href = resolveInfoLink(item?.linkUrl);
+                      const hasLink = !!href;
+                      const label = item?.labelText || '';
+                      const target = item?.openNewTab ? '_blank' : '_self';
+                      const rel = item?.openNewTab ? 'noopener noreferrer' : undefined;
+                      return (
+                        <span key={`f-${idx}`} className={styles.footerLinkItem}>
+                          {hasLink ? (
+                            <a href={href} target={target} rel={rel}>
+                              {label}
+                            </a>
+                          ) : (
+                            label
+                          )}
+                        </span>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+          </footer>
         )}
       </div>
-
-      {/* Footer at the end */}
-      <PageFooter pageNote={allData?.pageNote || allData?.homepage?.pageNote || allData?.aboutPage?.pageNote} />
     </div>
   );
 }

@@ -148,12 +148,12 @@ export default function Page() {
                
 
                 {/* Work Page Content */}
-                {/* {isWorkPage && (
-                    <WorkGalleryV2 projects={pageWork.projects} />
-                )} */}
                 {isWorkPage && (
-                    <WorkGallery projects={pageWork.projects} />
+                    <WorkGalleryV2 projects={pageWork.projects} />
                 )}
+                {/* {isWorkPage && (
+                    <WorkGallery projects={pageWork.projects} />
+                )} */}
 
                 {isLegalPage && (!legalLoading) && (legal?.content ? <LegalContent value={legal.content} /> : <PageErrorState missingPages={['Legal']} />)}
 

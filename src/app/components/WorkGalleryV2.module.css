@@ -185,6 +185,7 @@
   aspect-ratio: 1 / 1; /* Square images */
   min-height: 150px; /* Fallback for older browsers */
   overflow: hidden;
+  transition: opacity 1s ease;
 }
 
 .workImage {
@@ -198,6 +199,14 @@
 
 .imageItem:hover .workImage {
   transform: scale(1.03);
+}
+
+.fadeOut {
+  opacity: 0;
+}
+
+.fadeIn {
+  opacity: 1;
 }
 
 /* Modern aspect-ratio will override this, but it's good for fallback */
@@ -244,4 +253,3 @@
     max-height: 20px;
   }
 }
-

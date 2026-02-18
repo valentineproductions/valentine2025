@@ -545,7 +545,12 @@ export async function getLegalBySlug(slug) {
           moreInfoTitle,
           moreInfoItems,
           globalSectionTitle,
-          globalSectionLocations
+          globalSectionLocations,
+          infoFooterLinks[]{
+            labelText,
+            linkUrl,
+            openNewTab
+          }
         },
         "aboutPage": *[_type == "aboutPage" && status == true][0]{
           title,

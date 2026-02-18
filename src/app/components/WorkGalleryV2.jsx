@@ -167,6 +167,13 @@ export default function WorkGalleryV2({ projects }) {
   const [selectedImages, setSelectedImages] = useState(null);
   const [initialImageIndex, setInitialImageIndex] = useState(0);
   const [contentItems, setContentItems] = useState([]);
+  const [visibleImages, setVisibleImages] = useState([]);
+  const [fadingSlots, setFadingSlots] = useState([]);
+  const [imageContentIndexToSlotIndex, setImageContentIndexToSlotIndex] = useState({});
+  const [imageSlotsCount, setImageSlotsCount] = useState(0);
+  const availablePoolRef = useRef([]);
+  const INTERVAL_MS = 4000;
+  const FADE_MS = 1000;
 
   // Process projects to extract videos and images
   const { allVideos, allImages } = useMemo(() => {
@@ -215,6 +222,10 @@ export default function WorkGalleryV2({ projects }) {
   useEffect(() => {
     if (allVideos.length === 0 && allImages.length === 0) {
       setContentItems([]);
+      setVisibleImages([]);
+      setFadingSlots([]);
+      setImageContentIndexToSlotIndex({});
+      setImageSlotsCount(0);
       return;
     }
 
@@ -256,7 +267,73 @@ export default function WorkGalleryV2({ projects }) {
     }
 
     setContentItems(items);
+    const imageIndicesInContent = [];
+    const mapping = {};
+    let slotCounter = 0;
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type === 'image') {
+        mapping[i] = slotCounter;
+        imageIndicesInContent.push(i);
+        slotCounter++;
+      }
+    }
+    const initialVisible = imageIndicesInContent.map((ci) => items[ci].data);
+    setVisibleImages(initialVisible);
+    setImageContentIndexToSlotIndex(mapping);
+    setImageSlotsCount(initialVisible.length);
+    const visibleUrls = new Set(initialVisible.map((img) => img?.asset?.url));
+    availablePoolRef.current = allImages.filter((img) => !visibleUrls.has(img?.asset?.url));
   }, [allVideos, allImages]);
+
+  useEffect(() => {
+    if (imageSlotsCount === 0) return;
+    const numToReplace = imageSlotsCount <= 4 ? 1 : 4;
+    const interval = setInterval(() => {
+      const indices = getRandomIndices(numToReplace, imageSlotsCount);
+      setFadingSlots(indices);
+      setTimeout(() => {
+        setVisibleImages((current) => {
+          const next = [...current];
+          let pool = availablePoolRef.current.slice();
+          for (const slotIdx of indices) {
+            let candidate = null;
+            let attempts = 0;
+            const currentUrls = new Set(next.map((img) => img?.asset?.url));
+            while (pool.length > 0 && attempts < pool.length) {
+              const r = Math.floor(Math.random() * pool.length);
+              const pick = pool[r];
+              const pickUrl = pick?.asset?.url;
+              if (!currentUrls.has(pickUrl) || allImages.length <= 4) {
+                candidate = pick;
+                pool.splice(r, 1);
+                break;
+              }
+              attempts++;
+            }
+            if (!candidate) {
+              candidate = allImages[Math.floor(Math.random() * allImages.length)];
+            }
+            next[slotIdx] = candidate;
+          }
+          const nextUrls = new Set(next.map((img) => img?.asset?.url));
+          availablePoolRef.current = allImages.filter((img) => !nextUrls.has(img?.asset?.url));
+          return next;
+        });
+        setTimeout(() => {
+          setFadingSlots([]);
+        }, FADE_MS / 2);
+      }, FADE_MS / 2);
+    }, INTERVAL_MS);
+    return () => clearInterval(interval);
+  }, [imageSlotsCount, allImages]);
+
+  const getRandomIndices = (count, max) => {
+    const indices = new Set();
+    while (indices.size < Math.min(count, max)) {
+      indices.add(Math.floor(Math.random() * max));
+    }
+    return Array.from(indices);
+  };
 
   const handleVideoClick = (video) => {
     setSelectedVideo(video);
@@ -304,16 +381,19 @@ export default function WorkGalleryV2({ projects }) {
               />
             );
           } else {
+            const slotIdx = imageContentIndexToSlotIndex[index];
+            const currentImage = typeof slotIdx === 'number' ? visibleImages[slotIdx] : item.data;
+            const fading = typeof slotIdx === 'number' && fadingSlots.includes(slotIdx);
             return (
               <div
-                key={`image-${item.index}`}
-                className={styles.imageItem}
-                onClick={() => handleImageClick(item.data)}
+                key={`image-${item.index}-${slotIdx ?? 'x'}`}
+                className={`${styles.imageItem} ${fading ? styles.fadeOut : styles.fadeIn}`}
+                onClick={() => handleImageClick(currentImage)}
                 style={{ cursor: 'pointer' }}
               >
                 <Image
-                  src={item.data.asset.url}
-                  alt={item.data.alt || 'Valentine Work Content'}
+                  src={currentImage.asset.url}
+                  alt={currentImage.alt || 'Valentine Work Content'}
                   width={500}
                   height={500}
                   className={styles.workImage}
@@ -324,9 +404,9 @@ export default function WorkGalleryV2({ projects }) {
                   }}
                   quality={80}
                   loading="lazy"
-                  unoptimized={item.data.asset.url?.endsWith('.gif')}
-                  placeholder={item.data.asset.metadata?.lqip ? 'blur' : 'empty'}
-                  blurDataURL={item.data.asset.metadata?.lqip || ''}
+                  unoptimized={currentImage.asset.url?.endsWith('.gif')}
+                  placeholder={currentImage.asset.metadata?.lqip ? 'blur' : 'empty'}
+                  blurDataURL={currentImage.asset.metadata?.lqip || ''}
                 />
               </div>
             );
@@ -349,4 +429,3 @@ export default function WorkGalleryV2({ projects }) {
     </>
   );
 }
-
