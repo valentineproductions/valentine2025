@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo, useRef } from 'react';
+import { useEffect, useState, useMemo, useRef, memo, useCallback } from 'react';
 import Image from 'next/image';
 import VideoModal from './VideoModal';
 import styles from './WorkGalleryV2.module.css';
@@ -131,6 +131,7 @@ function VideoItem({ video, onVideoClick }) {
 }
 
 export default function WorkGalleryV3({ projects }) {
+  const VideoItemMemo = useMemo(() => memo(VideoItem), []);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [contentItems, setContentItems] = useState([]);
   const [visibleImages, setVisibleImages] = useState([]);
@@ -249,9 +250,9 @@ export default function WorkGalleryV3({ projects }) {
     return () => clearInterval(interval);
   }, [imageSlotsCount, allImages, selectedVideo]);
 
-  const handleVideoClick = (video) => {
+  const handleVideoClick = useCallback((video) => {
     setSelectedVideo(video);
-  };
+  }, []);
   const handleCloseVideoModal = () => {
     setSelectedVideo(null);
   };
@@ -266,7 +267,7 @@ export default function WorkGalleryV3({ projects }) {
         {contentItems.map((item, index) => {
           if (item.type === 'video') {
             return (
-              <VideoItem
+              <VideoItemMemo
                 key={`video-${item.index}`}
                 video={item.data}
                 onVideoClick={handleVideoClick}

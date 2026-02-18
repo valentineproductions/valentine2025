@@ -14,6 +14,9 @@
   cursor: pointer;
   transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: transform;
+  contain: paint;
+  transform: translateZ(0);
+  backface-visibility: hidden;
   overflow: hidden;
 }
 
@@ -28,6 +31,10 @@
   height: 0;
   overflow: hidden;
   background: #000000; /* Black background for letterboxing */
+  contain: paint;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: opacity, transform;
 }
 
 /* 16:9 videos - fill the container normally */
@@ -87,6 +94,8 @@
   height: 100%;
   border: none;
   pointer-events: none; /* Allow clicks to pass through to parent container */
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 /* Direct iframes (not wrapped in div) */
@@ -185,6 +194,7 @@
   min-height: 150px; /* Fallback for older browsers */
   overflow: hidden;
   transition: opacity 1s ease;
+  will-change: opacity;
 }
 
 .workImage {

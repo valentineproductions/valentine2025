@@ -156,6 +156,7 @@ export default function Page() {
                 {isWorkPage && (
                     <WorkGalleryV2 projects={pageWork.projects} />
                 )}
+
                 {/* {isWorkPage && (
                     <WorkGallery projects={pageWork.projects} />
                 )} */}
