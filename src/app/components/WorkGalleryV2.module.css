@@ -27,7 +27,6 @@
   padding-bottom: 56.25%; /* 16:9 aspect ratio */
   height: 0;
   overflow: hidden;
-  transition: opacity 0.3s ease-in-out;
   background: #000000; /* Black background for letterboxing */
 }
 

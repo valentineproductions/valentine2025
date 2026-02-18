@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useMemo, useEffect, useState } from 'react';
 import TeamMembersGallery from "@/app/components/TeamMembersGallery";
 import WorkGalleryV2 from "@/app/components/WorkGalleryV2";
+import WorkGalleryV3 from "@/app/components/WorkGalleryV3";
 import TalentHorizontalHeader from "@/app/components/TalentHorizontalHeader";
 import DirectorsList from "@/app/components/DirectorsList";
 import DirectorsListv4 from "@/app/components/DirectorsListv4";
@@ -148,6 +149,10 @@ export default function Page() {
                
 
                 {/* Work Page Content */}
+                {/* {isWorkPage && (
+                    <WorkGalleryV3 projects={pageWork.projects} />
+                )} */}
+                
                 {isWorkPage && (
                     <WorkGalleryV2 projects={pageWork.projects} />
                 )}
