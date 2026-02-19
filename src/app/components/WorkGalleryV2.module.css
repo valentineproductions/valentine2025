@@ -232,7 +232,7 @@
   .gallery {
     grid-template-columns: repeat(2, 1fr);
     gap: 7px;
-    padding: 20px;
+    padding: 20px 10px;
   }
 
   /* On mobile, videos still span 2 columns (full width) */
