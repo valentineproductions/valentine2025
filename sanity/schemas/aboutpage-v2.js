@@ -117,8 +117,16 @@ const aboutPageV2 = {
       group: 'infoFooter',
     },
     {
-      name: 'globalSectionLocations',
-      title: 'Global Section Locations',
+      name: 'globalSectionUSLocations',
+      title: 'US Cities',
+      type: 'array',
+      of: [{ type: 'string' }],
+      description: 'Rendered as-is; joined with “ / ”.',
+      group: 'infoFooter',
+    },
+    {
+      name: 'globalSectionInternationalLocations',
+      title: 'International Cities',
       type: 'array',
       of: [{ type: 'string' }],
       description: 'Rendered as-is; joined with “ / ”.',

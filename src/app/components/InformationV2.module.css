@@ -64,15 +64,17 @@
   color: #5F1B19;
   margin-bottom: 10px;
 }
-.partnerLine, .globalLine {
+.partnerLine {
+  display: block;
+  opacity: 0;
+  animation: listFadeIn 0.8s ease-out forwards;
+}
+.globalLine {
   display: block;
 }
 .partnerItem {
   display: inline-flex;
   align-items: center;
-  opacity: 0;
-  transform: translateY(8px);
-  animation: itemFadeIn 0.6s ease-out forwards;
 }
 .partnerItem:not(:last-child)::after {
   content: '/';
@@ -273,6 +275,10 @@
 @keyframes itemFadeIn {
   0% { opacity: 0; transform: translateY(8px); }
   100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes listFadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 @media (max-width: 768px) {

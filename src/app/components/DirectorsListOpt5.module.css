@@ -10,6 +10,8 @@
   margin: 0 auto;
   padding: 0 20px;
   width: 100%;
+  opacity: 0;
+  animation: listFadeIn 0.8s ease-out forwards;
 }
 
 .row {
@@ -19,9 +21,6 @@
   align-items: flex-start;
   padding: 25px 0;
   border-bottom: 1px solid #5f1b19;
-  opacity: 0;
-  transform: translateY(8px);
-  animation: directorFadeIn 1s ease-out forwards;
 }
 .row:first-child {
   border-top: 1px solid #5f1b19;
@@ -81,6 +80,10 @@
 @keyframes directorFadeIn {
   0% { opacity: 0; transform: translateY(8px); }
   100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes listFadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 @media (max-width: 900px) {

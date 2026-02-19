@@ -190,8 +190,8 @@
 .imageItem {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1; /* Square images */
-  min-height: 150px; /* Fallback for older browsers */
+  aspect-ratio: 4 / 5;
+  min-height: 150px;
   overflow: hidden;
   transition: opacity 1s ease;
   will-change: opacity;
@@ -219,11 +219,11 @@
 }
 
 /* Modern aspect-ratio will override this, but it's good for fallback */
-@supports not (aspect-ratio: 1 / 1) {
+@supports not (aspect-ratio: 4 / 5) {
   .imageItem::before {
     content: "";
     display: block;
-    padding-bottom: 100%; /* Square */
+    padding-bottom: 125%;
   }
 }
 

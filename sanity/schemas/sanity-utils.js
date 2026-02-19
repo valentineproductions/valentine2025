@@ -545,7 +545,8 @@ export async function getLegalBySlug(slug) {
           moreInfoTitle,
           moreInfoItems,
           globalSectionTitle,
-          globalSectionLocations,
+          globalSectionUSLocations,
+          globalSectionInternationalLocations,
           infoFooterLinks[]{
             labelText,
             linkUrl,

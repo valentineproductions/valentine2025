@@ -28,7 +28,6 @@ export default function DirectorsListOpt5({ directors }) {
             <div
               key={director._id}
               className={styles.row}
-              style={{ animationDelay: `${idx * 0.7}s` }}
             >
               <div className={styles.left}>
                 <Link href={directorUrl} className={styles.nameLink}>

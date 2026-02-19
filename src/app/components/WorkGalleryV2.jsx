@@ -212,8 +212,8 @@ export default function WorkGalleryV2({ projects }) {
     });
 
     return {
-      allVideos: shuffleArray(videos),
-      allImages: shuffleArray(images),
+      allVideos: videos,
+      allImages: images,
     };
   }, [projects]);
 

@@ -215,23 +215,41 @@ export default function InformationV2() {
         )}
 
         {/* Information Page Footer */}
-        {(info.globalSectionTitle ||
-          (Array.isArray(info.globalSectionLocations) && info.globalSectionLocations.length > 0) ||
-          (Array.isArray(info.infoFooterLinks) && info.infoFooterLinks.length > 0)) && (
+        {(
+          (Array.isArray(info.globalSectionUSLocations) && info.globalSectionUSLocations.length > 0) ||
+          (Array.isArray(info.globalSectionInternationalLocations) && info.globalSectionInternationalLocations.length > 0) ||
+          (Array.isArray(info.infoFooterLinks) && info.infoFooterLinks.length > 0)
+        ) && (
           <footer className={styles.infoFooter}>
             <div className={styles.infoFooterGrid}>
               <div className={styles.footerLeft}>
-                {info.globalSectionTitle && (
-                  <h2 className={styles.footerTitle}>{info.globalSectionTitle}</h2>
-                )}
-                {Array.isArray(info.globalSectionLocations) && info.globalSectionLocations.length > 0 && (
-                  <div className={styles.footerCities}>
-                    {info.globalSectionLocations.map((loc, idx) => (
-                      <span key={`city-${idx}`} className={styles.footerCityItem}>
-                        {loc}
-                      </span>
-                    ))}
-                  </div>
+                {(
+                  (Array.isArray(info.globalSectionUSLocations) && info.globalSectionUSLocations.length > 0) ||
+                  (Array.isArray(info.globalSectionInternationalLocations) && info.globalSectionInternationalLocations.length > 0)
+                ) && (
+                  <>
+                    {info.globalSectionTitle && (
+                      <h2 className={styles.footerTitle}>{info.globalSectionTitle}</h2>
+                    )}
+                    {Array.isArray(info.globalSectionUSLocations) && info.globalSectionUSLocations.length > 0 && (
+                      <div className={styles.footerCities}>
+                        {info.globalSectionUSLocations.map((loc, idx) => (
+                          <span key={`city-us-${idx}`} className={styles.footerCityItem}>
+                            {loc}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    {Array.isArray(info.globalSectionInternationalLocations) && info.globalSectionInternationalLocations.length > 0 && (
+                      <div className={styles.footerCities}>
+                        {info.globalSectionInternationalLocations.map((loc, idx) => (
+                          <span key={`city-intl-${idx}`} className={styles.footerCityItem}>
+                            {loc}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
               <div className={styles.footerRight}>
