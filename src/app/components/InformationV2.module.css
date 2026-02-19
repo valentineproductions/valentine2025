@@ -282,6 +282,10 @@
 }
 
 @media (max-width: 768px) {
+  .pageWrapper {
+    padding: 0 10px;
+  }
+
   .pageTitle {
     font-size: 35px;
     white-space: normal;

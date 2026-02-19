@@ -191,6 +191,10 @@
     text-align: left;
     flex-grow: 1;
   }
+
+  .footer {
+    padding: 20px 10px;
+  }
 }
 
 /* To have the footer match the nav */

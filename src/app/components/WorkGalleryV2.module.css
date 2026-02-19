@@ -228,7 +228,7 @@
 }
 
 /* Mobile - adjust to 2 columns */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .gallery {
     grid-template-columns: repeat(2, 1fr);
     gap: 7px;
