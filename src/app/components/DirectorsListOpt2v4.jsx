@@ -2,19 +2,13 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import styles from './DirectorsListOpt2v4.module.css';
 import { categoryToSlug } from '@/app/utils/categoryUtils';
+import styles from './DirectorsListOpt2v4.module.css';
 
-export default function DirectorsListOpt2v4({ directors }) {
+export default function DirectorsListOpt2v4({ directors, preserveCase = false }) {
   if (!directors || directors.length === 0) {
     return null;
   }
-
-  // Format name to uppercase
-  const formatName = (name) => {
-    if (!name) return '';
-    return name.toUpperCase();
-  };
 
   // Format text to title case (first letter of each word uppercase)
   const formatTitleCase = (text) => {
@@ -62,8 +56,8 @@ export default function DirectorsListOpt2v4({ directors }) {
               {/* Right Side: Text Info (70%) */}
               <div className={styles.textSide}>
                 <Link href={directorUrl} className={styles.nameLink}>
-                  <div className={styles.directorName}>
-                    {formatName(director.fullName)}
+                  <div className={`${styles.directorName} ${preserveCase ? styles.originalCaseName : styles.uppercasedName}`}>
+                    {director.fullName}
                   </div>
                 </Link>
 
@@ -97,7 +91,7 @@ export default function DirectorsListOpt2v4({ directors }) {
                           >
                             {formatTitleCase(category)}
                           </Link>
-                          {isLast ? '.' : ', '}
+                          {isLast ? '' : ', '}
                         </span>
                       );
                     })}
@@ -117,5 +111,3 @@ export default function DirectorsListOpt2v4({ directors }) {
     </div>
   );
 }
-
-

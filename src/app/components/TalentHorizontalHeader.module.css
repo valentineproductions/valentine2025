@@ -69,6 +69,10 @@
 
 /* Mobile Responsive Styles */
 @media (max-width: 767px) {
+  .container {
+    padding: 0 10px;
+  }
+
   .header {
     margin-top: 190px !important;
   }
@@ -87,6 +91,10 @@
 
   .column3 {
     width: 100%;
+  }
+
+  .pageTitle {
+    font-size: 54px;
   }
 
   .pageTitleText {

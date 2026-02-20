@@ -78,7 +78,7 @@
 .divider {
   width: 100%;
   height: 1px;
-  background-color: #5F1B19;
+  /* background-color: #5F1B19; */
   border: none;
   margin: 0;
 }
@@ -101,6 +101,10 @@
     width: 100%;
   }
 
+  .categoryTitle {
+    font-size: 54px;
+  }
+
   .directorsCount {
     text-align: left;
   }
@@ -113,4 +117,3 @@
     padding: 0 10px;
   }
 }
-

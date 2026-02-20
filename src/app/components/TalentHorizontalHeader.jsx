@@ -9,14 +9,6 @@ export default function TalentHorizontalHeader({ indexTitle, pageTitle, pageDesc
       <div className={styles.container}>
         <div className={styles.leftColumns}>
           <h1 className={styles.pageTitle}>{indexTitle}</h1>
-          <div className={styles.pageTitleText}>
-            {pageTitle}
-          </div>
-        </div>
-        <div className={styles.column3}>
-          <div className={styles.pageDescription}>
-            <PortableText value={pageDescription}/>
-          </div>
         </div>
       </div>
     </header>

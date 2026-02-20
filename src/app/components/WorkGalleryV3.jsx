@@ -1,12 +1,10 @@
 'use client';
 
-import { useEffect, useState, useMemo, useRef } from 'react';
+import { useEffect, useState, useMemo, useRef, memo, useCallback } from 'react';
 import Image from 'next/image';
 import VideoModal from './VideoModal';
-import ImageGalleryModal from './ImageGalleryModal';
 import styles from './WorkGalleryV2.module.css';
 
-// Helper function to shuffle array
 const shuffleArray = (array) => {
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -16,7 +14,6 @@ const shuffleArray = (array) => {
   return shuffled;
 };
 
-// Helper function to detect aspect ratio
 const getAspectRatio = (embedCode) => {
   if (!embedCode) return '16-9';
   if (embedCode.includes('padding-bottom:75.00000%') || embedCode.includes('padding-bottom:75%')) {
@@ -25,71 +22,52 @@ const getAspectRatio = (embedCode) => {
   if (embedCode.includes('padding-bottom:56.25000%') || embedCode.includes('padding-bottom:56.25%')) {
     return '16-9';
   }
-  // Check for portrait videos (padding-bottom > 100%, like 133.33% for 9:16 or 177.78% for 9:16)
   if (embedCode.match(/padding-bottom:\s*1[0-9]{2}/i)) {
     return 'portrait';
   }
-  // Direct iframe without wrapper is likely portrait
   if (embedCode.trim().startsWith('<iframe')) {
     return 'portrait';
   }
-  return '16-9'; // Default to 16-9 if unknown
+  return '16-9';
 };
 
-// Video Item Component with Loading State
-function VideoItem({ video, index, onVideoClick }) {
+function VideoItem({ video, onVideoClick }) {
   const [isLoading, setIsLoading] = useState(true);
   const videoRef = useRef(null);
   const hasCustomCover = video.coverImage?.asset?.url;
 
   useEffect(() => {
-    // Only check for iframe loading if we don't have a custom cover
     if (hasCustomCover) {
       setIsLoading(false);
       return;
     }
-
     let loadTimeout;
     let checkTimer;
-
-    // Find the iframe after it's rendered
     const checkIframeLoaded = () => {
       if (videoRef.current) {
         const iframe = videoRef.current.querySelector('iframe');
         if (iframe) {
-          // Try to detect if iframe is loaded
-          // For cross-origin iframes, onload might not fire, so we use a timeout
           loadTimeout = setTimeout(() => {
             setIsLoading(false);
-          }, 2000); // Hide spinner after 2 seconds (adjust based on typical load time)
-
-          // Try to listen for load event (works for same-origin)
+          }, 2000);
           iframe.onload = () => {
             if (loadTimeout) clearTimeout(loadTimeout);
             setIsLoading(false);
           };
-
-          // Also check if iframe content is accessible (may not work for cross-origin)
           try {
             if (iframe.contentWindow && iframe.contentWindow.document) {
               if (loadTimeout) clearTimeout(loadTimeout);
               setIsLoading(false);
             }
-          } catch (e) {
-            // Cross-origin restriction - timeout will handle it
-          }
+          } catch (e) {}
         } else {
-          // No iframe found, hide spinner after short delay
           loadTimeout = setTimeout(() => {
             setIsLoading(false);
           }, 500);
         }
       }
     };
-
-    // Check after a short delay to allow DOM to update
     checkTimer = setTimeout(checkIframeLoaded, 100);
-    
     return () => {
       if (checkTimer) clearTimeout(checkTimer);
       if (loadTimeout) clearTimeout(loadTimeout);
@@ -103,7 +81,6 @@ function VideoItem({ video, index, onVideoClick }) {
       onClick={() => onVideoClick(video)}
     >
       {hasCustomCover ? (
-        // Show custom cover image with logo and play button
         <div className={styles.customVideoCover}>
           <Image
             src={video.coverImage.asset.url}
@@ -121,19 +98,12 @@ function VideoItem({ video, index, onVideoClick }) {
                 width={200}
                 height={200}
                 className={styles.logo}
-                style={{ 
-                  width: 'auto',
-                  height: 'auto',
-                  maxWidth: '30%',
-                  maxHeight: '30%',
-                  objectFit: 'contain'
-                }}
+                style={{ width: 'auto', height: 'auto', maxWidth: '30%', maxHeight: '30%', objectFit: 'contain' }}
               />
             </div>
           )}
           <div className={styles.playButtonOverlay}>
             <Image
-              // src="/playValentineSimian.png"
               src="/modal-icon.png"
               alt="Play video"
               width={25}
@@ -143,7 +113,6 @@ function VideoItem({ video, index, onVideoClick }) {
           </div>
         </div>
       ) : (
-        // Fallback to Simian embed if no custom cover
         <>
           {isLoading && (
             <div className={styles.videoLoader}>
@@ -161,135 +130,131 @@ function VideoItem({ video, index, onVideoClick }) {
   );
 }
 
-export default function WorkGalleryV2({ projects }) {
+export default function WorkGalleryV3({ projects }) {
+  const VideoItemMemo = useMemo(() => memo(VideoItem), []);
   const [selectedVideo, setSelectedVideo] = useState(null);
-  const [selectedImages, setSelectedImages] = useState(null);
-  const [initialImageIndex, setInitialImageIndex] = useState(0);
   const [contentItems, setContentItems] = useState([]);
   const [visibleImages, setVisibleImages] = useState([]);
-  const [fadingSlots, setFadingSlots] = useState([]);
   const [imageContentIndexToSlotIndex, setImageContentIndexToSlotIndex] = useState({});
   const [imageSlotsCount, setImageSlotsCount] = useState(0);
+  const [fadingSlots, setFadingSlots] = useState([]);
   const availablePoolRef = useRef([]);
   const INTERVAL_MS = 4000;
   const FADE_MS = 1000;
 
-  // Process projects to extract videos and images
   const { allVideos, allImages } = useMemo(() => {
     if (!projects || projects.length === 0) {
       return { allVideos: [], allImages: [] };
     }
-
     const videos = [];
     const images = [];
-
     projects.forEach((project) => {
-      // Collect videos from projects that have videos
       if (project.videos && project.videos.length > 0) {
         project.videos.forEach((video) => {
           if (video.embedCode) {
-            videos.push({
-              ...video,
-              projectId: project._id,
-              projectName: project.name,
-            });
+            videos.push({ ...video, projectId: project._id, projectName: project.name });
           }
         });
       }
-
-      // Collect images from all projects that have images
       if (project.projectImages && project.projectImages.length > 0) {
         project.projectImages.forEach((image) => {
           if (image?.asset?.url) {
-            images.push({
-              ...image,
-              projectId: project._id,
-              projectName: project.name,
-            });
+            images.push({ ...image, projectId: project._id, projectName: project.name });
           }
         });
       }
     });
-
-    return {
-      allVideos: videos,
-      allImages: images,
-    };
+    return { allVideos: shuffleArray(videos), allImages: shuffleArray(images) };
   }, [projects]);
 
-  // Build content pattern: 2 videos + 4 images, repeating
   useEffect(() => {
     if (allVideos.length === 0 && allImages.length === 0) {
       setContentItems([]);
+      setVisibleImages([]);
+      setImageContentIndexToSlotIndex({});
+      setImageSlotsCount(0);
       return;
     }
-
     const items = [];
-    let videoIndex = 0;
-    let imageIndex = 0;
-
-    // Continue until we can't complete a full cycle (2 videos + 4 images)
+    let v = 0;
+    let i = 0;
     while (true) {
-      // Check if we have enough videos for this cycle (need 2)
-      if (videoIndex + 2 > allVideos.length) {
-        break; // Can't complete cycle, stop
+      if (v + 2 > allVideos.length) break;
+      if (i + 4 > allImages.length) break;
+      for (let k = 0; k < 2; k++) {
+        items.push({ type: 'video', data: allVideos[v], index: v });
+        v++;
       }
-
-      // Check if we have enough images for this cycle (need 4)
-      if (imageIndex + 4 > allImages.length) {
-        break; // Can't complete cycle, stop
-      }
-
-      // Add 2 videos
-      for (let i = 0; i < 2; i++) {
-        items.push({
-          type: 'video',
-          data: allVideos[videoIndex],
-          index: videoIndex,
-        });
-        videoIndex++;
-      }
-
-      // Add 4 images
-      for (let i = 0; i < 4; i++) {
-        items.push({
-          type: 'image',
-          data: allImages[imageIndex],
-          index: imageIndex,
-        });
-        imageIndex++;
+      for (let k = 0; k < 4; k++) {
+        items.push({ type: 'image', data: allImages[i], index: i });
+        i++;
       }
     }
-
     setContentItems(items);
+    const imgIndices = [];
+    const mapping = {};
+    let slot = 0;
+    for (let idx = 0; idx < items.length; idx++) {
+      if (items[idx].type === 'image') {
+        mapping[idx] = slot;
+        imgIndices.push(idx);
+        slot++;
+      }
+    }
+    const initialVisible = imgIndices.map((ci) => items[ci].data);
+    setVisibleImages(initialVisible);
+    setImageContentIndexToSlotIndex(mapping);
+    setImageSlotsCount(initialVisible.length);
+    const visibleUrls = new Set(initialVisible.map((img) => img?.asset?.url));
+    availablePoolRef.current = allImages.filter((img) => !visibleUrls.has(img?.asset?.url));
   }, [allVideos, allImages]);
 
-  const handleVideoClick = (video) => {
-    setSelectedVideo(video);
-  };
+  useEffect(() => {
+    if (imageSlotsCount === 0) return;
+    if (selectedVideo) return;
+    const interval = setInterval(() => {
+      const slotIdx = Math.floor(Math.random() * imageSlotsCount);
+      setFadingSlots([slotIdx]);
+      setTimeout(() => {
+        setVisibleImages((current) => {
+          const next = [...current];
+          let pool = availablePoolRef.current.slice();
+          let candidate = null;
+          const currentUrl = current[slotIdx]?.asset?.url;
+          const currentUrls = new Set(current.map((img) => img?.asset?.url));
+          while (pool.length > 0) {
+            const r = Math.floor(Math.random() * pool.length);
+            const pick = pool[r];
+            const pickUrl = pick?.asset?.url;
+            if (pickUrl !== currentUrl && !currentUrls.has(pickUrl)) {
+              candidate = pick;
+              pool.splice(r, 1);
+              break;
+            }
+            pool.splice(r, 1);
+          }
+          if (!candidate) {
+            const options = allImages.filter((img) => img?.asset?.url !== currentUrl && !currentUrls.has(img?.asset?.url));
+            candidate = options.length > 0 ? options[Math.floor(Math.random() * options.length)] : current[slotIdx];
+          }
+          next[slotIdx] = candidate;
+          const nextUrls = new Set(next.map((img) => img?.asset?.url));
+          availablePoolRef.current = allImages.filter((img) => !nextUrls.has(img?.asset?.url));
+          return next;
+        });
+        setTimeout(() => {
+          setFadingSlots([]);
+        }, FADE_MS / 2);
+      }, FADE_MS / 2);
+    }, INTERVAL_MS);
+    return () => clearInterval(interval);
+  }, [imageSlotsCount, allImages, selectedVideo]);
 
+  const handleVideoClick = useCallback((video) => {
+    setSelectedVideo(video);
+  }, []);
   const handleCloseVideoModal = () => {
     setSelectedVideo(null);
-  };
-
-  const handleImageClick = (clickedImage) => {
-    // Find all images from the same project
-    const projectImages = allImages.filter(
-      (image) => image.projectId === clickedImage.projectId
-    );
-    
-    // Find the index of the clicked image in the project's images
-    const clickedIndex = projectImages.findIndex(
-      (img) => img.asset.url === clickedImage.asset.url
-    );
-    
-    setSelectedImages(projectImages);
-    setInitialImageIndex(clickedIndex >= 0 ? clickedIndex : 0);
-  };
-
-  const handleCloseImageModal = () => {
-    setSelectedImages(null);
-    setInitialImageIndex(0);
   };
 
   if (contentItems.length === 0) {
@@ -302,21 +267,21 @@ export default function WorkGalleryV2({ projects }) {
         {contentItems.map((item, index) => {
           if (item.type === 'video') {
             return (
-              <VideoItem
+              <VideoItemMemo
                 key={`video-${item.index}`}
                 video={item.data}
-                index={item.index}
                 onVideoClick={handleVideoClick}
               />
             );
           } else {
-            const currentImage = item.data;
+            const slotIdx = imageContentIndexToSlotIndex[index];
+            const currentImage = typeof slotIdx === 'number' ? visibleImages[slotIdx] : item.data;
+            const fading = typeof slotIdx === 'number' && fadingSlots.includes(slotIdx);
             return (
               <div
-                key={`image-${item.index}`}
-                className={styles.imageItem}
-                onClick={() => handleImageClick(currentImage)}
-                style={{ cursor: 'pointer' }}
+                key={`image-${item.index}-${slotIdx ?? 'x'}`}
+                className={`${styles.imageItem} ${fading ? styles.fadeOut : styles.fadeIn}`}
+                style={{ cursor: 'default' }}
               >
                 <Image
                   src={currentImage.asset.url}
@@ -324,11 +289,7 @@ export default function WorkGalleryV2({ projects }) {
                   width={500}
                   height={500}
                   className={styles.workImage}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   quality={80}
                   loading="lazy"
                   unoptimized={currentImage.asset.url?.endsWith('.gif')}
@@ -344,13 +305,6 @@ export default function WorkGalleryV2({ projects }) {
         <VideoModal
           video={selectedVideo}
           onClose={handleCloseVideoModal}
-        />
-      )}
-      {selectedImages && selectedImages.length > 0 && (
-        <ImageGalleryModal
-          images={selectedImages}
-          initialIndex={initialImageIndex}
-          onClose={handleCloseImageModal}
         />
       )}
     </>

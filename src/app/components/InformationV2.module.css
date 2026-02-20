@@ -1,0 +1,332 @@
+/* InformationV2 styles */
+.container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  animation: pageFadeIn 0.7s cubic-bezier(0.2, 0.6, 0.2, 1) both;
+}
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.pageWrapper {
+  width: 100%;
+  max-width: 2000px;
+  margin: 0 auto;
+  padding: 0 20px;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+.pageWrapper > :last-child {
+  padding: 20px 0;
+}
+.pageTitle {
+  font-family: 'Baskerville', serif;
+  font-style: normal;
+  letter-spacing: -1px;
+  font-weight: 400;
+  font-size: 35px;
+  line-height: 83%;
+  color: #5F1B19;
+  margin: 200px 0 20px;
+  white-space: pre-wrap;
+}
+.pageDescription {
+  font-family: 'Baskerville', serif;
+  /* font-style: italic; */
+  font-size: 16px;
+  color: #5F1B19;
+  white-space: pre-wrap;
+  letter-spacing: -.50px;
+}
+.pageDescription p {
+  /* margin: 1em 0; */
+}
+.pageDescription .break {
+  margin: 0;
+  display: block;
+  height: 1em; /* render an explicit blank line for empty blocks (double Enter) */
+}
+.section {
+  margin-top: 90px;
+}
+.sectionTitle {
+  font-family: 'Sloop Script', cursive;
+  font-weight: 400;
+  font-size: 36px;
+  color: #5F1B19;
+  margin-bottom: 10px;
+}
+.partnerLine {
+  display: block;
+  opacity: 0;
+  animation: listFadeIn 0.8s ease-out forwards;
+}
+.globalLine {
+  display: block;
+}
+.partnerItem {
+  display: inline-flex;
+  align-items: center;
+}
+.partnerItem:not(:last-child)::after {
+  content: '/';
+  display: inline-block;
+  margin: 0 4px;
+  font-style: italic;
+}
+.partnerLogo {
+  height: 20px;
+  width: auto;
+  margin-right: 6px;
+}
+.globalNames {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  color: #5F1B19;
+  letter-spacing: 0.32px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.partnerName {
+  font-family: 'Baskerville', serif;
+  font-size: 16px;
+  color: #5F1B19;
+  font-style: italic;
+  letter-spacing: 0.32px;
+  text-transform: uppercase;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.globalNames {
+  display: inline-block;
+}
+.globalItem {
+  display: inline;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: itemFadeIn 0.6s ease-out forwards;
+}
+.globalItem:not(:last-child)::after {
+  content: ' / ';
+}
+.separator {
+  margin: 0 6px;
+  color: #5F1B19;
+}
+.richList {
+  font-family: 'Baskerville', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: #5F1B19;
+  letter-spacing: 0.32px;
+}
+.richItem {
+  margin: 4px 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  letter-spacing: 0.32px;
+}
+.richItem a {
+  font-style: normal;
+  text-decoration: none;
+  position: relative;
+  color: #5F1B19;
+}
+.richItem a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: #5F1B19;
+  transition: width 0.3s ease;
+}
+.richItem a:hover::after {
+  width: 100%;
+}
+.richItem a[href^="mailto:"] {
+  font-family: 'Helvetica Neue', sans-serif;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-style: normal;
+  color: #5F1B19;
+  text-decoration: none;
+  position: relative; /* underline animation like nav */
+  letter-spacing: 0.32px;
+  transition: font-weight 0.2s ease;
+}
+.richItem a[href^="mailto:"]::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: #5F1B19;
+  transition: width 0.3s ease;
+}
+.richItem a[href^="mailto:"]:hover::after {
+  width: 100%;
+}
+.richItem a[href^="mailto:"]:hover {
+  font-weight: 500;
+}
+
+/* Information Page Footer */
+.infoFooter {
+  margin-top: 230px;
+  padding-top: 150px;
+  margin-left: 0;
+  margin-right: 0;
+}
+.infoFooterGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0;
+  align-items: start;
+}
+.footerLeft {
+  text-align: left;
+  width: 80%;
+  justify-self: start;
+  min-width: 0;
+}
+.footerRight {
+  text-align: right;
+  width: 80%;
+  justify-self: end;
+  min-width: 0;
+}
+.footerTitle {
+  font-family: 'Sloop Script', cursive;
+  font-weight: 400;
+  font-size: 36px;
+  color: #5F1B19;
+  margin-bottom: 10px;
+}
+.footerLinks {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-style: normal;
+  font-size: 12px;
+  color: #5F1B19;
+  letter-spacing: 0.32px;
+}
+.footerLinkItem {
+  display: inline;
+}
+.footerLinkItem a {
+  color: #5F1B19;
+  text-decoration: none;
+  position: relative;
+}
+.footerLinkItem a::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0%;
+  height: 1px;
+  background-color: #5F1B19;
+  transition: width 0.3s ease;
+}
+.footerLinkItem a:hover::after {
+  width: 100%;
+}
+.footerLinkItem:not(:last-child)::after {
+  content: '\00a0/ ';
+}
+.footerCities {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-style: normal;
+  font-size: 12px;
+  color: #5F1B19;
+  letter-spacing: 0.32px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.footerCityItem {
+  display: inline-flex;
+  align-items: baseline;
+}
+.footerCityItem {
+  white-space: nowrap;
+  word-break: keep-all;
+}
+.footerCityItem:not(:last-child)::after {
+  content: '/';
+  display: inline-block;
+  margin: 0 4px;
+}
+
+/* Keyframes */
+@keyframes pageFadeIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes itemFadeIn {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes listFadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .pageWrapper {
+    padding: 0 10px;
+  }
+
+  .pageTitle {
+    font-size: 35px;
+    white-space: normal;
+  }
+  .sectionTitle {
+    font-size: 32px;
+  }
+  .pageDescription {
+    white-space: normal; /* collapse single-line breaks on mobile */
+  }
+  .infoFooterGrid {
+    grid-template-columns: 1fr;
+    text-align: left;
+    row-gap: 15px;
+  }
+  .footerRight {
+    text-align: left;
+  }
+  .footerLeft, .footerRight {
+    width: 100%;
+    justify-self: start;
+  }
+
+  .infoFooter {
+    margin-top: 100px;
+  }
+}
+
+@media (min-width: 1729px) {
+  .infoFooter {
+    margin-top: 300px;
+  }
+
+}
+
+.partnersSectionTitle {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 16px;
+  color: #5F1B19;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}

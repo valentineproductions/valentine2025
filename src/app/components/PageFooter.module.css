@@ -67,6 +67,18 @@
   display: inline;
 }
 
+.centerItem:not(:last-child)::after {
+  content: ' / ';
+}
+
+.contactItem {
+  display: inline;
+}
+
+.contactItem:not(:last-child)::after {
+  content: ' / ';
+}
+
 .copyRight {
   text-align: left;
   width: 300px;
@@ -178,6 +190,10 @@
     width: auto;
     text-align: left;
     flex-grow: 1;
+  }
+
+  .footer {
+    padding: 20px 10px;
   }
 }
 

@@ -88,6 +88,13 @@
   line-height: 93%;
   color: #5F1B19;
   margin: 15px 0px 0px 0px;
+}
+
+.originalCaseName {
+  text-transform: none;
+}
+
+.uppercasedName {
   text-transform: uppercase;
 }
 
@@ -98,8 +105,9 @@
 }
 
 .positionCity {
-  font-family: 'Helvetica Neue', sans-serif;
-  font-size: 12px;
+  /* font-family: 'Helvetica Neue', sans-serif; */
+  font-family: 'Baskerville', serif;
+  font-size: 15px;
   font-weight: 500;
   letter-spacing: 0.32px;
   color: #5F1B19;
@@ -194,4 +202,3 @@
     align-items: stretch;
   }
 }
-

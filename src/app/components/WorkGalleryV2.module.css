@@ -14,6 +14,9 @@
   cursor: pointer;
   transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: transform;
+  contain: paint;
+  transform: translateZ(0);
+  backface-visibility: hidden;
   overflow: hidden;
 }
 
@@ -27,8 +30,11 @@
   padding-bottom: 56.25%; /* 16:9 aspect ratio */
   height: 0;
   overflow: hidden;
-  transition: opacity 0.3s ease-in-out;
   background: #000000; /* Black background for letterboxing */
+  contain: paint;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: opacity, transform;
 }
 
 /* 16:9 videos - fill the container normally */
@@ -88,6 +94,8 @@
   height: 100%;
   border: none;
   pointer-events: none; /* Allow clicks to pass through to parent container */
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 /* Direct iframes (not wrapped in div) */
@@ -182,9 +190,11 @@
 .imageItem {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1; /* Square images */
-  min-height: 150px; /* Fallback for older browsers */
+  aspect-ratio: 4 / 5;
+  min-height: 150px;
   overflow: hidden;
+  transition: opacity 1s ease;
+  will-change: opacity;
 }
 
 .workImage {
@@ -200,21 +210,29 @@
   transform: scale(1.03);
 }
 
+.fadeOut {
+  opacity: 0;
+}
+
+.fadeIn {
+  opacity: 1;
+}
+
 /* Modern aspect-ratio will override this, but it's good for fallback */
-@supports not (aspect-ratio: 1 / 1) {
+@supports not (aspect-ratio: 4 / 5) {
   .imageItem::before {
     content: "";
     display: block;
-    padding-bottom: 100%; /* Square */
+    padding-bottom: 125%;
   }
 }
 
 /* Mobile - adjust to 2 columns */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .gallery {
     grid-template-columns: repeat(2, 1fr);
     gap: 7px;
-    padding: 20px;
+    padding: 20px 10px;
   }
 
   /* On mobile, videos still span 2 columns (full width) */
@@ -244,4 +262,3 @@
     max-height: 20px;
   }
 }
-
