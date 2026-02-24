@@ -1,3 +1,5 @@
+import ArrayWithCounter from '../components/ArrayWithCounter';
+
 const project = {
     name: 'project',
     title: 'Projects',
@@ -46,11 +48,14 @@ const project = {
             ],
           },
         ],
-        description: 'All images for the project (first image will be used as preview).',
+        description: 'First image will be used as preview. Total # images.',
+        components: {
+          field: ArrayWithCounter
+        }
       },
       {
         name: 'videos',
-        title: 'Videos',
+        title: 'Project Videos',
         type: 'array',
         of: [
           {
@@ -115,7 +120,10 @@ const project = {
             },
           },
         ],
-        description: 'Array of Simian video embeds for this project.',
+        description: 'Array of Simian video embeds with preview and logo optional each video. Total # videos',
+        components: {
+          field: ArrayWithCounter
+        }
       },
     ],
     preview: {
