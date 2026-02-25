@@ -36,7 +36,9 @@ export default function Home() {
 
         <SloganSection homePageData={homePageData} />
 
-        <ServicesSection homePageData={homePageData} />
+        {homePageData?.showServices !== false && (
+          <ServicesSection homePageData={homePageData} />
+        )}
         
         {homePageData?.showProcess !== false && (
           <section className="processSection four">

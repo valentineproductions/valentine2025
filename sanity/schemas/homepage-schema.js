@@ -1,3 +1,5 @@
+import SectionVisibilityToggleWithNote from '../components/SectionVisibilityToggleWithNote';
+
 const homepage = {
   name: 'homepage',
   title: 'Home Pages',
@@ -182,6 +184,18 @@ const homepage = {
     },
     // Services Section Group
     {
+      name: 'showServices',
+      title: 'Show Services Section',
+      type: 'boolean',
+      options: {
+        sectionName: 'Services section',
+      },
+      components: {
+        input: SectionVisibilityToggleWithNote,
+      },
+      group: 'services',
+    },
+    {
       name: 'servicesTitle',
       title: 'Services Title',
       type: 'string',
@@ -231,16 +245,22 @@ const homepage = {
     },
     // Process Section Group
     {
+      name: 'showProcess',
+      title: 'Show Process Section',
+      type: 'boolean',
+      options: {
+        sectionName: 'Process section',
+      },
+      components: {
+        input: SectionVisibilityToggleWithNote,
+      },
+      group: 'process',
+    },
+    {
       name: 'processTitle',
       title: 'Process Title',
       type: 'string',
       description: 'Title for the "Process" section.',
-      group: 'process',
-    },
-    {
-      name: 'showProcess',
-      title: 'Show Process Section',
-      type: 'boolean',
       group: 'process',
     },
     {

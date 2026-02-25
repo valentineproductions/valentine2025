@@ -49,6 +49,7 @@ export async function getHomePage() {
       },
       videoAlt1,
       videoDescription1,
+      showServices,
       servicesTitle,
       osDescription,
       servicesList[]{
@@ -500,6 +501,7 @@ export async function getLegalBySlug(slug) {
           },
           videoAlt1,
           videoDescription1,
+          showServices,
           servicesTitle,
           osDescription,
           servicesList[]{
