@@ -283,7 +283,8 @@ export async function getProject(slug) {
                 _id,
                 url
               },
-              alt
+              alt,
+              sizePercent
             }
           }
         },
@@ -426,7 +427,8 @@ export async function getLegalBySlug(slug) {
                   _id,
                   url
                 },
-                alt
+                alt,
+                sizePercent
               }
             }
           },

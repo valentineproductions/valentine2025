@@ -1,4 +1,5 @@
 import ArrayWithCounter from '../components/ArrayWithCounter';
+import LogoSizeSlider from '../components/LogoSizeSlider';
 
 const project = {
     name: 'project',
@@ -77,7 +78,7 @@ const project = {
                 name: 'coverImage',
                 title: 'Custom Cover Image',
                 type: 'image',
-                description: 'Custom thumbnail/cover image for the video.',
+                description: 'Custom thumbnail/cover image for the video. //1920x1080.',
                 options: {
                   hotspot: true,
                 },
@@ -102,6 +103,17 @@ const project = {
                     name: 'alt',
                     title: 'Alt Text',
                     type: 'string',
+                  },
+                  {
+                    name: 'sizePercent',
+                    title: 'Logo Size (%)',
+                    type: 'number',
+                    description: 'Size of logo 20% to 100% //33% is default',
+                    initialValue: 33,
+                    validation: Rule => Rule.min(20).max(100),
+                    components: {
+                      input: LogoSizeSlider,
+                    },
                   },
                 ],
               },
