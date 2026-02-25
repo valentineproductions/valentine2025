@@ -98,7 +98,13 @@ function VideoItem({ video, onVideoClick }) {
                 width={200}
                 height={200}
                 className={styles.logo}
-                style={{ width: 'auto', height: 'auto', maxWidth: '30%', maxHeight: '30%', objectFit: 'contain' }}
+                style={{
+                  width: 'auto',
+                  height: 'auto',
+                  maxWidth: '30%',
+                  maxHeight: '30%',
+                  objectFit: 'contain',
+                }}
               />
             </div>
           )}

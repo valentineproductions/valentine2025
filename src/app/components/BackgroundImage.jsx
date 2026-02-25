@@ -50,7 +50,7 @@ export default function BackgroundImage({ src, alt }) {
         height: '95%',
         zIndex: -1,
         pointerEvents: 'none',
-        transform: `scaleY(${isFooterVisible ? 0.85 : 1})`,
+        transform: `scaleY(${isFooterVisible ? 0.95 : 1})`,
         transformOrigin: 'top',
         transition: 'transform 0.4s ease'
       }}
