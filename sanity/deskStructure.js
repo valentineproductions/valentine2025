@@ -1,7 +1,43 @@
 import { structureTool } from 'sanity/structure';
 
-export const deskStructure = (S) =>
-  S.list()
+export const deskStructure = async (S, context) => {
+  const client = context.getClient({ apiVersion: '2025-05-10' });
+
+  const [
+    allApplicationsCount,
+    needsReviewCount,
+    reviewedCount,
+    responseSentCount,
+    topRatedCount,
+    jobsWithCounts,
+  ] = await Promise.all([
+    client.fetch('count(*[_type == "application"])'),
+    client.fetch('count(*[_type == "application" && status == "Needs Review"])'),
+    client.fetch('count(*[_type == "application" && status == "Reviewed"])'),
+    client.fetch('count(*[_type == "application" && status == "Response Sent"])'),
+    client.fetch('count(*[_type == "application" && defined(rating)])'),
+    client.fetch(`
+      *[_type == "jobPosting"] | order(positionTitle asc) {
+        _id,
+        positionTitle,
+        "applicationsCount": count(*[_type == "application" && references(^._id)])
+      }
+    `),
+  ]);
+
+  const applicationsByJobItems = jobsWithCounts.map((job) =>
+    S.listItem()
+      .id(`job-applications-${job._id}`)
+      .title(`${job.positionTitle || 'Untitled Job'} (${job.applicationsCount || 0})`)
+      .child(
+        S.documentTypeList('application')
+          .title(`${job.positionTitle || 'Untitled Job'} Applications (${job.applicationsCount || 0})`)
+          .filter('_type == "application" && references($jobId)')
+          .params({ jobId: job._id })
+      )
+  );
+
+  return S.list()
     .title('Content')
     .items([
       S.listItem()
@@ -13,49 +49,47 @@ export const deskStructure = (S) =>
               S.documentListItem().title('Careers Page').schemaType('careersPage'),
               S.documentTypeListItem('jobPosting').title('Job Opportunities Items'),
               S.listItem()
-                .title('All Applications')
-                .child(S.documentTypeList('application').title('All Applications')),
-              S.listItem()
-                .title('Applications By Job Post')
-                .child(
-                  S.documentTypeList('jobPosting')
-                    .title('Job Postings')
-                    .child(jobId =>
-                      S.documentTypeList('application')
-                        .title('Applications')
-                        .filter('_type == "application" && references($jobId)')
-                        .params({ jobId })
-                    )
-                ),
-              S.listItem()
-                .title('Needs Review')
+                .title(`All Applications (${allApplicationsCount})`)
                 .child(
                   S.documentTypeList('application')
-                    .title('Needs Review')
+                    .title(`All Applications (${allApplicationsCount})`)
+                ),
+              S.listItem()
+                .title(`Applications By Job Post (${allApplicationsCount})`)
+                .child(
+                  S.list()
+                    .title('Applications By Job Post')
+                    .items(applicationsByJobItems)
+                ),
+              S.listItem()
+                .title(`Needs Review (${needsReviewCount})`)
+                .child(
+                  S.documentTypeList('application')
+                    .title(`Needs Review (${needsReviewCount})`)
                     .filter('status == $status')
                     .params({ status: 'Needs Review' })
                 ),
               S.listItem()
-                .title('Reviewed')
+                .title(`Reviewed (${reviewedCount})`)
                 .child(
                   S.documentTypeList('application')
-                    .title('Reviewed')
+                    .title(`Reviewed (${reviewedCount})`)
                     .filter('status == $status')
                     .params({ status: 'Reviewed' })
                 ),
               S.listItem()
-                .title('Response Sent')
+                .title(`Response Sent (${responseSentCount})`)
                 .child(
                   S.documentTypeList('application')
-                    .title('Response Sent')
+                    .title(`Response Sent (${responseSentCount})`)
                     .filter('status == $status')
                     .params({ status: 'Response Sent' })
                 ),
               S.listItem()
-                .title('Top Rated')
+                .title(`Top Rated (${topRatedCount})`)
                 .child(
                   S.documentTypeList('application')
-                    .title('Top Rated')
+                    .title(`Top Rated (${topRatedCount})`)
                     .filter('defined(rating)')
                     .defaultOrdering([{ field: 'rating', direction: 'desc' }])
                 ),
@@ -70,5 +104,6 @@ export const deskStructure = (S) =>
         (item) => !['careersPage', 'jobPosting', 'application', 'legal'].includes(item.getId())
       ),
     ]);
+};
 
 export default structureTool({ structure: deskStructure });

@@ -41,6 +41,10 @@ function VideoItem({ video, index, onVideoClick }) {
   const [isLoading, setIsLoading] = useState(true);
   const videoRef = useRef(null);
   const hasCustomCover = video.coverImage?.asset?.url;
+  const rawLogoSize = video?.logo?.sizePercent;
+  const logoSizePercent = rawLogoSize == null
+    ? 33
+    : Math.min(100, Math.max(20, Number(rawLogoSize)));
 
   useEffect(() => {
     // Only check for iframe loading if we don't have a custom cover
@@ -124,8 +128,8 @@ function VideoItem({ video, index, onVideoClick }) {
                 style={{ 
                   width: 'auto',
                   height: 'auto',
-                  maxWidth: '30%',
-                  maxHeight: '30%',
+                  maxWidth: `${logoSizePercent}%`,
+                  maxHeight: `${logoSizePercent}%`,
                   objectFit: 'contain'
                 }}
               />

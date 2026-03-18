@@ -64,6 +64,47 @@ export default function VideoModal({ video, onClose }) {
     return embedCode;
   };
 
+  // Try to infer the exact aspect ratio from embed code.
+  // This helps avoid extra black bars when content is not 16:9.
+  const getEmbedAspectRatio = (embedCode) => {
+    if (!embedCode) return 16 / 9;
+
+    // Most Simian wrappers include padding-bottom:{height/width*100}%
+    const paddingMatch = embedCode.match(/padding-bottom:\s*([0-9]+(?:\.[0-9]+)?)%/i);
+    if (paddingMatch) {
+      const paddingPercent = Number(paddingMatch[1]);
+      if (Number.isFinite(paddingPercent) && paddingPercent > 0) {
+        return 100 / paddingPercent;
+      }
+    }
+
+    // Fallback: iframe width/height attributes
+    const widthMatch = embedCode.match(/width=["'](\d+)["']/i);
+    const heightMatch = embedCode.match(/height=["'](\d+)["']/i);
+    if (widthMatch && heightMatch) {
+      const width = Number(widthMatch[1]);
+      const height = Number(heightMatch[1]);
+      if (Number.isFinite(width) && Number.isFinite(height) && width > 0 && height > 0) {
+        return width / height;
+      }
+    }
+
+    // Fallback: Simian URL pattern /share/v/{id}/{autoplay}/{width}/{height}/...
+    const simianSizeMatch = embedCode.match(/\/share\/v\/[^/]+\/(?:true|false)\/(\d+)\/(\d+)\//i);
+    if (simianSizeMatch) {
+      const width = Number(simianSizeMatch[1]);
+      const height = Number(simianSizeMatch[2]);
+      if (Number.isFinite(width) && Number.isFinite(height) && width > 0 && height > 0) {
+        return width / height;
+      }
+    }
+
+    return 16 / 9;
+  };
+
+  const aspectRatio = getEmbedAspectRatio(video?.embedCode);
+  const safeAspectRatio = Number.isFinite(aspectRatio) && aspectRatio > 0 ? aspectRatio : 16 / 9;
+
   return (
     <div className={styles.overlay}>
       <div className={styles.modal} ref={modalRef}>
@@ -74,7 +115,10 @@ export default function VideoModal({ video, onClose }) {
         >
           ×
         </button>
-        <div className={styles.videoContainer}>
+        <div
+          className={styles.videoContainer}
+          style={{ '--video-ratio': safeAspectRatio }}
+        >
           <div
             className={styles.videoEmbed}
             ref={videoRef}
