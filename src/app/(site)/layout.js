@@ -1,10 +1,12 @@
 import "./../globals.css";
+import Script from "next/script";
 import { AppProvider } from "../components/AppContext";
 import HeaderNavigation from "../components/HeaderNavigation";
 import HomeChecker from "../components/HomeChecker";
 import { getAllPagesData, getHomeSEOData } from "../../../sanity/schemas/sanity-utils";
 import { Analytics } from "@vercel/analytics/next"
 
+const META_PIXEL_ID = "1250437307179904";
 
 // Default fallback keywords
 const DEFAULT_KEYWORDS = [
@@ -56,6 +58,15 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
+            alt=""
+          />
+        </noscript>
       </head>
       <body>
       <AppProvider initialData={allData}>
@@ -66,6 +77,25 @@ export default async function RootLayout({ children }) {
         <main>{children}</main>
         </AppProvider>
         <Analytics />
+        {/* Meta Pixel - loads on all site pages for conversion tracking */}
+        <Script
+          id="meta-pixel"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              !function(f,b,e,v,n,t,s)
+              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+              n.queue=[];t=b.createElement(e);t.async=!0;
+              t.src=v;s=b.getElementsByTagName(e)[0];
+              s.parentNode.insertBefore(t,s)}(window, document,'script',
+              'https://connect.facebook.net/en_US/fbevents.js');
+              fbq('init', '${META_PIXEL_ID}');
+              fbq('track', 'PageView');
+            `,
+          }}
+        />
       </body>
     </html>
   );
