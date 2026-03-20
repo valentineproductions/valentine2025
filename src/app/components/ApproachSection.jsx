@@ -1,5 +1,6 @@
 'use client';
 import { PortableText } from '@portabletext/react';
+import { defaultPortableTextComponents } from '@/app/lib/portableTextConfig';
 import H2Animation from './H2Animator';
 import Image from 'next/image';
 
@@ -10,7 +11,7 @@ const ApproachSection = ({ homePageData }) => {
         <H2Animation>{homePageData?.approachTitle || 'Approach'}</H2Animation>
         <div className="approachDescription">
           <span>
-            <PortableText value={homePageData?.aDescription || 'We listen.'} />
+            <PortableText value={homePageData?.aDescription || 'We listen.'} components={defaultPortableTextComponents} />
           </span>
           {homePageData?.logosImageDesktop && homePageData?.logosImageMobile && (
             <div className="logos-image-container">

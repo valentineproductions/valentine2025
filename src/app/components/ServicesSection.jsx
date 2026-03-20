@@ -1,5 +1,6 @@
 'use client';
 import { PortableText } from '@portabletext/react';
+import { defaultPortableTextComponents } from '@/app/lib/portableTextConfig';
 import H2Animation from './H2Animator';
 import DivsAnimator from './DivsAnimator';
 import styles from './ServicesSection.module.css';
@@ -16,7 +17,7 @@ const ServicesSection = ({ homePageData }) => {
         <div className={styles.description}>
           {homePageData?.osDescription && (
             <span>
-              <PortableText value={homePageData.osDescription} />
+              <PortableText value={homePageData.osDescription} components={defaultPortableTextComponents} />
             </span>
           )}
         </div>

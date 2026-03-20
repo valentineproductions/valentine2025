@@ -47,25 +47,9 @@ function HomeVideo({ homePageData }) {
     }
   }, [homePageData]);
 
-  // Helper function to get video URLs with proper extensions
-  const getVideoUrls = (url) => {
-    if (!url) return { webm: null, mp4: null };
-    
-    const baseUrl = url.split('.').slice(0, -1).join('.');
-    return {
-      webm: `${baseUrl}.webm`,
-      mp4: `${baseUrl}.mp4`
-    };
-  };
-
-  const defaultVideoUrls = {
-    webm: "https://cdn.sanity.io/files/m2vd2mbt/production/553b5f5b07875eee33eea3f5988c241b00237e50.webm",
-    mp4: "https://cdn.sanity.io/files/m2vd2mbt/production/553b5f5b07875eee33eea3f5988c241b00237e50.mp4"
-  };
-
-  const videoUrls = homePageData?.homeVideo1?.asset?.url 
-    ? getVideoUrls(homePageData.homeVideo1.asset.url)
-    : defaultVideoUrls;
+  // Use the asset URL as-is from Sanity - don't construct .webm (Sanity only stores the uploaded format)
+  const defaultVideoUrl = "https://cdn.sanity.io/files/m2vd2mbt/production/553b5f5b07875eee33eea3f5988c241b00237e50.mp4";
+  const videoUrl = homePageData?.homeVideo1?.asset?.url || defaultVideoUrl;
 
   return (
     <section ref={sectionRef} className="homeVideo">
@@ -78,8 +62,7 @@ function HomeVideo({ homePageData }) {
         playsInline 
         style={{ opacity: 0 }}
       >
-        {videoUrls.webm && <source src={videoUrls.webm} type="video/webm" />}
-        {videoUrls.mp4 && <source src={videoUrls.mp4} type="video/mp4" />}
+        <source src={videoUrl} type={videoUrl.endsWith('.webm') ? 'video/webm' : 'video/mp4'} />
       </video>
     </section>
   );

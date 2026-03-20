@@ -1,6 +1,7 @@
 'use client';
 
 import { PortableText } from "@portabletext/react";
+import { defaultPortableTextComponents } from "@/app/lib/portableTextConfig";
 import { useAppContext } from "@/app/components/AppContext";
 import { use } from 'react';
 import VideoGridV2 from "@/app/components/VideoGridV2";
@@ -31,7 +32,7 @@ export default function TeamMemberPage({ params }) {
           <h1 className={styles.memberName}>{member.fullName}</h1>
           {member.bio && member.bio.length > 0 && (
             <div className={styles.bio}>
-              <PortableText value={member.bio} />
+              <PortableText value={member.bio} components={defaultPortableTextComponents} />
             </div>
           )}
         </header>

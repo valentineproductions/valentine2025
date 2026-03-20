@@ -1,6 +1,7 @@
 'use client';
 
 import { PortableText } from "@portabletext/react";
+import { defaultPortableTextComponents } from "@/app/lib/portableTextConfig";
 import { useAppContext } from "@/app/components/AppContext";
 import Link from "next/link";
 import styles from "./page.module.css";
@@ -60,7 +61,7 @@ export default function CareersPage() {
               {careers.title && <h1 className={styles.title}>{careers.title}</h1>}
               {careers.description && (
                 <div className={styles.description}>
-                  <PortableText value={careers.description} />
+                  <PortableText value={careers.description} components={defaultPortableTextComponents} />
                 </div>
               )}
             </div>

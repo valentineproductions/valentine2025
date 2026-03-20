@@ -1,6 +1,7 @@
 'use client';
 
 import { PortableText } from "@portabletext/react";
+import { defaultPortableTextComponents } from "@/app/lib/portableTextConfig";
 import styles from './CategoryPageOpt3.module.css';
 
 export default function CategoryPageOpt3({ categoryName, directorsCount, pageDescription }) {
@@ -17,7 +18,7 @@ export default function CategoryPageOpt3({ categoryName, directorsCount, pageDes
         </div>
         <div className={styles.column3}>
           <div className={styles.pageDescription}>
-            <PortableText value={pageDescription}/>
+            <PortableText value={pageDescription} components={defaultPortableTextComponents} />
           </div>
         </div>
       </div>

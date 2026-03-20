@@ -1,6 +1,7 @@
 'use client';
 
 import { PortableText } from "@portabletext/react";
+import { defaultPortableTextComponents } from "@/app/lib/portableTextConfig";
 import { useAppContext } from "@/app/components/AppContext";
 import Link from "next/link";
 import { use, useEffect, useRef, useState } from "react";
@@ -266,7 +267,7 @@ export default function CareerJobPage({ params }) {
           <div className={styles.content}>
             {job.description && (
               <div className={styles.portableText} style={{ marginTop: 12 }}>
-                <PortableText value={job.description} />
+                <PortableText value={job.description} components={defaultPortableTextComponents} />
               </div>
             )}
           </div>

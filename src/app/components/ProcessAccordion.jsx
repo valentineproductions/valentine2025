@@ -27,7 +27,13 @@ const ProcessAccordion = ({ steps }) => {
               onMouseLeave={() => setHoverIndex(null)}
               style={{ maxHeight: isOpen ? '1000px' : hoverIndex === index ? '200px' : '90px' }}
             >
-              <h3 onClick={() => toggle(index)} className={styles.title}>
+              <h3
+                onClick={() => toggle(index)}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(index); } }}
+                role="button"
+                tabIndex={0}
+                className={styles.title}
+              >
                 <span>{prefix}</span> {rest}
               </h3>
               <p>{step.text || ''}</p>

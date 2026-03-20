@@ -21,6 +21,7 @@ import SoonAnimation from "@/app/components/SoonAnimation";
 import LegalContent from "@/app/components/LegalContent";
 import { getLegalBySlug } from "../../../../sanity/schemas/sanity-utils";
 import { PortableText } from "@portabletext/react";
+import { defaultPortableTextComponents } from "@/app/lib/portableTextConfig";
 
 export default function Page() {
     const pathname = usePathname();
@@ -103,12 +104,12 @@ export default function Page() {
                     <h1 className="pageTitle">{legal?.title || (legalLoading ? '' : 'Page Not Found')}</h1>
                     {(!legalLoading && legal?.titleDescription) && (
                         <div className="pageDescription">
-                            <PortableText value={legal.titleDescription} />
+                            <PortableText value={legal.titleDescription} components={defaultPortableTextComponents} />
                         </div>
                     )}
                     {(!legalLoading && legal?.moreInfo) && (
                         <div className="contactInfo">
-                            <PortableText value={legal.moreInfo} />
+                            <PortableText value={legal.moreInfo} components={defaultPortableTextComponents} />
                         </div>
                     )}
                 </header>

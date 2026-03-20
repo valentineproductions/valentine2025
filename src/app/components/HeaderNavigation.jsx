@@ -29,9 +29,24 @@ export default function HeaderNavigation() { // Default empty array
         }
     }, []);
 
+    useEffect(() => {
+        const handleEscape = (e) => { if (e.key === 'Escape') setMenuOpen(false); };
+        if (menuOpen) {
+            window.addEventListener('keydown', handleEscape);
+            return () => window.removeEventListener('keydown', handleEscape);
+        }
+    }, [menuOpen]);
+
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
+
+    // Normalize href to prevent hydration mismatch (server /work vs client /work/)
+    const toHref = (slug) => {
+        const clean = String(slug || '').replace(/\/$/, '');
+        return clean ? `/${clean}` : '/';
+    };
+    const pathNorm = (p) => (String(p || '').replace(/\/$/, '') || '/');
 
     // Safely get logo data with fallbacks
     const logoData = (isHomePage 
@@ -63,7 +78,10 @@ export default function HeaderNavigation() { // Default empty array
                 <div className="mobileNavContainer">
                     <span 
                         className={`menu-trigger ${menuOpen ? 'menu-open' : ''}`} 
+                        role="button"
+                        tabIndex={0}
                         onClick={toggleMenu}
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleMenu(); } }}
                     >
                         {menuOpen ? 'MENU' : 'MENU'}
                     </span>
@@ -75,8 +93,8 @@ export default function HeaderNavigation() { // Default empty array
                                 {[ 'work', 'directors' ].map((slug) => {
                                     const page = pages.find(p => p.slug === slug);
                                     return page ? (
-                                        <Link key={page._id} href={`/${page.slug}`} onClick={toggleMenu}>
-                                            {pathname === `/${page.slug}` ? <b>{page.navTitle}</b> : page.navTitle}
+                                        <Link key={page._id} href={toHref(page.slug)} onClick={toggleMenu}>
+                                            {pathNorm(pathname) === toHref(page.slug) ? <b>{page.navTitle}</b> : page.navTitle}
                                         </Link>
                                     ) : null;
                                 })}
@@ -95,8 +113,8 @@ export default function HeaderNavigation() { // Default empty array
                     {[ 'work', 'directors' ].map((slug) => {
                         const page = pages.find(p => p.slug === slug);
                         return page ? (
-                            <Link key={page._id} href={`/${page.slug}`}>
-                                {pathname === `/${page.slug}` ? <b>{page.navTitle}</b> : page.navTitle}
+                            <Link key={page._id} href={toHref(page.slug)}>
+                                {pathNorm(pathname) === toHref(page.slug) ? <b>{page.navTitle}</b> : page.navTitle}
                             </Link>
                         ) : null;
                     })}

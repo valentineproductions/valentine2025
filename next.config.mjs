@@ -3,6 +3,7 @@
 
 export const nextConfig = {
     reactStrictMode: true,
+    trailingSlash: false, // Prevent href mismatch: server /work vs client /work/
     images: {
       remotePatterns: [
         {

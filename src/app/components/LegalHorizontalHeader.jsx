@@ -1,6 +1,7 @@
 'use client';
 
 import { PortableText } from "@portabletext/react";
+import { defaultPortableTextComponents } from "@/app/lib/portableTextConfig";
 import styles from './TalentHorizontalHeader.module.css';
 
 export default function LegalHorizontalHeader({ pageTitle, pageDescription, contactInfo }) {
@@ -12,10 +13,10 @@ export default function LegalHorizontalHeader({ pageTitle, pageDescription, cont
         </div>
         <div className={styles.column3}>
           <div className={styles.pageDescription}>
-            {pageDescription && <PortableText value={pageDescription} />}
+            {pageDescription && <PortableText value={pageDescription} components={defaultPortableTextComponents} />}
           </div>
           <div className="contactInfo">
-            {contactInfo && <PortableText value={contactInfo} />}
+            {contactInfo && <PortableText value={contactInfo} components={defaultPortableTextComponents} />}
           </div>
         </div>
       </div>

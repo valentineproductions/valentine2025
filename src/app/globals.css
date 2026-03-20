@@ -64,6 +64,36 @@ a {
   /* text-decoration: none; */
 }
 
+/* Focus states for accessibility - visible only for keyboard navigation (:focus-visible) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+  outline: 2px solid #5F1B19;
+  outline-offset: 2px;
+}
+
+/* Home nav links on dark background need light outline */
+.navBar.homeNavBar a:focus-visible,
+.navBar.homeNavBar .homeNavLink:focus-visible,
+.homeBody .menu-trigger:focus-visible {
+  outline-color: #fff;
+}
+
+/* Home page links (email, footer GENERAL/INSTAGRAM/etc.) - white text on dark bg */
+.homePage a:focus-visible,
+.homeLastVideoFooter a:focus-visible,
+.homeLastVideoFooter .contactLink:focus-visible {
+  outline-color: #fff;
+}
+
+/* Home page interactive elements (accordion, menu trigger) - white outline on dark bg */
+.homePage [tabindex]:not([tabindex="-1"]):focus-visible {
+  outline-color: #fff;
+}
+
 /* Layout Styles */
 
 

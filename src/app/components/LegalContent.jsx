@@ -1,6 +1,7 @@
 'use client';
 
 import { PortableText } from '@portabletext/react';
+import { defaultPortableTextComponents } from '@/app/lib/portableTextConfig';
 import styles from './LegalContent.module.css';
 
 export default function LegalContent({ value }) {
@@ -9,7 +10,7 @@ export default function LegalContent({ value }) {
     <div className={styles.pageWrapper}>
       <div className={styles.content}>
         <div className={styles.portableText}>
-          <PortableText value={value} />
+          <PortableText value={value} components={defaultPortableTextComponents} />
         </div>
       </div>
     </div>

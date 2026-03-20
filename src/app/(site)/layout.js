@@ -1,5 +1,6 @@
 import "./../globals.css";
 import Script from "next/script";
+import { headers } from "next/headers";
 import { AppProvider } from "../components/AppContext";
 import HeaderNavigation from "../components/HeaderNavigation";
 import HomeChecker from "../components/HomeChecker";
@@ -39,9 +40,9 @@ export async function generateMetadata() {
 export const revalidate = 300; // Revalidate every 5 minutes
 
 export default async function RootLayout({ children }) {
-  //get all Pages Changes except About
-  // const data = await getPages(); // The getPages function now returns an object
-  // const pages = data?.pages || []; // Access the 'pages' array
+  const headersList = await headers();
+  const host = headersList.get("host") || "";
+  const isLocalhost = host.includes("localhost") || host.includes("127.0.0.1");
 
   const allData = await getAllPagesData();
   // console.log("All Data:", allData); //  line to check the data structure
@@ -58,15 +59,17 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: "none" }}
-            src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
-            alt=""
-          />
-        </noscript>
+        {!isLocalhost && (
+          <noscript>
+            <img
+              height="1"
+              width="1"
+              style={{ display: "none" }}
+              src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
+              alt=""
+            />
+          </noscript>
+        )}
       </head>
       <body>
       <AppProvider initialData={allData}>
@@ -77,25 +80,27 @@ export default async function RootLayout({ children }) {
         <main>{children}</main>
         </AppProvider>
         <Analytics />
-        {/* Meta Pixel - loads on all site pages for conversion tracking */}
-        <Script
-          id="meta-pixel"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              !function(f,b,e,v,n,t,s)
-              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-              n.queue=[];t=b.createElement(e);t.async=!0;
-              t.src=v;s=b.getElementsByTagName(e)[0];
-              s.parentNode.insertBefore(t,s)}(window, document,'script',
-              'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '${META_PIXEL_ID}');
-              fbq('track', 'PageView');
-            `,
-          }}
-        />
+        {/* Meta Pixel - skip on localhost to avoid Madgicx 404 (third-party integration) */}
+        {!isLocalhost && (
+          <Script
+            id="meta-pixel"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                !function(f,b,e,v,n,t,s)
+                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                n.queue=[];t=b.createElement(e);t.async=!0;
+                t.src=v;s=b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t,s)}(window, document,'script',
+                'https://connect.facebook.net/en_US/fbevents.js');
+                fbq('init', '${META_PIXEL_ID}');
+                fbq('track', 'PageView');
+              `,
+            }}
+          />
+        )}
       </body>
     </html>
   );

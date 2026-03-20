@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { PortableText } from '@portabletext/react';
+import { defaultPortableTextComponents } from '@/app/lib/portableTextConfig';
 import { useAppContext } from './AppContext';
 import styles from './InformationV2.module.css';
 import PageFooter from './PageFooter';
@@ -25,6 +26,7 @@ function autoLinkChildren(children) {
 }
 
 const richComponents = {
+  ...defaultPortableTextComponents,
   block: {
     normal: ({ children }) => (
       <p className={styles.richItem}>{autoLinkChildren(children)}</p>
@@ -133,6 +135,7 @@ export default function InformationV2() {
               <PortableText
                 value={info.pageDescription}
                 components={{
+                  ...defaultPortableTextComponents,
                   block: {
                     normal: ({ children, value }) => {
                       const empty =

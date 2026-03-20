@@ -7,6 +7,7 @@ import { useAppContext } from '@/app/components/AppContext';
 import AboutAnimations from '@/app/components/AboutAnimations';
 import AboutInitAnimation from '@/app/components/AboutInitAnimation';
 import { PortableText } from "@portabletext/react";
+import { defaultPortableTextComponents } from "@/app/lib/portableTextConfig";
 import PageFooter from '@/app/components/PageFooter';
 // import TypeAnimation from '@/app/components/TypeAnimation';
 
@@ -36,7 +37,7 @@ export default function About() {
                         <h2 className="aboutTitle" data-init-animate>{aboutPageData.philosophyTitle}</h2>
                             {aboutPageData.philosophyDescription1 && (
                                 // <p className="aboutText" data-init-animate>{aboutPageData.philosophyDescription1}</p>
-                                <span className="aboutText" data-init-animate><PortableText value={aboutPageData.philosophyDescription1} /></span>
+                                <span className="aboutText" data-init-animate><PortableText value={aboutPageData.philosophyDescription1} components={defaultPortableTextComponents} /></span>
                             )}
                     </div>
                     {aboutPageData.philosophyProjectData && (
@@ -71,7 +72,7 @@ export default function About() {
                             <div className="projectIntro" data-animate>
                                 {aboutPageData.philosophyDescription2 && (
                                 // <p className="projectDescription">{aboutPageData.philosophyDescription2}</p>
-                                <span className="projectDescription"><PortableText value={aboutPageData.philosophyDescription2} /></span>
+                                <span className="projectDescription"><PortableText value={aboutPageData.philosophyDescription2} components={defaultPortableTextComponents} /></span>
                                 )}
                                 {aboutPageData.philosophyFeaturedImage?.asset?.url && (
                                 <div className='featureAnimated' data-animate>
@@ -102,7 +103,7 @@ export default function About() {
                     )}
                     {aboutPageData.storyDescription1 && (
                     // <p className="aboutText" data-animate>{aboutPageData.storyDescription1}</p>
-                    <span className="aboutText" data-animate><PortableText value={aboutPageData.storyDescription1} /></span>
+                    <span className="aboutText" data-animate><PortableText value={aboutPageData.storyDescription1} components={defaultPortableTextComponents} /></span>
                     )}
                 </div>
                 {aboutPageData.storyProjectData && (
@@ -131,7 +132,7 @@ export default function About() {
                         <div className="projectIntro">
                             {aboutPageData.storyDescription2 && (
                             // <p className="projectDescription" data-animate>{aboutPageData.storyDescription2}</p>
-                            <span className="projectDescription" data-animate><PortableText value={aboutPageData.storyDescription2} /></span>
+                            <span className="projectDescription" data-animate><PortableText value={aboutPageData.storyDescription2} components={defaultPortableTextComponents} /></span>
                             
                             )}
                             {aboutPageData.storyFeaturedImage?.asset?.url && (
@@ -161,7 +162,7 @@ export default function About() {
                         )}
                         {aboutPageData.whoDescription1 && (
                         // <p className="aboutText"data-animate>{aboutPageData.whoDescription1}</p>
-                        <span className="aboutText" data-animate><PortableText value={aboutPageData.whoDescription1} /></span>
+                        <span className="aboutText" data-animate><PortableText value={aboutPageData.whoDescription1} components={defaultPortableTextComponents} /></span>
                         )}
                     </div>
                     {aboutPageData.whoProjectData && (
@@ -190,7 +191,7 @@ export default function About() {
                             <div className="projectIntro">
                                 {aboutPageData.whoDescription2 && (
                                 // <p className="projectDescription" data-animate>{aboutPageData.whoDescription2}</p>
-                                <span className="projectDescription" data-animate><PortableText value={aboutPageData.whoDescription2} /></span>
+                                <span className="projectDescription" data-animate><PortableText value={aboutPageData.whoDescription2} components={defaultPortableTextComponents} /></span>
                                 )}
                                 {aboutPageData.whoFeaturedImage?.asset?.url && (
                                 <div className='featureAnimated' data-animate><Image
