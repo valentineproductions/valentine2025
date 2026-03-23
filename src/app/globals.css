@@ -361,21 +361,21 @@ header.navBar.homeNavBar + main {
 }
 
 
-.homePage section > *:not(.locationsNemail) {
-  /* Target all direct children that are NOT .locationsNemail */
+.homePage section > *:not([data-locations-email]) {
+  /* Target all direct children that are NOT LocationsAndEmail */
   margin-top: auto; /* Push them towards the top (due to space-between) */
   margin-bottom: auto; /* Keep them centered vertically within the available space */
   text-align: center;
   width: 100%;
 }
 
-.homePage section.one > *:not(.locationsNemail) {
+.homePage section.one > *:not([data-locations-email]) {
   /* Special handling for the first section if needed */
   margin-top: auto;
   margin-bottom: auto;
 }
 
-.homePage section.two > *:not(.locationsNemail) {
+.homePage section.two > *:not([data-locations-email]) {
   /* Special handling for the second section if needed */
   margin-top: auto;
   margin-bottom: auto;
@@ -390,47 +390,10 @@ header.navBar.homeNavBar + main {
   margin:20px; /*I need this one for it to appear*/
 }
 
-.homePage section.four > *:not(.locationsNemail) {
+.homePage section.four > *:not([data-locations-email]) {
   /* Special handling for the fourth section if needed */
   margin-top: auto;
   margin-bottom: auto;
-}
-
-.locationsNemail {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: 10px 0 20px 0;
-  font-family: 'Helvetica Neue', sans-serif;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 500;
-  gap: 6px;
-}
-
-.locationsNemail2 {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: 10px 0 20px 0;
-  font-family: 'Helvetica Neue', sans-serif;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 500;
-  gap: 6px;
-}
-
-.locationsCodes,
-.homeEmail {
-  margin: 0;
-}
-
-.homeEmail a {
-  text-decoration: none;
 }
 
 #VideoBG, .videos {
@@ -489,7 +452,7 @@ section.sloganVideo.two {
 
 
 /* Shadow to help read text over home video */
-header.navBar.homeNavBar a, .homeBody .menu-trigger, section.sloganVideo h2, .locationsNemail p, .locationsNemail a, .locationsNemail2 p, .locationsNemail2 a, .servicesDescription p, .servicesLists, .servicesSection h2, .processSection h2, .processDescription, .processDescription p, .approachContainer p, .approachContainer h2, section.approachSection .pageNote {
+header.navBar.homeNavBar a, .homeBody .menu-trigger, section.sloganVideo h2, .servicesDescription p, .servicesLists, .servicesSection h2, .processSection h2, .processDescription, .processDescription p, .approachContainer p, .approachContainer h2, section.approachSection .pageNote {
   color: white;
   text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
   text-align: center;
@@ -902,26 +865,7 @@ header.navBar.homeNavBar a, .homeBody .menu-trigger, section.sloganVideo h2, .lo
   }
 }
 
-.homeLastVideoFooter {
-  display: none;
-  width: 100%;
-  padding: 20px 10px 50px 10px;
-  bottom: 0;
-  left: 0;
-  z-index: 10;
-}
-
-.homeLastVideoFooter.footerVisible {
-  display: block;
-}
-
-.homeLastVideoFooter.footerFixed {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-}
+/* homeLastVideoFooter base styles moved to HomeVideoFooter.module.css */
 
 .homeLastVideoFooter .pageNote {
   display: flex;
@@ -1799,9 +1743,6 @@ p.copyRightText b {
 
   .sideBar .connectSection {
       margin-bottom: 0px;
-  }
-  .locationsCodes, .homeEmail{
-    margin: 0 12px;
   }
   /* WIP */
   .clientInfo {

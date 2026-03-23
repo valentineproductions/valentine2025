@@ -434,6 +434,7 @@ export async function getLegalBySlug(slug) {
           },
         },
         "careersPage": *[_type == "careersPage"][0]{
+          showInNav,
           title,
           description,
           locations,
@@ -529,6 +530,7 @@ export async function getLegalBySlug(slug) {
           keywords
         },
         "aboutPageV2": *[_type == "aboutPageV2"][0]{
+          showInNav,
           title,
           pageDescription,
           backgroundOpacity,

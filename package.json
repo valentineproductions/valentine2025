@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@portabletext/react": "^3.2.1",
@@ -18,5 +19,8 @@
     "react-dom": "^19.0.0",
     "react-use": "^17.6.0",
     "sanity": "^3.86.0"
+  },
+  "devDependencies": {
+    "patch-package": "^8.0.1"
   }
 }

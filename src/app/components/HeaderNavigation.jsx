@@ -18,6 +18,8 @@ export default function HeaderNavigation() { // Default empty array
     const [menuOpen, setMenuOpen] = useState(false);
     const { allData } = useAppContext();
     const pages = allData?.pages || []; // Access the 'pages' array
+    const showCareersInNav = allData?.careersPage?.showInNav !== false;
+    const showInformationInNav = allData?.aboutPageV2?.showInNav !== false;
     // console.log("K------NAV WORKS Page Data:", pages); // Is working
 
     useEffect(() => {
@@ -98,12 +100,16 @@ export default function HeaderNavigation() { // Default empty array
                                         </Link>
                                     ) : null;
                                 })}
-                                <Link href="/information" className="homeNavLink" onClick={toggleMenu}>
-                                    {pathname === "/information" ? <b>Information</b> : "Information"}
-                                </Link>
-                                <Link href="/careers" className="homeNavLink" onClick={toggleMenu}>
-                                    {pathname === "/careers" ? <b>Careers</b> : "Careers"}
-                                </Link>
+                                {showInformationInNav && (
+                                    <Link href="/information" className="homeNavLink" onClick={toggleMenu}>
+                                        {pathname === "/information" ? <b>Information</b> : "Information"}
+                                    </Link>
+                                )}
+                                {showCareersInNav && (
+                                    <Link href="/careers" className="homeNavLink" onClick={toggleMenu}>
+                                        {pathname === "/careers" ? <b>Careers</b> : "Careers"}
+                                    </Link>
+                                )}
                             </div>
                         </MenuAnimation>
                     )}
@@ -118,12 +124,16 @@ export default function HeaderNavigation() { // Default empty array
                             </Link>
                         ) : null;
                     })}
-                    <Link href="/information" className="homeNavLink">
-                        {pathname === "/information" ? <b>Information</b> : "Information"}
-                    </Link>
-                    <Link href="/careers" className="homeNavLink">
-                        {pathname === "/careers" ? <b>Careers</b> : "Careers"}
-                    </Link>
+                    {showInformationInNav && (
+                        <Link href="/information" className="homeNavLink">
+                            {pathname === "/information" ? <b>Information</b> : "Information"}
+                        </Link>
+                    )}
+                    {showCareersInNav && (
+                        <Link href="/careers" className="homeNavLink">
+                            {pathname === "/careers" ? <b>Careers</b> : "Careers"}
+                        </Link>
+                    )}
                 </div>
             )}
         </header>

@@ -2,8 +2,8 @@
 import { PortableText } from '@portabletext/react';
 import { defaultPortableTextComponents } from '@/app/lib/portableTextConfig';
 import H2Animation from './H2Animator';
-import DivsAnimator from './DivsAnimator';
 import styles from './ServicesSection.module.css';
+import LocationsAndEmail from './LocationsAndEmail';
 
 const ServicesSection = ({ homePageData }) => {
   return (
@@ -22,15 +22,7 @@ const ServicesSection = ({ homePageData }) => {
           )}
         </div>
       </div>
-      {/* Services list intentionally removed when empty */}
-      <div className="locationsNemail">
-        <div className="locationsCodes">
-          <p>{homePageData.locations}</p>
-        </div>
-        <div className="homeEmail">
-          <a href={`mailto:${homePageData.email}`}>{homePageData.email}</a>
-        </div>
-      </div>
+      <LocationsAndEmail locations={homePageData?.locations} email={homePageData?.email} />
     </section>
   );
 };

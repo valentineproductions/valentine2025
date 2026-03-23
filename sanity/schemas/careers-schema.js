@@ -4,6 +4,13 @@ const careersPage = {
   type: 'document',
   fields: [
     {
+      name: 'showInNav',
+      title: 'Show in Navigation',
+      type: 'boolean',
+      description: 'When off, the Careers page will not appear in the main nav but will still be accessible via direct URL.',
+      initialValue: true,
+    },
+    {
       name: 'title',
       title: 'Page Title',
       type: 'string',

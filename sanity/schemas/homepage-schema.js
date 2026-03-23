@@ -93,8 +93,7 @@ const homepage = {
       title: 'Page Note',
       type: 'reference',
       to: { type: 'pageNote' },
-      description: 'Page note to associate with this homepage.',
-      validation: Rule => Rule.required(),
+      description: 'Page note to associate with this homepage. If empty, it will display the 2 fields above (Locations or Info & Email) in that area instead.',
       group: 'pageNoteGroup',
     },
     {

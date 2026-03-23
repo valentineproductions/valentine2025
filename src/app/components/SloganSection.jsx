@@ -1,6 +1,7 @@
 'use client';
 import Image from 'next/image';
 import H2Animation from './H2Animator';
+import LocationsAndEmail from './LocationsAndEmail';
 
 const SloganSection = ({ homePageData }) => {
   const hasLogo = !!homePageData?.logoSlogan;
@@ -31,14 +32,7 @@ const SloganSection = ({ homePageData }) => {
             </H2Animation>
           )
         )}
-        <div className="locationsNemail2">
-          <div className="locationsCodes">
-            <p>{homePageData.locations}</p>
-          </div>
-          <div className="homeEmail">
-            <a href={`mailto:${homePageData.email}`}>{homePageData.email}</a>
-          </div>
-        </div>
+        <LocationsAndEmail locations={homePageData?.locations} email={homePageData?.email} />
       </div>
     </section>
   );

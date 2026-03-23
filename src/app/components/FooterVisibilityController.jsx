@@ -1,10 +1,13 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
-export default function BackgroundImage({ src, alt }) {
-  const containerRef = useRef(null);
+/**
+ * Controls homeLastVideoFooter visibility based on scroll.
+ * Observes approachSection and logos - when they're in view, shows the footer.
+ * Must render regardless of home frame to work when homeFrame is empty.
+ */
+export default function FooterVisibilityController() {
   const [isFooterVisible, setIsFooterVisible] = useState(false);
 
   useEffect(() => {
@@ -29,29 +32,15 @@ export default function BackgroundImage({ src, alt }) {
     };
   }, []);
 
-  return (
-    <div className='coolBG' 
-      ref={containerRef}
-      style={{
-        position: 'fixed',
-        top: '20px',
-        left: 0,
-        right: 0,
-        height: '95%',
-        zIndex: -1,
-        pointerEvents: 'none',
-        transform: `scaleY(${isFooterVisible ? 0.95 : 1})`,
-        transformOrigin: 'top',
-        transition: 'transform 0.4s ease'
-      }}
-    >
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        style={{ objectFit: 'contain', pointerEvents: 'none' }}
-        priority
-      />
-    </div>
-  );
+  useEffect(() => {
+    const footer = document.querySelector('.homeLastVideoFooter');
+    if (!footer) return;
+    if (isFooterVisible) {
+      footer.classList.add('footerFixed', 'footerVisible');
+    } else {
+      footer.classList.remove('footerFixed', 'footerVisible');
+    }
+  }, [isFooterVisible]);
+
+  return null;
 }

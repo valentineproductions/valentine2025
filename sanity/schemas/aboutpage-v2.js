@@ -8,6 +8,14 @@ const aboutPageV2 = {
   ],
   fields: [
     {
+      name: 'showInNav',
+      title: 'Show in Navigation',
+      type: 'boolean',
+      description: 'When off, the Information page will not appear in the main nav but will still be accessible via direct URL.',
+      initialValue: true,
+      group: 'content',
+    },
+    {
       name: 'title',
       title: 'Page Title',
       type: 'text',
