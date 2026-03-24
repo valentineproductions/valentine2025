@@ -107,6 +107,42 @@ const teamMember = {
         description: 'Short video clip (7–15 sec, MP4) for the Directors list page. When hovering this director\'s name, this clip plays as the full-bleed background. Leave empty to skip.',
       },
       {
+        name: 'profileProjects',
+        title: 'Profile Projects',
+        type: 'array',
+        of: [
+          {
+            type: 'object',
+            fields: [
+              {
+                name: 'name',
+                title: 'Video Name',
+                type: 'string',
+                description: 'Name displayed below the director\'s name (e.g. project or video title).',
+              },
+              {
+                name: 'profileClip',
+                title: 'Profile Clip',
+                type: 'file',
+                options: {
+                  accept: 'video/mp4,video/webm',
+                },
+                description: 'Video clip (7–15 sec, MP4) for full-bleed background. Required for this to appear on the profile.',
+              },
+            ],
+            preview: {
+              select: {
+                title: 'name',
+              },
+              prepare({ title }) {
+                return { title: title || 'Untitled' };
+              },
+            },
+          },
+        ],
+        description: 'Projects shown on the director profile page. Each needs a profile clip. Used as fallback: directorsPageClip when empty.',
+      },
+      {
         name: 'categories',
         title: 'Categories',
         type: 'array',

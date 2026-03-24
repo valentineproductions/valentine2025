@@ -257,6 +257,12 @@ export async function getProject(slug) {
           directorsPageClip{
             asset->{ _id, url }
           },
+          profileProjects[]{
+            name,
+            profileClip{
+              asset->{ _id, url }
+            }
+          },
         },
         projects[]->{
           _id,
@@ -348,6 +354,12 @@ export async function getTeamMemberBySlug(slug) {
       directorsPageClip{
         asset->{ _id, url }
       },
+      profileProjects[]{
+        name,
+        profileClip{
+          asset->{ _id, url }
+        }
+      },
     }`,
     { slug }
   );
@@ -406,6 +418,12 @@ export async function getLegalBySlug(slug) {
             },
             directorsPageClip{
               asset->{ _id, url }
+            },
+            profileProjects[]{
+              name,
+              profileClip{
+                asset->{ _id, url }
+              }
             },
           },
           projects[]->{   // Added from getFullPagesData

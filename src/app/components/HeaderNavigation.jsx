@@ -13,7 +13,7 @@ export default function HeaderNavigation() { // Default empty array
     const pathname = usePathname();
     // console.log("Current PATH :", pathname); // To check the current page
     const isHomePage = pathname === '/';
-    const isDirectorsPage = pathname === '/directors';
+    const isDirectorsPage = pathname === '/directors' || pathname?.startsWith?.('/directors/');
     const headerClasses = `navBar ${isHomePage ? 'homeNavBar' : ''} ${isDirectorsPage ? 'directorsNavBar' : ''}`;
     const [isMobile, setIsMobile] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
