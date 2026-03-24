@@ -98,6 +98,15 @@ const teamMember = {
         description: 'Array of Simian video embeds for this team member.',
       },
       {
+        name: 'directorsPageClip',
+        title: 'Directors Page Clip',
+        type: 'file',
+        options: {
+          accept: 'video/mp4,video/webm',
+        },
+        description: 'Short video clip (7–15 sec, MP4) for the Directors list page. When hovering this director\'s name, this clip plays as the full-bleed background. Leave empty to skip.',
+      },
+      {
         name: 'categories',
         title: 'Categories',
         type: 'array',

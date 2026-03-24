@@ -3,21 +3,10 @@
 import { useAppContext } from "@/app/components/AppContext";
 import { usePathname } from 'next/navigation';
 import { useMemo, useEffect, useState } from 'react';
-import TeamMembersGallery from "@/app/components/TeamMembersGallery";
 import WorkGalleryV2 from "@/app/components/WorkGalleryV2";
-import WorkGalleryV3 from "@/app/components/WorkGalleryV3";
-import TalentHorizontalHeader from "@/app/components/TalentHorizontalHeader";
-import DirectorsList from "@/app/components/DirectorsList";
-import DirectorsListv4 from "@/app/components/DirectorsListv4";
-import DirectorsListOpt2v4 from "@/app/components/DirectorsListOpt2v4";
-import DirectorsListOpt5 from "@/app/components/DirectorsListOpt5";
-import TalentPageHeaderOriginal from "@/app/components/TalentPageHeaderOriginal"; // Backup - original centered layout
+import DirectorsPageFullBleed from "@/app/components/DirectorsPageFullBleed";
 import WorkPageHeader from "@/app/components/WorkPageHeader";
-import PageFooter from "@/app/components/PageFooter";
 import PageErrorState from "@/app/components/PageErrorState";
-import TalentPageHeader from "@/app/components/TalentPageHeader";
-import WorkGallery from "@/app/components/WorkGallery"; // Kept for future use
-import SoonAnimation from "@/app/components/SoonAnimation";
 import LegalContent from "@/app/components/LegalContent";
 import { getLegalBySlug } from "../../../../sanity/schemas/sanity-utils";
 import { PortableText } from "@portabletext/react";
@@ -43,7 +32,6 @@ export default function Page() {
     const isTalentPage = pathname === '/directors';
     const isWorkPage = pathname === '/work';
     const isLegalPage = !isTalentPage && !isWorkPage && !!slug;
-    const currentPage = isTalentPage ? pageTalent : pageWork;
 
     // Legal data state
     const [legal, setLegal] = useState(null);
@@ -73,24 +61,6 @@ export default function Page() {
     return(
         // HEADERS
         <div className="pageContainer">
-            {/* Dynamic Header based on current page */}
-            
-            {/* {isTalentPage && (
-                <TalentPageHeader 
-                    pageTitle={pageTalent.pageTitle}
-                    pageDescription={pageTalent.pageDescription}
-                    contactInfo={pageTalent.contactInfo}
-                />
-            )} */}
-            
-            {isTalentPage && (
-                <TalentHorizontalHeader 
-                    indexTitle={pageTalent.indexTitle}
-                    pageTitle={pageTalent.pageTitle}
-                    pageDescription={pageTalent.pageDescription}
-                />
-            )}
-            
             {isWorkPage && (
                 <WorkPageHeader 
                     pageTitle={pageWork.pageTitle}
@@ -118,54 +88,16 @@ export default function Page() {
 
             {/* PAGE CONTENT */}
             <div className="pageContent">
-                {/* Talent Page Content */}
-                
-                {/* New Component Opt5 */}
-                {/* MEMBERS SECTION v4 / this one will be a grid of 3 columns, each column will have a team member */}
-                {/* {isTalentPage && (
-                    <DirectorsListv4 directors={pageTalent.teamMembers} />
-                )} */}
-
-                {/* Option2 */}
-                {/* MEMBERS SECTION Opt2v4 / 30/70 split with updated styling 2026*/}
-                {/* {isTalentPage && (
-                    <DirectorsListOpt2v4 directors={pageTalent.teamMembers} />
-                )} */}
-
-                {/* MEMBERS SECTION Opt5 / text-only directory layout */}
+                {/* Directors Page - full-bleed video, names (directors with directorsPageClip only) */}
                 {isTalentPage && (
-                    <DirectorsListOpt5 directors={pageTalent.teamMembers} />
+                    <DirectorsPageFullBleed directors={pageTalent.teamMembers} />
                 )}
-                
-                {/* {isTalentPage && (
-                    <TeamMembersGallery teamMembers={pageTalent.teamMembers} />
-                )} */}
 
-                {/* SoonAnimation alternative: */}
-                {/* {isTalentPage && (
-                    <div className="gallery">
-                        <SoonAnimation>{currentPage.tbd}</SoonAnimation>
-                    </div>
-                )} */}
-               
-
-                {/* Work Page Content */}
-                {/* {isWorkPage && (
-                    <WorkGalleryV3 projects={pageWork.projects} />
-                )} */}
-                
                 {isWorkPage && (
                     <WorkGalleryV2 projects={pageWork.projects} />
                 )}
 
-                {/* {isWorkPage && (
-                    <WorkGallery projects={pageWork.projects} />
-                )} */}
-
                 {isLegalPage && (!legalLoading) && (legal?.content ? <LegalContent value={legal.content} /> : <PageErrorState missingPages={['Legal']} />)}
-
-                {/* Footer / Page Note */}
-                <PageFooter pageNote={allData?.pageNote || allData?.homepage?.pageNote || allData?.aboutPage?.pageNote} />
             </div>
         </div>
     )

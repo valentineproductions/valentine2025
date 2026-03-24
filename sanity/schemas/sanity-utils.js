@@ -254,6 +254,9 @@ export async function getProject(slug) {
             embedCode,
             videoName
           },
+          directorsPageClip{
+            asset->{ _id, url }
+          },
         },
         projects[]->{
           _id,
@@ -342,6 +345,9 @@ export async function getTeamMemberBySlug(slug) {
         embedCode,
         videoName
       },
+      directorsPageClip{
+        asset->{ _id, url }
+      },
     }`,
     { slug }
   );
@@ -397,6 +403,9 @@ export async function getLegalBySlug(slug) {
             videos[]{
               embedCode,
               videoName
+            },
+            directorsPageClip{
+              asset->{ _id, url }
             },
           },
           projects[]->{   // Added from getFullPagesData

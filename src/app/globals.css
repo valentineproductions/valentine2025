@@ -156,6 +156,43 @@ textarea:focus-visible,
   width: 100%;
 }
 
+/* Directors page nav - white text over full-bleed video */
+.navBar.directorsNavBar {
+  background-color: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.navBar.directorsNavBar .homeNavLink,
+.navBar.directorsNavBar a,
+.navBar.directorsNavBar span.menu-trigger {
+  color: white;
+}
+
+.navBar.directorsNavBar .homeNavLink::after,
+.navBar.directorsNavBar a::after,
+.navBar.directorsNavBar span.menu-trigger::after {
+  background-color: white;
+}
+
+.navBar.directorsNavBar .homeNavLink:hover,
+.navBar.directorsNavBar a:hover,
+.navBar.directorsNavBar span.menu-trigger:hover {
+  color: rgb(220, 220, 220);
+}
+
+.navBar.directorsNavBar img {
+  filter: brightness(0) invert(1);
+}
+
+.navBar.directorsNavBar a:focus-visible,
+.navBar.directorsNavBar .homeNavLink:focus-visible,
+.navBar.directorsNavBar span.menu-trigger:focus-visible {
+  outline-color: #fff;
+}
+
 /* Existing styles for the non-homepage navigation bar */
 .homeNavLink {
   color: var(--foreground);
@@ -266,6 +303,10 @@ textarea:focus-visible,
 
 .menuOverlay.pageOverlay {
   background-color: rgba(255, 255, 255, 0.8);
+}
+
+.menuOverlay.directorsOverlay {
+  background-color: rgba(95, 27, 25, 0.92);
 }
 
 .menuOverlay.visible {

@@ -1,0 +1,63 @@
+.wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.videoLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  pointer-events: none;
+}
+
+.videoLayer.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.namesOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* gap: 3px; */
+  pointer-events: none;
+}
+
+.nameLink {
+  pointer-events: auto;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: white;
+  text-decoration: none;
+  text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+  transition: opacity 0.2s ease;
+  opacity: 0.8;
+}
+
+.nameLink.nameLinkActive {
+  opacity: 1;
+  font-weight: bold;
+}
+
+/* .nameLink:hover {
+  text-decoration: underline;
+} */

@@ -13,7 +13,8 @@ export default function HeaderNavigation() { // Default empty array
     const pathname = usePathname();
     // console.log("Current PATH :", pathname); // To check the current page
     const isHomePage = pathname === '/';
-    const headerClasses = `navBar ${isHomePage ? 'homeNavBar' : ''}`;
+    const isDirectorsPage = pathname === '/directors';
+    const headerClasses = `navBar ${isHomePage ? 'homeNavBar' : ''} ${isDirectorsPage ? 'directorsNavBar' : ''}`;
     const [isMobile, setIsMobile] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const { allData } = useAppContext();
@@ -72,7 +73,7 @@ export default function HeaderNavigation() { // Default empty array
             </Link>
             {isMobile && menuOpen && (
                 <div
-                    className={`menuOverlay ${isHomePage ? 'homeOverlay' : 'pageOverlay'} visible`}
+                    className={`menuOverlay ${isHomePage ? 'homeOverlay' : isDirectorsPage ? 'directorsOverlay' : 'pageOverlay'} visible`}
                     onClick={() => setMenuOpen(false)}
                 />
             )}
