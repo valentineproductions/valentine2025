@@ -1,3 +1,14 @@
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .wrapper {
   position: fixed;
   top: 0;
@@ -54,6 +65,12 @@
   padding: 24px 20px;
 }
 
+.bioBarAnimate {
+  opacity: 0;
+  animation: fadeUp 0.5s ease-out both;
+  animation-delay: var(--bio-delay, 400ms);
+}
+
 .directorInfo {
   display: flex;
   flex-direction: column;
@@ -66,7 +83,11 @@
   font-weight: 500;
   letter-spacing: 0.02em;
   color: white;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  /* text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5); */
+}
+
+.directorInfoLineAnimate {
+  animation: fadeUp 0.6s ease-out 0.1s both;
 }
 
 /* Mobile: line break after director name */
@@ -86,7 +107,7 @@
 
 .projectName {
   font-weight: 400;
-  opacity: 0.8;
+  opacity: 0.5;
 }
 
 .bioLink {
@@ -144,9 +165,26 @@
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.05em;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.5);
   text-align: right;
   transition: opacity 0.2s ease;
+}
+
+.projectRowAnimate {
+  opacity: 0;
+  animation: iconFadeUp 0.5s ease-out both;
+  animation-delay: var(--icon-delay, 0ms);
+}
+
+@keyframes iconFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .projectRow:hover,
@@ -156,11 +194,28 @@
 }
 
 .projectRow:not(.projectRowActive) {
-  opacity: 0.8;
+  opacity: 0.5;
 }
 
 .projectItemName {
   white-space: nowrap;
+}
+
+/* Desktop: names hidden by default, animate in on projectNav hover */
+@media (min-width: 768px) {
+  .projectItemName {
+    max-width: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(6px);
+    transition: max-width 0.3s ease, opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .projectNav:hover .projectItemName {
+    max-width: 280px;
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 /* Play (triangle) for active, Stop (square) for inactive - compact */
@@ -210,7 +265,39 @@
   .directorInfoLine {
     font-size: 28px;
   }
+}
 
+/* Director name overlay - shown above bio modal, same position as center bar */
+.directorNameOverlay {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 101;
+  max-width: 2000px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  pointer-events: none;
+}
+
+.directorNameOverlayText {
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: white;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 768px) {
+  .directorNameOverlay {
+    padding: 32px 20px;
+  }
+
+  .directorNameOverlayText {
+    font-size: 28px;
+  }
 }
 
 /* Bio overlay */
@@ -230,6 +317,78 @@
 
 .bioOverlay > * {
   pointer-events: auto;
+}
+
+.bioOverlayEnter {
+  animation: bioModalIn 0.35s ease-out both;
+}
+
+.bioOverlayClosing {
+  animation: bioModalOut 0.3s ease-in both;
+}
+
+.directorNameOverlay.bioOverlayEnter {
+  animation: bioModalIn 0.35s ease-out both;
+}
+
+.directorNameOverlay.bioOverlayClosing {
+  animation: bioModalOut 0.3s ease-in both;
+}
+
+@keyframes bioModalIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.bioOverlayEnter .bioBackdrop {
+  animation: bioModalIn 0.35s ease-out both;
+}
+
+.bioOverlayEnter .bioWrapper {
+  animation: bioModalPanelIn 0.4s ease-out 0.05s both;
+}
+
+.bioOverlayClosing .bioBackdrop {
+  animation: bioModalOut 0.3s ease-in both;
+}
+
+.bioOverlayClosing .bioWrapper {
+  animation: bioModalPanelOut 0.25s ease-in both;
+}
+
+@keyframes bioModalPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bioModalPanelOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+}
+
+@keyframes bioModalOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 .bioBackdrop {

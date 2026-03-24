@@ -8,7 +8,9 @@ import styles from './DirectorPageVideoV3.module.css';
 export default function DirectorPageVideoV3({ member }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [bioOpen, setBioOpen] = useState(false);
+  const [bioClosing, setBioClosing] = useState(false);
   const [bioUppercase, setBioUppercase] = useState(false);
+  const [animationsDone, setAnimationsDone] = useState(false);
   const longPressRef = useRef(null);
   const videoRefs = useRef([]);
 
@@ -48,8 +50,19 @@ export default function DirectorPageVideoV3({ member }) {
   }, [bioOpen]);
 
   useEffect(() => {
-    if (!bioOpen) setBioUppercase(false);
-  }, [bioOpen]);
+    if (!bioOpen && !bioClosing) setBioUppercase(false);
+  }, [bioOpen, bioClosing]);
+
+  const handleBioClose = () => {
+    setBioClosing(true);
+  };
+
+  const handleBioAnimationEnd = (e) => {
+    if (bioClosing && e.target === e.currentTarget) {
+      setBioOpen(false);
+      setBioClosing(false);
+    }
+  };
 
   if (items.length === 0) {
     return null;
@@ -75,6 +88,11 @@ export default function DirectorPageVideoV3({ member }) {
   const currentItem = items[activeIndex];
   const hasBio = member?.bio && member.bio.length > 0;
 
+  // Remove animation class once last item finishes (enables cascade for opacity)
+  const handleIconAnimationEnd = () => {
+    setAnimationsDone(true);
+  };
+
   return (
     <div className={styles.wrapper}>
       {items.map((item, index) => {
@@ -99,7 +117,7 @@ export default function DirectorPageVideoV3({ member }) {
       {/* Center bar: vertically centered, director name + video name */}
       <div className={styles.centerBar}>
         <div className={styles.directorInfo}>
-          <div className={styles.directorInfoLine}>
+          <div className={`${styles.directorInfoLine} ${styles.directorInfoLineAnimate}`}>
             <span className={styles.directorName}>
               {member?.fullName?.toUpperCase() || member?.fullName}
             </span>
@@ -116,9 +134,11 @@ export default function DirectorPageVideoV3({ member }) {
               <button
                 key={item.id}
                 type="button"
-                className={`${styles.projectRow} ${isActive ? styles.projectRowActive : ''}`}
+                className={`${styles.projectRow} ${!animationsDone ? styles.projectRowAnimate : ''} ${isActive ? styles.projectRowActive : ''}`}
+                style={{ '--icon-delay': `${index * 80}ms` }}
                 onMouseEnter={() => handleMouseEnter(index)}
                 onClick={() => handleDotClick(index)}
+                onAnimationEnd={index === items.length - 1 ? handleIconAnimationEnd : undefined}
               >
                 <span className={styles.projectItemName}>{item.name}</span>
                 <span
@@ -133,7 +153,7 @@ export default function DirectorPageVideoV3({ member }) {
 
       {/* BIO link - fixed at bottom, same on mobile */}
       {hasBio && (
-        <div className={styles.bioBar}>
+        <div className={`${styles.bioBar} ${styles.bioBarAnimate}`} style={{ '--bio-delay': `${100 + items.length * 80}ms` }}>
           <button
             type="button"
             className={styles.bioLink}
@@ -145,14 +165,22 @@ export default function DirectorPageVideoV3({ member }) {
       )}
 
       {/* Bio overlay - click anywhere to close, video keeps playing underneath */}
-      {bioOpen && (
+      {(bioOpen || bioClosing) && (
+        <>
+        {/* Director name brought upfront, same position, above modal */}
+        <div className={`${styles.directorNameOverlay} ${bioClosing ? styles.bioOverlayClosing : styles.bioOverlayEnter}`}>
+          <span className={styles.directorNameOverlayText}>
+            {member?.fullName?.toUpperCase() || member?.fullName}
+          </span>
+        </div>
         <div
-          className={styles.bioOverlay}
+          className={`${styles.bioOverlay} ${bioClosing ? styles.bioOverlayClosing : styles.bioOverlayEnter}`}
           role="dialog"
           aria-modal="true"
           aria-label="Biography"
+          onAnimationEnd={handleBioAnimationEnd}
         >
-          <div className={styles.bioBackdrop} onClick={() => setBioOpen(false)} />
+          <div className={styles.bioBackdrop} onClick={handleBioClose} />
           <div className={styles.bioWrapper} onClick={(e) => e.stopPropagation()}>
             <div
               className={styles.bioPanel}
@@ -175,6 +203,7 @@ export default function DirectorPageVideoV3({ member }) {
             </div>
           </div>
         </div>
+        </>
       )}
     </div>
   );

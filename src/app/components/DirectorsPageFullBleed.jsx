@@ -63,7 +63,8 @@ export default function DirectorsPageFullBleed({ directors }) {
             <Link
               key={director._id}
               href={`/directors/${director.slug}`}
-              className={`${styles.nameLink} ${isActive ? styles.nameLinkActive : ''}`}
+              className={`${styles.nameLink} ${isActive ? styles.nameLinkActive : ''} ${styles.nameLinkAnimate}`}
+              style={{ '--name-delay': `${index * 80}ms` }}
               onMouseEnter={() => handleMouseEnter(index)}
             >
               {director.fullName?.toUpperCase() || director.fullName}
