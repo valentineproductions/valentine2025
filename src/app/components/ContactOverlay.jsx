@@ -70,7 +70,7 @@ export default function ContactOverlay() {
   return (
     <>
       <div
-        className={`${styles.contactBar}${isDirectorsPage ? ` ${styles.contactBarLight}` : ''}`}
+        className={`${styles.contactBar} ${styles.contactBarEnter}${isDirectorsPage ? ` ${styles.contactBarLight}` : ''}`}
       >
         <button
           type="button"

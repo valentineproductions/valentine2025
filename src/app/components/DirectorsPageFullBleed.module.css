@@ -78,6 +78,11 @@
   font-weight: bold;
 }
 
+.nameLink:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.95);
+  outline-offset: 4px;
+}
+
 /* .nameLink:hover {
   text-decoration: underline;
 } */

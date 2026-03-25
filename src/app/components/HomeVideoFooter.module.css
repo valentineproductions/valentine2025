@@ -2,7 +2,7 @@
 .wrapper {
   display: none;
   width: 100%;
-  padding: 20px 10px 24px 10px;
+  /* padding: 20px 10px 24px 10px; */
   bottom: 0;
   left: 0;
   z-index: 10;
@@ -18,5 +18,5 @@
   left: 0;
   right: 0;
   width: 100%;
-  padding: 20px 10px 7px;
+  /* padding: 20px 10px 7px; */
 }

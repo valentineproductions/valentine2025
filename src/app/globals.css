@@ -806,6 +806,23 @@ header.navBar.homeNavBar a, .homeBody .menu-trigger, section.sloganVideo h2, .se
 
   @media (max-width: 767px) {
 
+  /* Home: reduce phantom scroll / rubber-band past last section (mobile 100vh vs dynamic toolbar) */
+  .homePage .container {
+    height: 100vh;
+    max-height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow-y: auto;
+    overscroll-behavior-y: none;
+  }
+
+  .homePage .approachContainer {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    flex: 1 1 auto;
+  }
+
   .servicesSection h2 {
     padding: 100px 0 0 0;
   }
