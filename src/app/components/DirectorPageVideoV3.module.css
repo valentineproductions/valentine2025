@@ -115,6 +115,28 @@
   opacity: 0.5;
 }
 
+.projectNameSwap {
+  display: inline-block;
+  animation: projectNameSwapIn 0.38s ease-out both;
+}
+
+@keyframes projectNameSwapIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.45em);
+  }
+  to {
+    opacity: 0.5;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projectNameSwap {
+    animation: none;
+  }
+}
+
 .bioLink {
   position: relative;
   background: none;
@@ -155,7 +177,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 6px;
+  gap: 30px;
 }
 
 .projectRow {
@@ -206,8 +228,26 @@
   white-space: nowrap;
 }
 
-/* Desktop: names hidden by default, animate in on projectNav hover */
+/* Desktop: names hidden by default, animate in on projectNav hover or row focus */
 @media (min-width: 768px) {
+  .projectRow {
+    position: relative;
+    z-index: 0;
+    /* Wider hit area: ~200px left of icons, ~25px extra top/bottom (50px total height) */
+    padding: 27px 0 27px 200px;
+    margin: -25px 0 -25px -200px;
+  }
+
+  .projectRow:hover,
+  .projectRow:focus-visible {
+    z-index: 2;
+  }
+
+  .projectRow:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.95);
+    outline-offset: 6px;
+  }
+
   .projectItemName {
     max-width: 0;
     overflow: hidden;
@@ -216,33 +256,23 @@
     transition: max-width 0.3s ease, opacity 0.25s ease, transform 0.25s ease;
   }
 
-  .projectNav:hover .projectItemName {
+  .projectNav:hover .projectItemName,
+  .projectRow:focus-visible .projectItemName {
     max-width: 280px;
     opacity: 1;
     transform: translateX(0);
   }
 }
 
-/* Play (triangle) for active, Stop (square) for inactive - compact */
-.mediaIcon {
+/* Play / stop bullets from public/play-bullet.svg + stop-bullet.svg */
+.mediaIconImg {
   display: block;
   flex-shrink: 0;
+  width: 5px;
+  height: auto;
+  aspect-ratio: 281 / 318;
+  object-fit: contain;
   transition: opacity 0.2s ease;
-}
-
-.mediaIconStop {
-  width: 4px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.7);
-}
-
-.mediaIconPlay {
-  width: 0;
-  height: 0;
-  background: none;
-  border-left: 6px solid white;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
 }
 
 /* Mobile: show icons only, hide names (title already under director name) */

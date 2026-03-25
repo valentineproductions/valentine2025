@@ -18,6 +18,7 @@ export default function DirectorPageVideoV3({ member }) {
   const longPressRef = useRef(null);
   const videoRefs = useRef([]);
   const swipeTouchStartRef = useRef(null);
+  const projectBtnRefs = useRef([]);
 
   // Build items: profileProjects with profileClip, or fallback to directorsPageClip
   const items = (() => {
@@ -116,6 +117,34 @@ export default function DirectorPageVideoV3({ member }) {
   const handleMouseEnter = (index) => setActiveIndex(index);
   const handleDotClick = (index) => setActiveIndex(index);
 
+  const focusProjectButton = useCallback((index) => {
+    const i = Math.max(0, Math.min(items.length - 1, index));
+    requestAnimationFrame(() => {
+      projectBtnRefs.current[i]?.focus();
+    });
+  }, [items.length]);
+
+  const handleProjectKeyDown = useCallback(
+    (e, index) => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        const next = Math.min(items.length - 1, index + 1);
+        if (next !== index) {
+          setActiveIndex(next);
+          focusProjectButton(next);
+        }
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const prev = Math.max(0, index - 1);
+        if (prev !== index) {
+          setActiveIndex(prev);
+          focusProjectButton(prev);
+        }
+      }
+    },
+    [items.length, focusProjectButton]
+  );
+
   const handleBioLongPressStart = () => {
     longPressRef.current = setTimeout(() => {
       setBioUppercase((prev) => !prev);
@@ -174,7 +203,12 @@ export default function DirectorPageVideoV3({ member }) {
             </span>
             {' '}
             <br className={styles.mobileBreak} />
-            <span className={styles.projectName}>{currentItem?.name || ''}</span>
+            <span
+              key={currentItem?.id ?? activeIndex}
+              className={`${styles.projectName} ${styles.projectNameSwap}`}
+            >
+              {currentItem?.name || ''}
+            </span>
           </div>
         </div>
 
@@ -184,16 +218,29 @@ export default function DirectorPageVideoV3({ member }) {
             return (
               <button
                 key={item.id}
+                ref={(el) => {
+                  projectBtnRefs.current[index] = el;
+                }}
                 type="button"
                 className={`${styles.projectRow} ${!animationsDone ? styles.projectRowAnimate : ''} ${isActive ? styles.projectRowActive : ''}`}
                 style={{ '--icon-delay': `${index * 80}ms` }}
+                aria-current={isActive ? 'true' : undefined}
+                aria-label={`${item.name}${isActive ? ', current clip' : ''}`}
                 onMouseEnter={() => handleMouseEnter(index)}
                 onClick={() => handleDotClick(index)}
+                onKeyDown={(e) => handleProjectKeyDown(e, index)}
                 onAnimationEnd={index === items.length - 1 ? handleIconAnimationEnd : undefined}
               >
-                <span className={styles.projectItemName}>{item.name}</span>
-                <span
-                  className={`${styles.mediaIcon} ${isActive ? styles.mediaIconPlay : styles.mediaIconStop}`}
+                <span className={styles.projectItemName} aria-hidden="true">
+                  {item.name}
+                </span>
+                <img
+                  src={isActive ? '/play-bullet.svg' : '/stop-bullet.svg'}
+                  alt=""
+                  className={styles.mediaIconImg}
+                  width={281}
+                  height={318}
+                  decoding="async"
                   aria-hidden
                 />
               </button>
@@ -234,7 +281,12 @@ export default function DirectorPageVideoV3({ member }) {
                   </span>
                   {' '}
                   <br className={styles.mobileBreak} />
-                  <span className={styles.projectName}>{currentItem?.name || ''}</span>
+                  <span
+                    key={currentItem?.id ?? activeIndex}
+                    className={`${styles.projectName} ${styles.projectNameSwap}`}
+                  >
+                    {currentItem?.name || ''}
+                  </span>
                 </div>
               </div>
               <div className={styles.bioWrapper}>
