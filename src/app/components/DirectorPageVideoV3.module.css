@@ -53,6 +53,11 @@
   align-items: center;
 }
 
+/* While bio modal is open: hide in-bar title so the stacked copy in .bioColumn is the only one */
+.centerBarBioOpen .directorInfo {
+  visibility: hidden;
+}
+
 /* BIO bar - fixed at bottom, same on mobile */
 .bioBar {
   position: absolute;
@@ -267,39 +272,6 @@
   }
 }
 
-/* Director name overlay - shown above bio modal, same position as center bar */
-.directorNameOverlay {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
-  z-index: 101;
-  max-width: 2000px;
-  margin: 0 auto;
-  padding: 24px 20px;
-  pointer-events: none;
-}
-
-.directorNameOverlayText {
-  font-family: 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: white;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
-}
-
-@media (min-width: 768px) {
-  .directorNameOverlay {
-    padding: 32px 20px;
-  }
-
-  .directorNameOverlayText {
-    font-size: 28px;
-  }
-}
-
 /* Bio overlay */
 .bioOverlay {
   position: fixed;
@@ -308,14 +280,52 @@
   right: 0;
   bottom: 0;
   z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
   pointer-events: none;
 }
 
-.bioOverlay > * {
+/*
+ * Same horizontal shell as .centerBar / nav: max-width 2000px, centered, matching padding.
+ * Outer column only handles position + layout box; inner stack runs panel transform animation
+ * so translateY(-50%) is not overwritten by keyframes.
+ */
+.bioColumn {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 101;
+  max-width: 2000px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 20px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.bioColumnStack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  max-width: min(750px, 100%);
+  pointer-events: none;
+}
+
+.bioColumnStack > * {
+  pointer-events: auto;
+}
+
+.bioTitleBlock {
+  width: 100%;
+}
+
+.bioTitleBlock .directorInfoLine {
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.bioOverlay > .bioBackdrop {
   pointer-events: auto;
 }
 
@@ -324,14 +334,6 @@
 }
 
 .bioOverlayClosing {
-  animation: bioModalOut 0.3s ease-in both;
-}
-
-.directorNameOverlay.bioOverlayEnter {
-  animation: bioModalIn 0.35s ease-out both;
-}
-
-.directorNameOverlay.bioOverlayClosing {
   animation: bioModalOut 0.3s ease-in both;
 }
 
@@ -348,7 +350,7 @@
   animation: bioModalIn 0.35s ease-out both;
 }
 
-.bioOverlayEnter .bioWrapper {
+.bioOverlayEnter .bioColumnStack {
   animation: bioModalPanelIn 0.4s ease-out 0.05s both;
 }
 
@@ -356,7 +358,7 @@
   animation: bioModalOut 0.3s ease-in both;
 }
 
-.bioOverlayClosing .bioWrapper {
+.bioOverlayClosing .bioColumnStack {
   animation: bioModalPanelOut 0.25s ease-in both;
 }
 
@@ -403,14 +405,14 @@
 
 .bioWrapper {
   position: relative;
-  max-width: 560px;
   width: 100%;
+  max-width: 560px;
 }
 
 .bioPanel {
   position: relative;
-  max-width: 560px;
-  max-height: 80vh;
+  width: 100%;
+  max-height: min(80vh, 480px);
   overflow-y: auto;
   background: rgba(0, 0, 0, 0.6);
   padding: 32px;
@@ -438,22 +440,42 @@
 }
 
 @media (max-width: 767px) {
-  /* Bio modal: lower on screen - below director name/title, above BIO bar */
-  .bioOverlay {
-    align-items: flex-end;
+  /* Title + bio stacked from upper area; room for BIO bar at bottom */
+  .bioColumn {
+    top: max(72px, 8vh);
+    transform: none;
+    /* padding: 16px 20px 96px; */
+    padding: 246px 20px 96px;
+    max-height: calc(100vh - 24px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .bioWrapper {
-    margin-bottom: 72px; /* Clear the BIO bar */
-    margin-top: 55vh;    /* Start below center (director name + title) */
+  .bioColumnStack {
+    gap: 16px;
+    max-width: none;
   }
 
   .bioPanel {
-    max-height: 38vh;
+    max-height: min(42vh, 360px);
     padding: 24px;
   }
 
   .bioContent {
     font-size: 13px;
+  }
+}
+
+@media (min-width: 768px) {
+  .bioColumn {
+    padding: 150px 20px 32px 20px;
+  }
+
+  .bioColumnStack {
+    gap: 24px;
+  }
+
+  .bioPanel {
+    max-height: min(70vh, 560px);
   }
 }

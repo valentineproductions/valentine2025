@@ -1,9 +1,12 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { PortableText } from '@portabletext/react';
 import { defaultPortableTextComponents } from '@/app/lib/portableTextConfig';
 import styles from './DirectorPageVideoV3.module.css';
+
+const MOBILE_SWIPE_MAX_WIDTH = 767;
+const SWIPE_MIN_PX = 56;
 
 export default function DirectorPageVideoV3({ member }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -11,8 +14,10 @@ export default function DirectorPageVideoV3({ member }) {
   const [bioClosing, setBioClosing] = useState(false);
   const [bioUppercase, setBioUppercase] = useState(false);
   const [animationsDone, setAnimationsDone] = useState(false);
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
   const longPressRef = useRef(null);
   const videoRefs = useRef([]);
+  const swipeTouchStartRef = useRef(null);
 
   // Build items: profileProjects with profileClip, or fallback to directorsPageClip
   const items = (() => {
@@ -31,6 +36,18 @@ export default function DirectorPageVideoV3({ member }) {
     return [];
   })();
 
+  const handleBioClose = useCallback(() => {
+    setBioClosing(true);
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${MOBILE_SWIPE_MAX_WIDTH}px)`);
+    const onChange = () => setIsMobileViewport(mq.matches);
+    onChange();
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
   useEffect(() => {
     videoRefs.current.forEach((video, i) => {
       if (!video) return;
@@ -43,19 +60,17 @@ export default function DirectorPageVideoV3({ member }) {
   }, [activeIndex]);
 
   useEffect(() => {
-    if (!bioOpen) return;
-    const handleEscape = (e) => { if (e.key === 'Escape') setBioOpen(false); };
+    if (!bioOpen && !bioClosing) return;
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') handleBioClose();
+    };
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
-  }, [bioOpen]);
+  }, [bioOpen, bioClosing, handleBioClose]);
 
   useEffect(() => {
     if (!bioOpen && !bioClosing) setBioUppercase(false);
   }, [bioOpen, bioClosing]);
-
-  const handleBioClose = () => {
-    setBioClosing(true);
-  };
 
   const handleBioAnimationEnd = (e) => {
     if (bioClosing && e.target === e.currentTarget) {
@@ -63,6 +78,36 @@ export default function DirectorPageVideoV3({ member }) {
       setBioClosing(false);
     }
   };
+
+  const handleSwipeTouchStart = useCallback(
+    (e) => {
+      if (!isMobileViewport || bioOpen || bioClosing || items.length < 2) return;
+      const t = e.targetTouches?.[0];
+      if (!t) return;
+      swipeTouchStartRef.current = { x: t.clientX, y: t.clientY };
+    },
+    [isMobileViewport, bioOpen, bioClosing, items.length]
+  );
+
+  const handleSwipeTouchEnd = useCallback(
+    (e) => {
+      const start = swipeTouchStartRef.current;
+      swipeTouchStartRef.current = null;
+      if (!start || !isMobileViewport || bioOpen || bioClosing || items.length < 2) return;
+      const t = e.changedTouches?.[0];
+      if (!t) return;
+      const dx = t.clientX - start.x;
+      const dy = t.clientY - start.y;
+      if (Math.abs(dy) < SWIPE_MIN_PX || Math.abs(dy) < Math.abs(dx)) return;
+      /* Finger moves up → next clip; moves down → previous */
+      if (dy < 0) {
+        setActiveIndex((i) => Math.min(items.length - 1, i + 1));
+      } else {
+        setActiveIndex((i) => Math.max(0, i - 1));
+      }
+    },
+    [isMobileViewport, bioOpen, bioClosing, items.length]
+  );
 
   if (items.length === 0) {
     return null;
@@ -94,7 +139,11 @@ export default function DirectorPageVideoV3({ member }) {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <div
+      className={styles.wrapper}
+      onTouchStart={handleSwipeTouchStart}
+      onTouchEnd={handleSwipeTouchEnd}
+    >
       {items.map((item, index) => {
         const isActive = activeIndex === index;
         return (
@@ -115,7 +164,9 @@ export default function DirectorPageVideoV3({ member }) {
       })}
 
       {/* Center bar: vertically centered, director name + video name */}
-      <div className={styles.centerBar}>
+      <div
+        className={`${styles.centerBar} ${bioOpen || bioClosing ? styles.centerBarBioOpen : ''}`}
+      >
         <div className={styles.directorInfo}>
           <div className={`${styles.directorInfoLine} ${styles.directorInfoLineAnimate}`}>
             <span className={styles.directorName}>
@@ -166,13 +217,6 @@ export default function DirectorPageVideoV3({ member }) {
 
       {/* Bio overlay - click anywhere to close, video keeps playing underneath */}
       {(bioOpen || bioClosing) && (
-        <>
-        {/* Director name brought upfront, same position, above modal */}
-        <div className={`${styles.directorNameOverlay} ${bioClosing ? styles.bioOverlayClosing : styles.bioOverlayEnter}`}>
-          <span className={styles.directorNameOverlayText}>
-            {member?.fullName?.toUpperCase() || member?.fullName}
-          </span>
-        </div>
         <div
           className={`${styles.bioOverlay} ${bioClosing ? styles.bioOverlayClosing : styles.bioOverlayEnter}`}
           role="dialog"
@@ -181,29 +225,42 @@ export default function DirectorPageVideoV3({ member }) {
           onAnimationEnd={handleBioAnimationEnd}
         >
           <div className={styles.bioBackdrop} onClick={handleBioClose} />
-          <div className={styles.bioWrapper} onClick={(e) => e.stopPropagation()}>
-            <div
-              className={styles.bioPanel}
-              onClick={(e) => e.stopPropagation()}
-              onMouseDown={handleBioLongPressStart}
-              onMouseUp={handleBioLongPressEnd}
-              onMouseLeave={handleBioLongPressEnd}
-              onTouchStart={handleBioLongPressStart}
-              onTouchEnd={handleBioLongPressEnd}
-              onContextMenu={(e) => e.preventDefault()}
-            >
-              <div
-                className={`${styles.bioContent} ${bioUppercase ? styles.bioContentUppercase : ''}`}
-              >
-                <PortableText
-                  value={member.bio}
-                  components={defaultPortableTextComponents}
-                />
+          <div className={styles.bioColumn} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.bioColumnStack}>
+              <div className={styles.bioTitleBlock}>
+                <div className={styles.directorInfoLine}>
+                  <span className={styles.directorName}>
+                    {member?.fullName?.toUpperCase() || member?.fullName}
+                  </span>
+                  {' '}
+                  <br className={styles.mobileBreak} />
+                  <span className={styles.projectName}>{currentItem?.name || ''}</span>
+                </div>
+              </div>
+              <div className={styles.bioWrapper}>
+                <div
+                  className={styles.bioPanel}
+                  onClick={(e) => e.stopPropagation()}
+                  onMouseDown={handleBioLongPressStart}
+                  onMouseUp={handleBioLongPressEnd}
+                  onMouseLeave={handleBioLongPressEnd}
+                  onTouchStart={handleBioLongPressStart}
+                  onTouchEnd={handleBioLongPressEnd}
+                  onContextMenu={(e) => e.preventDefault()}
+                >
+                  <div
+                    className={`${styles.bioContent} ${bioUppercase ? styles.bioContentUppercase : ''}`}
+                  >
+                    <PortableText
+                      value={member.bio}
+                      components={defaultPortableTextComponents}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        </>
       )}
     </div>
   );

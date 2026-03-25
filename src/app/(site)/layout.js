@@ -3,6 +3,7 @@ import Script from "next/script";
 import { headers } from "next/headers";
 import { AppProvider } from "../components/AppContext";
 import HeaderNavigation from "../components/HeaderNavigation";
+import ContactOverlay from "../components/ContactOverlay";
 import HomeChecker from "../components/HomeChecker";
 import { getAllPagesData, getHomeSEOData } from "../../../sanity/schemas/sanity-utils";
 import { Analytics } from "@vercel/analytics/next"
@@ -78,6 +79,7 @@ export default async function RootLayout({ children }) {
         <HeaderNavigation pages={pages} />
         
         <main>{children}</main>
+        <ContactOverlay />
         </AppProvider>
         <Analytics />
         {/* Meta Pixel - skip on localhost to avoid Madgicx 404 (third-party integration) */}
