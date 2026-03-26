@@ -74,7 +74,17 @@
 /* Directors full-bleed: white trigger (class set from pathname, same rule as HeaderNavigation) */
 .contactBarLight .contactTrigger {
   color: white;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: none;
+}
+
+.contactBarWorkMotion .contactTrigger {
+  color: #fff;
+  text-shadow: none;
+}
+
+.contactBarWorkStills .contactTrigger {
+  color: #5f1b19;
+  text-shadow: none;
 }
 
 .overlay {

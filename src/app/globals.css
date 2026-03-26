@@ -193,7 +193,7 @@ textarea:focus-visible,
   outline-color: #fff;
 }
 
-/* Work page nav — fixed, hide/show, Motion vs Stills chrome */
+/* Work page nav — motion: plain white; stills: plain #5f1b19 (no shadows) */
 .navBar.workNavBar {
   position: fixed;
   top: 0;
@@ -212,6 +212,7 @@ textarea:focus-visible,
 .navBar.workNavBar:not(.workNavStillsLight) a,
 .navBar.workNavBar:not(.workNavStillsLight) span.menu-trigger {
   color: #fff;
+  text-shadow: none;
 }
 
 .navBar.workNavBar:not(.workNavStillsLight) .homeNavLink::after,
@@ -222,6 +223,11 @@ textarea:focus-visible,
 
 .navBar.workNavBar:not(.workNavStillsLight) .workModeOpt {
   color: #fff;
+  text-shadow: none;
+}
+
+.navBar.workNavBar:not(.workNavStillsLight) .workModeSep {
+  text-shadow: none;
 }
 
 .navBar.workNavBar:not(.workNavStillsLight) a:focus-visible,
@@ -235,17 +241,16 @@ textarea:focus-visible,
 .navBar.workNavBar.workNavStillsLight a,
 .navBar.workNavBar.workNavStillsLight span.menu-trigger {
   color: #5f1b19;
-  text-shadow:
-    0 0 20px rgba(255, 255, 255, 0.95),
-    0 0 1px rgba(255, 255, 255, 0.9),
-    0 1px 2px rgba(255, 255, 255, 0.8);
+  text-shadow: none;
 }
 
 .navBar.workNavBar.workNavStillsLight .workModeOpt {
   color: #5f1b19;
-  text-shadow:
-    0 0 18px rgba(255, 255, 255, 0.9),
-    0 1px 2px rgba(255, 255, 255, 0.85);
+  text-shadow: none;
+}
+
+.navBar.workNavBar.workNavStillsLight .workModeSep {
+  text-shadow: none;
 }
 
 .workNavLogoInvert {

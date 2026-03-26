@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { useAppContext } from './AppContext';
+import { useWorkPageChrome } from './WorkModeContext';
 import styles from './ContactOverlay.module.css';
 
 function formatMailto(email) {
@@ -15,6 +16,7 @@ function formatMailto(email) {
 export default function ContactOverlay() {
   const { allData } = useAppContext();
   const pathname = usePathname();
+  const workChrome = useWorkPageChrome();
   const pageNote = allData?.pageNote;
 
   const [open, setOpen] = useState(false);
@@ -23,6 +25,13 @@ export default function ContactOverlay() {
   const isStudio = pathname?.startsWith?.('/studio');
   const isDirectorsPage =
     pathname === '/directors' || pathname?.startsWith?.('/directors/');
+  const isWorkPage = pathname === '/work';
+  const workContactChrome =
+    isWorkPage && workChrome?.mode === 'stills'
+      ? styles.contactBarWorkStills
+      : isWorkPage && workChrome?.mode === 'motion'
+        ? styles.contactBarWorkMotion
+        : '';
 
   const handleClose = useCallback(() => setClosing(true), []);
 
@@ -70,7 +79,7 @@ export default function ContactOverlay() {
   return (
     <>
       <div
-        className={`${styles.contactBar} ${styles.contactBarEnter}${isDirectorsPage ? ` ${styles.contactBarLight}` : ''}`}
+        className={`${styles.contactBar} ${styles.contactBarEnter}${isDirectorsPage ? ` ${styles.contactBarLight}` : ''}${workContactChrome ? ` ${workContactChrome}` : ''}`}
       >
         <button
           type="button"

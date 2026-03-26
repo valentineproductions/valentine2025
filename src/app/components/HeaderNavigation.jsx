@@ -65,7 +65,10 @@ export default function HeaderNavigation() { // Default empty array
     const logoData =
         (isHomePage ? pages[0]?.pageCompanyLogoWhite : pages[0]?.pageCompanyLogo) || {};
 
-    const workLogoInvert = isWorkPage && workChrome && !workChrome.workNavStillsLight;
+    const workLogoChromeClass =
+        isWorkPage && workChrome && !workChrome.workNavStillsLight
+            ? 'workNavLogoInvert'
+            : '';
 
     const handleLogoClick = () => {
         if (menuOpen) setMenuOpen(false);
@@ -136,7 +139,7 @@ export default function HeaderNavigation() { // Default empty array
             width={77}
             height={18}
             priority
-            className={workLogoInvert ? 'workNavLogoInvert' : ''}
+            className={workLogoChromeClass}
         />
     );
 
