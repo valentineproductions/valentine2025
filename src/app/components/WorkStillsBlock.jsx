@@ -1,21 +1,17 @@
 'use client';
 
 import Image from 'next/image';
+import { useRef } from 'react';
 import WorkStillsParallaxMedia from './WorkStillsParallaxMedia';
-import { resolveImageUrl, resolveStillsImages } from './workStillsUtils';
+import {
+  resolveImageUrl,
+  resolveStillsImages,
+  resolveImageParallaxStrength,
+} from './workStillsUtils';
 import styles from './WorkStills.module.css';
 
-function imageStrength(im, blockDefault) {
-  if (
-    typeof im.parallaxStrength === 'number' &&
-    !Number.isNaN(im.parallaxStrength)
-  ) {
-    return im.parallaxStrength;
-  }
-  return blockDefault;
-}
-
 export default function WorkStillsBlock({ item }) {
+  const parallaxRootRef = useRef(null);
   const layoutRaw = item.layout;
   const layout =
     layoutRaw === 'fullBleed' ||
@@ -42,9 +38,13 @@ export default function WorkStillsBlock({ item }) {
     const url = resolveImageUrl(im);
     if (!url) return null;
     const alt = im.alt || item.title || `Still ${idx + 1}`;
-    const s = imageStrength(im, strength);
+    const s = resolveImageParallaxStrength(im, strength);
     return (
-      <WorkStillsParallaxMedia key={`${url}-${idx}`} strength={s}>
+      <WorkStillsParallaxMedia
+        key={`${url}-${idx}`}
+        rootRef={parallaxRootRef}
+        strength={s}
+      >
         <Image
           src={url}
           alt={alt}
@@ -69,7 +69,10 @@ export default function WorkStillsBlock({ item }) {
   if (layout === 'twoColumn') {
     const pair = images.slice(0, 2);
     return (
-      <article className={`${styles.block} ${styles.blockStaggerPair}`}>
+      <article
+        ref={parallaxRootRef}
+        className={`${styles.block} ${styles.blockStaggerPair}`}
+      >
         <div className={`${styles.mediaShell} ${styles.mediaShellPair}`}>
           <div className={styles.pairRow}>
             {pair.map((im, idx) => (
@@ -101,7 +104,10 @@ export default function WorkStillsBlock({ item }) {
   if (layout === 'dualImageTextRow') {
     const pair = images.slice(0, 2);
     return (
-      <article className={`${styles.block} ${styles.blockPairFlat}`}>
+      <article
+        ref={parallaxRootRef}
+        className={`${styles.block} ${styles.blockPairFlat}`}
+      >
         <div className={`${styles.mediaShell} ${styles.mediaShellPair}`}>
           <div className={`${styles.pairRow} ${styles.pairRowFlat}`}>
             {pair.map((im, idx) => (
@@ -140,7 +146,7 @@ export default function WorkStillsBlock({ item }) {
   const imageGridClass = [styles.imageGrid, gridExtra].filter(Boolean).join(' ');
 
   return (
-    <article className={`${styles.block} ${layoutMod}`}>
+    <article ref={parallaxRootRef} className={`${styles.block} ${layoutMod}`}>
       <div className={styles.mediaShell}>
         {count > 0 && (
           <div className={imageGridClass}>

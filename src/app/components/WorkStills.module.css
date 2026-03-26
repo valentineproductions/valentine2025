@@ -1,13 +1,13 @@
-/* Work page Stills — scoped to WorkStills*.jsx; shell class stays global for [slug]/page.js */
+/* Page wrapper lives on [slug]/page.js; breakout uses data attr so styles stay in this module */
 
-:global(.workPageStillsShell) {
+.pageShell {
   width: 100%;
   max-width: none;
   margin: 0;
   padding: 0;
 }
 
-:global(main .pageContent:has(.workPageStillsShell)) {
+:global(main .pageContent:has([data-work-stills-shell])) {
   max-width: none;
   padding-left: 0;
   padding-right: 0;
@@ -42,10 +42,43 @@
   opacity: 0.07;
 }
 
+/* Same center as .bgMark; above watermark (z-index), below .feed; opacity driven by scroll */
+.sloganLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  user-select: none;
+  will-change: opacity;
+}
+
+/* Colored logo — same max frame as .bgMarkImg so it sits in the same center */
+.sloganLayerImg {
+  width: min(88vw, 720px) !important;
+  max-width: min(88vw, 720px);
+  max-height: min(70vh, 520px);
+  height: auto !important;
+  object-fit: contain;
+}
+
+/* Scrollable gap so the colored logo reads as its own “hero” before the stills feed */
+.heroSpacer {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-height: clamp(340px, 54vh, 640px);
+  margin-bottom: clamp(240px, 5vw, 56px);
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
 .feed {
   position: relative;
-  z-index: 1;
-  max-width: 2000px;
+  z-index: 2;
+  max-width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -56,16 +89,15 @@
 @media (min-width: 900px) {
   .feed {
     gap: 800px;
-    padding-top: clamp(200px, 22vh, 420px);
   }
 }
 
 .feed > .block:first-child {
-  margin-top: clamp(28px, 6vw, 72px);
+  margin-top: clamp(12px, 3vw, 40px);
 }
 
 .feed > .block:last-child {
-  margin-bottom: clamp(56px, 11vw, 180px);
+  margin-bottom: clamp(506px, 11vw, 180px);
 }
 
 .block {
@@ -234,17 +266,8 @@
   .pairRow {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
-  .blockStaggerPair .pairCell:nth-child(2) {
-    margin-top: clamp(48px, 12vw, 160px);
-  }
 }
 
-@media (max-width: 767px) {
-  .blockStaggerPair .pairCell:nth-child(2) {
-    margin-top: clamp(12px, 5vw, 36px);
-  }
-}
 
 .pairCell {
   min-width: 0;
@@ -263,6 +286,8 @@
 }
 
 .empty {
+  position: relative;
+  z-index: 2;
   min-height: 50vh;
   display: flex;
   align-items: center;
@@ -279,8 +304,36 @@
     padding: 0 clamp(24px, 4vw, 48px);
   }
 
+  .blockEditorial .imageGridCols3 {
+    align-items: start;
+  }
+
+  .blockEditorial .imageGridCols3 > :nth-child(1) {
+    margin-top: clamp(36px, 9vw, 120px);
+  }
+
+  .blockEditorial .imageGridCols3 > :nth-child(2) {
+    margin-top: 0;
+  }
+
+  .blockEditorial .imageGridCols3 > :nth-child(3) {
+    margin-top: clamp(72px, 16vw, 220px);
+  }
+
+  .blockEditorial .imageGridCols2 > :nth-child(2) {
+    margin-top: clamp(40px, 11vw, 140px);
+  }
+
   .blockEditorial .text {
     padding-top: 0.5rem;
+  }
+
+  .blockEditorial .text .title {
+    text-align: left;
+  }
+
+  .feed > .blockEditorial:nth-child(even) .text .title {
+    text-align: right;
   }
 
   .feed > .blockEditorial:nth-child(even) .mediaShell {
@@ -302,6 +355,17 @@
   width: 50%;
   margin: 0 auto;
   text-align: center;
+}
+
+@media (max-width: 767px) {
+  .blockCentered {
+    width: 100%;
+  }
+
+  .feed > .block:last-child {
+    margin-bottom: clamp(246px, 11vw, 180px);
+  }
+
 }
 
 .blockCentered .desc {

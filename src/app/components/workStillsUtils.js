@@ -15,3 +15,28 @@ export function resolveStillsImages(item) {
 export function resolveBackgroundLogoUrl(logo) {
   return logo?.url || logo?.asset?.url || null;
 }
+
+/**
+ * Effective parallax strength for one still image.
+ * Prefers `parallaxAdjust` (added to block baseline). Falls back to legacy
+ * per-image `parallaxStrength` as an absolute override, then block baseline.
+ */
+export function resolveImageParallaxStrength(im, blockBaseline) {
+  const B =
+    typeof blockBaseline === 'number' && !Number.isNaN(blockBaseline)
+      ? blockBaseline
+      : 35;
+  if (
+    typeof im?.parallaxAdjust === 'number' &&
+    !Number.isNaN(im.parallaxAdjust)
+  ) {
+    return Math.min(120, Math.max(0, B + im.parallaxAdjust));
+  }
+  if (
+    typeof im?.parallaxStrength === 'number' &&
+    !Number.isNaN(im.parallaxStrength)
+  ) {
+    return Math.min(120, Math.max(0, im.parallaxStrength));
+  }
+  return B;
+}

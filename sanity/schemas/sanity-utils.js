@@ -331,6 +331,7 @@ export async function getProject(slug) {
           images[]{
             alt,
             parallaxStrength,
+            parallaxAdjust,
             "url": asset->url,
             asset->{ _id, url }
           },
@@ -504,6 +505,7 @@ export async function getLegalBySlug(slug) {
             images[]{
               alt,
               parallaxStrength,
+              parallaxAdjust,
               "url": asset->url,
               asset->{ _id, url }
             },

@@ -7,6 +7,7 @@ import DirectorsPageFullBleed from "@/app/components/DirectorsPageFullBleed";
 import WorkMotionView from "@/app/components/WorkMotionView";
 import WorkStillsView from "@/app/components/WorkStillsView";
 import { useWorkPageChrome } from "@/app/components/WorkModeContext";
+import workStillsStyles from "@/app/components/WorkStills.module.css";
 import PageErrorState from "@/app/components/PageErrorState";
 import LegalContent from "@/app/components/LegalContent";
 import { getLegalBySlug } from "../../../../sanity/schemas/sanity-utils";
@@ -104,12 +105,16 @@ export default function Page() {
                 {isLegalPage && (!legalLoading) && (legal?.content ? <LegalContent value={legal.content} /> : <PageErrorState missingPages={['Legal']} />)}
 
                 {isWorkPage && (
-                    <div className={workChrome?.mode === 'stills' ? 'workPageStillsShell' : 'workPageMotionShell'}>
+                    <div
+                        className={workChrome?.mode === 'stills' ? workStillsStyles.pageShell : 'workPageMotionShell'}
+                        {...(workChrome?.mode === 'stills' ? { 'data-work-stills-shell': '' } : {})}
+                    >
                         {workChrome?.mode === 'stills' ? (
                             <WorkStillsView
                                 stills={pageWork.workStills}
                                 backgroundLogo={pageWork.workStillsBackgroundLogo}
                                 fallbackLogo={pageWork.pageCompanyLogo}
+                                pageCompanyLogo={pageWork.pageCompanyLogo}
                             />
                         ) : (
                             <WorkMotionView clips={pageWork.workMotionClips} />

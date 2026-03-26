@@ -1,0 +1,92 @@
+.workNavRow {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+}
+
+.workNavLogoLink {
+  margin-right: 0;
+  flex-shrink: 0;
+}
+
+.workNavCenter {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+.workNavRight {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.workModeToggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.workModeToggleMobile {
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 18px;
+  gap: 6px;
+}
+
+.workModeSep {
+  user-select: none;
+  font-weight: 900;
+}
+
+.themeMotion .workModeSep {
+  color: #fff;
+  opacity: 0.65;
+}
+
+.themeStills .workModeSep {
+  color: #5f1b19;
+  opacity: 0.45;
+}
+
+.workModeOpt {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.32px;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  text-shadow: none;
+}
+
+.themeMotion .workModeOpt {
+  color: #fff;
+}
+
+.themeStills .workModeOpt {
+  color: #5f1b19;
+}
+
+.themeMotion .workModeOpt:focus-visible {
+  outline-color: #fff;
+}
+
+.themeStills .workModeOpt:focus-visible {
+  outline-color: #5f1b19;
+}
+
+.workModeOptActive {
+  font-weight: 700;
+  opacity: 1;
+}
+
+.workModeOptMuted {
+  font-weight: 500;
+  opacity: 0.8;
+}

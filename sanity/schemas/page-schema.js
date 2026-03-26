@@ -1,3 +1,34 @@
+const WORK_STILLS_LAYOUT_LIST = [
+  {
+    title:
+      'One full bleed image row then title and description below',
+    value: 'fullBleed',
+  },
+  {
+    title: 'Centered one image with title and description',
+    value: 'centered',
+  },
+  {
+    title:
+      'One row two equal columns two images staggered then centered title and description below',
+    value: 'twoColumn',
+  },
+  {
+    title:
+      'One row two equal columns two images aligned then centered title and description below',
+    value: 'dualImageTextRow',
+  },
+  {
+    title:
+      'Up to three images staggered in a row with title and description beside',
+    value: 'threeColumn',
+  },
+];
+
+const WORK_STILLS_LAYOUT_LABEL = Object.fromEntries(
+  WORK_STILLS_LAYOUT_LIST.map((item) => [item.value, item.title]),
+);
+
 const page = {
     name: 'page',
     title: 'Pages',
@@ -144,7 +175,7 @@ const page = {
       },
       {
         name: 'workStillsBackgroundLogo',
-        title: 'Work Page — Stills background mark',
+        title: 'Work page stills background mark',
         type: 'image',
         description:
           'Optional large logo fixed behind Stills content (viewport center). Add on the Work page; appears only in Stills mode.',
@@ -159,7 +190,7 @@ const page = {
       },
       {
         name: 'workStills',
-        title: 'Work Page — Stills (editorial)',
+        title: 'Work page stills editorial',
         type: 'array',
         description: 'Stills with layout and optional parallax strength for scroll effect.',
         of: [
@@ -173,19 +204,7 @@ const page = {
                 description:
                   'Pick this first: it sets how many images you can add (1–3). Tablet shows max 2 columns, desktop up to 3.',
                 options: {
-                  list: [
-                    { title: 'Full bleed — 1 image', value: 'fullBleed' },
-                    { title: 'Centered — 1 image', value: 'centered' },
-                    {
-                      title: '3 columns, 2 for images + text (Left aligned)',
-                      value: 'twoColumn',
-                    },
-                    {
-                      title: '2 columns for images + 1 row for text',
-                      value: 'dualImageTextRow',
-                    },
-                    { title: 'Three column — up to 3 images + text', value: 'threeColumn' },
-                  ],
+                  list: WORK_STILLS_LAYOUT_LIST,
                   layout: 'radio',
                 },
                 initialValue: 'twoColumn',
@@ -207,12 +226,20 @@ const page = {
                         type: 'string',
                       },
                       {
-                        name: 'parallaxStrength',
-                        title: 'Parallax strength (this image)',
+                        name: 'parallaxAdjust',
+                        title: 'Parallax adjust vs block',
                         type: 'number',
                         description:
-                          'Optional. Overrides the block parallax so each image can scroll at a different rate (e.g. 20 vs 55).',
+                          'Optional. Added to the block baseline (e.g. +25 = stronger drift, −15 = subtler). Leave empty so this image matches the block exactly. Same baseline on all images keeps them aligned; different adjusts create separation while scrolling.',
+                        validation: (R) => R.min(-60).max(60),
+                      },
+                      {
+                        name: 'parallaxStrength',
+                        title: 'Parallax strength (legacy override)',
+                        type: 'number',
+                        description: 'Deprecated: use Parallax adjust vs block. If set (old entries), this absolute value is used instead of baseline + adjust.',
                         validation: (R) => R.min(0).max(120),
+                        hidden: true,
                       },
                     ],
                   },
@@ -256,9 +283,10 @@ const page = {
               },
               {
                 name: 'parallaxStrength',
-                title: 'Parallax strength',
+                title: 'Parallax baseline (block)',
                 type: 'number',
-                description: 'How much images shift vs scroll (e.g. 15–60). Higher = more movement.',
+                description:
+                  'Default drift for every image in this block. Per-image Parallax adjust adds or subtracts from this. Raise the baseline for stronger motion overall.',
                 initialValue: 35,
                 validation: (Rule) => Rule.min(0).max(120),
               },
@@ -287,9 +315,10 @@ const page = {
               },
               prepare({ title, imgs, legacy, layout }) {
                 const media = imgs?.[0] || legacy;
+                const key = layout || 'twoColumn';
                 return {
                   title: title || 'Still',
-                  subtitle: layout || 'twoColumn',
+                  subtitle: WORK_STILLS_LAYOUT_LABEL[key] || key,
                   media,
                 };
               },

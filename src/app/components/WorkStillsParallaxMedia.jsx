@@ -3,20 +3,38 @@
 import { useEffect, useRef, useCallback } from 'react';
 import styles from './WorkStills.module.css';
 
-export default function WorkStillsParallaxMedia({ strength, children }) {
-  const ref = useRef(null);
+/** Viewport based multiplier so motion stays noticeable on large screens. */
+function motionMultiplier(vh) {
+  return Math.min(520, Math.max(220, vh * 0.55));
+}
+
+export default function WorkStillsParallaxMedia({ strength, rootRef, children }) {
+  const wrapRef = useRef(null);
 
   const onScroll = useCallback(() => {
-    const el = ref.current;
+    const el = wrapRef.current;
     if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const vh = window.innerHeight || 1;
-    const center = rect.top + rect.height / 2;
-    const offset = (center - vh / 2) / vh;
-    const px = offset * (strength / 100) * 80;
     const inner = el.querySelector('[data-parallax-inner]');
-    if (inner) inner.style.transform = `translate3d(0, ${px}px, 0)`;
-  }, [strength]);
+    if (!inner) return;
+
+    const vh = window.innerHeight || 1;
+    const root = rootRef?.current;
+
+    let progress;
+    if (root) {
+      const r = root.getBoundingClientRect();
+      const blockCenter = r.top + r.height / 2;
+      progress = (blockCenter - vh / 2) / vh;
+    } else {
+      const rect = el.getBoundingClientRect();
+      const center = rect.top + rect.height / 2;
+      progress = (center - vh / 2) / vh;
+    }
+
+    const mult = motionMultiplier(vh);
+    const px = progress * (strength / 100) * mult;
+    inner.style.transform = `translate3d(0, ${px}px, 0)`;
+  }, [strength, rootRef]);
 
   useEffect(() => {
     onScroll();
@@ -29,7 +47,7 @@ export default function WorkStillsParallaxMedia({ strength, children }) {
   }, [onScroll]);
 
   return (
-    <div ref={ref} className={styles.parallaxWrap}>
+    <div ref={wrapRef} className={styles.parallaxWrap}>
       <div data-parallax-inner className={styles.parallaxInner}>
         {children}
       </div>

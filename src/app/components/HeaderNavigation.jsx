@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import MenuAnimation from './MenuAnimation';
 import { useAppContext } from './AppContext';
 import { useWorkPageChrome } from './WorkModeContext';
+import workPageNav from './WorkPageNav.module.css';
 
 export default function HeaderNavigation() { // Default empty array
     
@@ -76,33 +77,51 @@ export default function HeaderNavigation() { // Default empty array
 
     const slugLinks = isWorkPage ? ['directors'] : ['work', 'directors'];
 
-    const WorkModeToggle = ({ mobile }) => (
-        workChrome ? (
+    const WorkModeToggle = ({ mobile }) => {
+        if (!workChrome) return null;
+        const theme = workChrome.workNavStillsLight
+            ? workPageNav.themeStills
+            : workPageNav.themeMotion;
+        return (
             <div
-                className={`workModeToggle${mobile ? ' workModeToggleMobile' : ''}`}
+                className={[
+                    workPageNav.workModeToggle,
+                    mobile ? workPageNav.workModeToggleMobile : '',
+                    theme,
+                ].filter(Boolean).join(' ')}
                 role="group"
                 aria-label="Work view mode"
             >
                 <button
                     type="button"
-                    className={workChrome.mode === 'motion' ? 'workModeOpt workModeOptActive' : 'workModeOpt workModeOptMuted'}
+                    className={[
+                        workPageNav.workModeOpt,
+                        workChrome.mode === 'motion'
+                            ? workPageNav.workModeOptActive
+                            : workPageNav.workModeOptMuted,
+                    ].join(' ')}
                     onClick={() => { workChrome.setMode('motion'); if (mobile) setMenuOpen(false); }}
                 >
                     Motion
                 </button>
-                <span className="workModeSep" aria-hidden>
+                <span className={workPageNav.workModeSep} aria-hidden>
                     /
                 </span>
                 <button
                     type="button"
-                    className={workChrome.mode === 'stills' ? 'workModeOpt workModeOptActive' : 'workModeOpt workModeOptMuted'}
+                    className={[
+                        workPageNav.workModeOpt,
+                        workChrome.mode === 'stills'
+                            ? workPageNav.workModeOptActive
+                            : workPageNav.workModeOptMuted,
+                    ].join(' ')}
                     onClick={() => { workChrome.setMode('stills'); if (mobile) setMenuOpen(false); }}
                 >
                     Stills
                 </button>
             </div>
-        ) : null
-    );
+        );
+    };
 
     const renderPageLinks = (onItemClick) => (
         <>
@@ -150,14 +169,14 @@ export default function HeaderNavigation() { // Default empty array
                     {logo}
                 </Link>
             ) : isWorkPage ? (
-                <div className="workNavRow">
-                    <Link href="/" className="homeNavLink workNavLogoLink" onClick={handleLogoClick}>
+                <div className={workPageNav.workNavRow}>
+                    <Link href="/" className={`homeNavLink ${workPageNav.workNavLogoLink}`} onClick={handleLogoClick}>
                         {logo}
                     </Link>
-                    <div className="workNavCenter">
+                    <div className={workPageNav.workNavCenter}>
                         <WorkModeToggle mobile={false} />
                     </div>
-                    <div className="workNavRight homeNavLinksContainer">
+                    <div className={`${workPageNav.workNavRight} homeNavLinksContainer`}>
                         {renderPageLinks()}
                     </div>
                 </div>
