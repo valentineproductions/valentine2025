@@ -1,0 +1,215 @@
+'use client';
+
+import {
+  createContext,
+  useContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  Suspense,
+} from 'react';
+import { usePathname, useSearchParams, useRouter } from 'next/navigation';
+import styles from './WorkModeContext.module.css';
+
+export const WORK_MODE_STORAGE_KEY = 'workViewMode';
+
+/** Share Stills with `/work?stills`. Motion uses a clean `/work` URL (no query). */
+export const WORK_QUERY_STILLS = 'stills';
+
+function normalizeMode(s) {
+  return s === 'stills' ? 'stills' : 'motion';
+}
+
+const WorkModeContext = createContext(null);
+
+export function useWorkPageChrome() {
+  return useContext(WorkModeContext);
+}
+
+function WorkModeProviderSuspended({ children }) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const isWorkPage = pathname === '/work';
+
+  const [mode, setModeState] = useState('motion');
+  const [workNavHidden, setWorkNavHidden] = useState(false);
+  const [motionReveal, setMotionReveal] = useState(false);
+  const motionSlideIndexRef = useRef(0);
+  const lastWindowScrollRef = useRef(0);
+
+  useEffect(() => {
+    if (!isWorkPage) return;
+
+    if (searchParams.has('motion')) {
+      router.replace('/work', { scroll: false });
+      return;
+    }
+
+    if (searchParams.get('mode') === 'motion') {
+      router.replace('/work', { scroll: false });
+      return;
+    }
+
+    if (searchParams.get('mode') === 'stills') {
+      setModeState('stills');
+      try {
+        localStorage.setItem(WORK_MODE_STORAGE_KEY, 'stills');
+      } catch (_) {}
+      router.replace('/work?stills', { scroll: false });
+      return;
+    }
+
+    const hasStillsKey = searchParams.has(WORK_QUERY_STILLS);
+    const stillsVal = searchParams.get(WORK_QUERY_STILLS);
+    const wantsStills =
+      hasStillsKey &&
+      (stillsVal === '' ||
+        stillsVal === null ||
+        stillsVal === '1' ||
+        stillsVal === 'true' ||
+        (stillsVal && stillsVal !== '0' && stillsVal !== 'false'));
+
+    if (wantsStills) {
+      setModeState('stills');
+      try {
+        localStorage.setItem(WORK_MODE_STORAGE_KEY, 'stills');
+      } catch (_) {}
+      return;
+    }
+
+    try {
+      const stored = localStorage.getItem(WORK_MODE_STORAGE_KEY);
+      if (stored === 'stills') {
+        setModeState('stills');
+        router.replace('/work?stills', { scroll: false });
+        return;
+      }
+    } catch (_) {}
+
+    setModeState('motion');
+    try {
+      localStorage.setItem(WORK_MODE_STORAGE_KEY, 'motion');
+    } catch (_) {}
+  }, [isWorkPage, searchParams, router]);
+
+  const setMode = useCallback(
+    (m) => {
+      const next = normalizeMode(m);
+      setModeState(next);
+      try {
+        localStorage.setItem(WORK_MODE_STORAGE_KEY, next);
+      } catch (_) {}
+      router.replace(next === 'stills' ? '/work?stills' : '/work', { scroll: false });
+      setWorkNavHidden(false);
+      setMotionReveal(false);
+      motionSlideIndexRef.current = 0;
+    },
+    [router]
+  );
+
+  const reportMotionSlideIndex = useCallback(
+    (i) => {
+      motionSlideIndexRef.current = i;
+      if (!motionReveal) {
+        setWorkNavHidden(i > 0);
+      }
+    },
+    [motionReveal]
+  );
+
+  useEffect(() => {
+    if (!isWorkPage || mode !== 'stills') {
+      if (isWorkPage && mode === 'motion') return;
+      if (!isWorkPage) setWorkNavHidden(false);
+      return;
+    }
+    lastWindowScrollRef.current = typeof window !== 'undefined' ? window.scrollY : 0;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const prev = lastWindowScrollRef.current;
+      const dy = y - prev;
+      if (y < 32) {
+        setWorkNavHidden(false);
+      } else if (dy > 6) {
+        setWorkNavHidden(true);
+      } else if (dy < -6) {
+        setWorkNavHidden(false);
+      }
+      lastWindowScrollRef.current = y;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [isWorkPage, mode]);
+
+  useEffect(() => {
+    if (!isWorkPage || mode !== 'motion') return;
+    if (motionReveal) {
+      setWorkNavHidden(false);
+      return;
+    }
+    setWorkNavHidden(motionSlideIndexRef.current > 0);
+  }, [motionReveal, isWorkPage, mode]);
+
+  useEffect(() => {
+    if (!isWorkPage || mode !== 'motion' || !motionReveal) return;
+    const el = document.querySelector('[data-work-motion-scroll]');
+    if (!el) return;
+    const onScroll = () => {
+      if (el.scrollTop > 40 && motionSlideIndexRef.current > 0) {
+        setMotionReveal(false);
+      }
+    };
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, [motionReveal, isWorkPage, mode]);
+
+  const value = useMemo(() => {
+    if (!isWorkPage) return null;
+    return {
+      mode,
+      setMode,
+      workNavHidden,
+      workNavStillsLight: mode === 'stills',
+      motionReveal,
+      setMotionReveal,
+      reportMotionSlideIndex,
+      motionSlideIndexRef,
+    };
+  }, [
+    isWorkPage,
+    mode,
+    setMode,
+    workNavHidden,
+    motionReveal,
+    reportMotionSlideIndex,
+  ]);
+
+  const showMotionRevealZone =
+    isWorkPage && mode === 'motion' && workNavHidden && !motionReveal;
+
+  return (
+    <WorkModeContext.Provider value={value}>
+      {children}
+      {showMotionRevealZone && (
+        <button
+          type="button"
+          className={styles.motionRevealZone}
+          aria-label="Show navigation"
+          onMouseEnter={() => setMotionReveal(true)}
+          onClick={() => setMotionReveal(true)}
+        />
+      )}
+    </WorkModeContext.Provider>
+  );
+}
+
+export function WorkModeProvider({ children }) {
+  return (
+    <Suspense fallback={<>{children}</>}>
+      <WorkModeProviderSuspended>{children}</WorkModeProviderSuspended>
+    </Suspense>
+  );
+}

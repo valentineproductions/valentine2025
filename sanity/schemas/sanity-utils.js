@@ -312,6 +312,33 @@ export async function getProject(slug) {
           copyrightText,
           copyrightBrandName,
           copyrightYear
+        },
+        workMotionClips[]{
+          title,
+          description,
+          "videoUrl": videoFile.asset->url
+        },
+        workStillsBackgroundLogo{
+          alt,
+          "url": asset->url,
+          asset->{ _id, url }
+        },
+        workStills[]{
+          title,
+          description,
+          layout,
+          parallaxStrength,
+          images[]{
+            alt,
+            parallaxStrength,
+            "url": asset->url,
+            asset->{ _id, url }
+          },
+          image{
+            alt,
+            "url": asset->url,
+            asset->{ _id, url }
+          }
         }
       }`,
       { slug }
@@ -457,6 +484,33 @@ export async function getLegalBySlug(slug) {
                 alt,
                 sizePercent
               }
+            }
+          },
+          workMotionClips[]{
+            title,
+            description,
+            "videoUrl": videoFile.asset->url
+          },
+          workStillsBackgroundLogo{
+            alt,
+            "url": asset->url,
+            asset->{ _id, url }
+          },
+          workStills[]{
+            title,
+            description,
+            layout,
+            parallaxStrength,
+            images[]{
+              alt,
+              parallaxStrength,
+              "url": asset->url,
+              asset->{ _id, url }
+            },
+            image{
+              alt,
+              "url": asset->url,
+              asset->{ _id, url }
             }
           },
         },

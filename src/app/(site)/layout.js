@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { AppProvider } from "../components/AppContext";
 import HeaderNavigation from "../components/HeaderNavigation";
 import ContactOverlay from "../components/ContactOverlay";
+import { WorkModeProvider } from "../components/WorkModeContext";
 import HomeChecker from "../components/HomeChecker";
 import { getAllPagesData, getHomeSEOData } from "../../../sanity/schemas/sanity-utils";
 import { Analytics } from "@vercel/analytics/next"
@@ -74,12 +75,13 @@ export default async function RootLayout({ children }) {
       </head>
       <body>
       <AppProvider initialData={allData}>
-        <HomeChecker />
-        {/* Add homeNavBar if not a homepage (check with slug)... */}
-        <HeaderNavigation pages={pages} />
-        
-        <main>{children}</main>
-        <ContactOverlay />
+        <WorkModeProvider>
+          <HomeChecker />
+          <HeaderNavigation pages={pages} />
+
+          <main>{children}</main>
+          <ContactOverlay />
+        </WorkModeProvider>
         </AppProvider>
         <Analytics />
         {/* Meta Pixel - skip on localhost to avoid Madgicx 404 (third-party integration) */}

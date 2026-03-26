@@ -193,6 +193,142 @@ textarea:focus-visible,
   outline-color: #fff;
 }
 
+/* Work page nav — fixed, hide/show, Motion vs Stills chrome */
+.navBar.workNavBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  background-color: transparent;
+  transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navBar.workNavBar.workNavHidden {
+  transform: translateY(-100%);
+}
+
+.navBar.workNavBar:not(.workNavStillsLight) .homeNavLink,
+.navBar.workNavBar:not(.workNavStillsLight) a,
+.navBar.workNavBar:not(.workNavStillsLight) span.menu-trigger {
+  color: #fff;
+}
+
+.navBar.workNavBar:not(.workNavStillsLight) .homeNavLink::after,
+.navBar.workNavBar:not(.workNavStillsLight) a::after,
+.navBar.workNavBar:not(.workNavStillsLight) span.menu-trigger::after {
+  background-color: #fff;
+}
+
+.navBar.workNavBar:not(.workNavStillsLight) .workModeOpt {
+  color: #fff;
+}
+
+.navBar.workNavBar:not(.workNavStillsLight) a:focus-visible,
+.navBar.workNavBar:not(.workNavStillsLight) .homeNavLink:focus-visible,
+.navBar.workNavBar:not(.workNavStillsLight) span.menu-trigger:focus-visible,
+.navBar.workNavBar:not(.workNavStillsLight) .workModeOpt:focus-visible {
+  outline-color: #fff;
+}
+
+.navBar.workNavBar.workNavStillsLight .homeNavLink,
+.navBar.workNavBar.workNavStillsLight a,
+.navBar.workNavBar.workNavStillsLight span.menu-trigger {
+  color: #5f1b19;
+  text-shadow:
+    0 0 20px rgba(255, 255, 255, 0.95),
+    0 0 1px rgba(255, 255, 255, 0.9),
+    0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.navBar.workNavBar.workNavStillsLight .workModeOpt {
+  color: #5f1b19;
+  text-shadow:
+    0 0 18px rgba(255, 255, 255, 0.9),
+    0 1px 2px rgba(255, 255, 255, 0.85);
+}
+
+.workNavLogoInvert {
+  filter: brightness(0) invert(1);
+}
+
+.workNavRow {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+}
+
+.workNavLogoLink {
+  margin-right: 0;
+  flex-shrink: 0;
+}
+
+.workNavCenter {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+.workNavRight {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.workModeToggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.workModeToggleMobile {
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 18px;
+  gap: 6px;
+}
+
+.workModeSep {
+  opacity: 0.45;
+  user-select: none;
+  font-weight: 500;
+}
+
+.workModeOpt {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.32px;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+.workModeOptActive {
+  font-weight: 700;
+  opacity: 1;
+}
+
+.workModeOptMuted {
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.workPageMotionShell {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+main:has(.workPageMotionShell) {
+  min-height: 100vh;
+}
+
 /* Existing styles for the non-homepage navigation bar */
 .homeNavLink {
   color: var(--foreground);

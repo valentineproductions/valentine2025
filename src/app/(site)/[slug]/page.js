@@ -3,9 +3,10 @@
 import { useAppContext } from "@/app/components/AppContext";
 import { usePathname } from 'next/navigation';
 import { useMemo, useEffect, useState } from 'react';
-import WorkGalleryV2 from "@/app/components/WorkGalleryV2";
 import DirectorsPageFullBleed from "@/app/components/DirectorsPageFullBleed";
-import WorkPageHeader from "@/app/components/WorkPageHeader";
+import WorkMotionView from "@/app/components/WorkMotionView";
+import WorkStillsView from "@/app/components/WorkStillsView";
+import { useWorkPageChrome } from "@/app/components/WorkModeContext";
 import PageErrorState from "@/app/components/PageErrorState";
 import LegalContent from "@/app/components/LegalContent";
 import { getLegalBySlug } from "../../../../sanity/schemas/sanity-utils";
@@ -14,6 +15,7 @@ import { defaultPortableTextComponents } from "@/app/lib/portableTextConfig";
 
 export default function Page() {
     const pathname = usePathname();
+    const workChrome = useWorkPageChrome();
     const { allData } = useAppContext();
     const pagesData = allData?.pages || [];
 
@@ -61,13 +63,14 @@ export default function Page() {
     return(
         // HEADERS
         <div className="pageContainer">
-            {isWorkPage && (
+            {/* Valentine V3 Work Here */}
+            {/* {isWorkPage && (
                 <WorkPageHeader 
                     pageTitle={pageWork.pageTitle}
                     pageDescription={pageWork.pageDescription}
                     contactInfo={pageWork.contactInfo}
                 />
-            )}
+            )} */}
 
             {isLegalPage && (
                 <header>
@@ -92,12 +95,27 @@ export default function Page() {
                 {isTalentPage && (
                     <DirectorsPageFullBleed directors={pageTalent.teamMembers} />
                 )}
-
-                {isWorkPage && (
+                
+                {/* Valentine V3 Work Here */}
+                {/* {isWorkPage && (
                     <WorkGalleryV2 projects={pageWork.projects} />
-                )}
+                )} */}
 
                 {isLegalPage && (!legalLoading) && (legal?.content ? <LegalContent value={legal.content} /> : <PageErrorState missingPages={['Legal']} />)}
+
+                {isWorkPage && (
+                    <div className={workChrome?.mode === 'stills' ? 'workPageStillsShell' : 'workPageMotionShell'}>
+                        {workChrome?.mode === 'stills' ? (
+                            <WorkStillsView
+                                stills={pageWork.workStills}
+                                backgroundLogo={pageWork.workStillsBackgroundLogo}
+                                fallbackLogo={pageWork.pageCompanyLogo}
+                            />
+                        ) : (
+                            <WorkMotionView clips={pageWork.workMotionClips} />
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     )
