@@ -30,10 +30,10 @@ const LocationsAndEmailAnimator = ({ locations, email }) => {
   const fadeOut = () => {
     if (containerRef.current && hasAnimated.current) {
       gsap.to(containerRef.current, {
-        duration: 1,
+        duration: 0.25,
         opacity: 0,
-        y: -20,
-        ease: "power2.out"
+        y: -12,
+        ease: 'power2.out',
       });
       hasAnimated.current = false;
     }

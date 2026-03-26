@@ -15,14 +15,15 @@
   text-align: center;
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  transition-delay: 0s;
+  /* Fast when leaving view (scroll back up) */
+  transition: opacity 0.22s ease-out, transform 0.22s ease-out;
 }
 
 .root.visible {
   opacity: 1;
   transform: translateY(0);
-  transition-delay: 0.7s;
+  /* Slower entrance + delay unchanged; overrides .root for show only */
+  transition: opacity 0.55s ease-out 0.45s, transform 0.55s ease-out 0.45s;
 }
 
 .locationsCodes,

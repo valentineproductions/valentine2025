@@ -2,14 +2,14 @@
 
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import Link from 'next/link';
+import { useDirectorSwipeEnabled } from '@/app/lib/useDirectorSwipeEnabled';
 import styles from './DirectorsPageFullBleed.module.css';
 
-const MOBILE_SWIPE_MAX_WIDTH = 767;
 const SWIPE_MIN_PX = 56;
 
 export default function DirectorsPageFullBleed({ directors }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isMobileViewport, setIsMobileViewport] = useState(false);
+  const isSwipeEnabled = useDirectorSwipeEnabled();
   const videoRefs = useRef([]);
   const swipeTouchStartRef = useRef(null);
   const nameLinkRefs = useRef([]);
@@ -21,14 +21,6 @@ export default function DirectorsPageFullBleed({ directors }) {
   );
 
   const count = withClips.length;
-
-  useEffect(() => {
-    const mq = window.matchMedia(`(max-width: ${MOBILE_SWIPE_MAX_WIDTH}px)`);
-    const onChange = () => setIsMobileViewport(mq.matches);
-    onChange();
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
-  }, []);
 
   useEffect(() => {
     videoRefs.current.forEach((video, i) => {
@@ -43,19 +35,19 @@ export default function DirectorsPageFullBleed({ directors }) {
 
   const handleSwipeTouchStart = useCallback(
     (e) => {
-      if (!isMobileViewport || count < 2) return;
+      if (!isSwipeEnabled || count < 2) return;
       const t = e.targetTouches?.[0];
       if (!t) return;
       swipeTouchStartRef.current = { x: t.clientX, y: t.clientY };
     },
-    [isMobileViewport, count]
+    [isSwipeEnabled, count]
   );
 
   const handleSwipeTouchEnd = useCallback(
     (e) => {
       const start = swipeTouchStartRef.current;
       swipeTouchStartRef.current = null;
-      if (!start || !isMobileViewport || count < 2) return;
+      if (!start || !isSwipeEnabled || count < 2) return;
       const t = e.changedTouches?.[0];
       if (!t) return;
       const dx = t.clientX - start.x;
@@ -67,7 +59,7 @@ export default function DirectorsPageFullBleed({ directors }) {
         setActiveIndex((i) => Math.max(0, i - 1));
       }
     },
-    [isMobileViewport, count]
+    [isSwipeEnabled, count]
   );
 
   const focusNameLink = useCallback(

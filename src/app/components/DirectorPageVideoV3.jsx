@@ -3,9 +3,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { PortableText } from '@portabletext/react';
 import { defaultPortableTextComponents } from '@/app/lib/portableTextConfig';
+import { useDirectorSwipeEnabled } from '@/app/lib/useDirectorSwipeEnabled';
 import styles from './DirectorPageVideoV3.module.css';
 
-const MOBILE_SWIPE_MAX_WIDTH = 767;
 const SWIPE_MIN_PX = 56;
 
 export default function DirectorPageVideoV3({ member }) {
@@ -14,7 +14,7 @@ export default function DirectorPageVideoV3({ member }) {
   const [bioClosing, setBioClosing] = useState(false);
   const [bioUppercase, setBioUppercase] = useState(false);
   const [animationsDone, setAnimationsDone] = useState(false);
-  const [isMobileViewport, setIsMobileViewport] = useState(false);
+  const isSwipeEnabled = useDirectorSwipeEnabled();
   const longPressRef = useRef(null);
   const videoRefs = useRef([]);
   const swipeTouchStartRef = useRef(null);
@@ -39,14 +39,6 @@ export default function DirectorPageVideoV3({ member }) {
 
   const handleBioClose = useCallback(() => {
     setBioClosing(true);
-  }, []);
-
-  useEffect(() => {
-    const mq = window.matchMedia(`(max-width: ${MOBILE_SWIPE_MAX_WIDTH}px)`);
-    const onChange = () => setIsMobileViewport(mq.matches);
-    onChange();
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
   }, []);
 
   useEffect(() => {
@@ -82,19 +74,19 @@ export default function DirectorPageVideoV3({ member }) {
 
   const handleSwipeTouchStart = useCallback(
     (e) => {
-      if (!isMobileViewport || bioOpen || bioClosing || items.length < 2) return;
+      if (!isSwipeEnabled || bioOpen || bioClosing || items.length < 2) return;
       const t = e.targetTouches?.[0];
       if (!t) return;
       swipeTouchStartRef.current = { x: t.clientX, y: t.clientY };
     },
-    [isMobileViewport, bioOpen, bioClosing, items.length]
+    [isSwipeEnabled, bioOpen, bioClosing, items.length]
   );
 
   const handleSwipeTouchEnd = useCallback(
     (e) => {
       const start = swipeTouchStartRef.current;
       swipeTouchStartRef.current = null;
-      if (!start || !isMobileViewport || bioOpen || bioClosing || items.length < 2) return;
+      if (!start || !isSwipeEnabled || bioOpen || bioClosing || items.length < 2) return;
       const t = e.changedTouches?.[0];
       if (!t) return;
       const dx = t.clientX - start.x;
@@ -107,7 +99,7 @@ export default function DirectorPageVideoV3({ member }) {
         setActiveIndex((i) => Math.max(0, i - 1));
       }
     },
-    [isMobileViewport, bioOpen, bioClosing, items.length]
+    [isSwipeEnabled, bioOpen, bioClosing, items.length]
   );
 
   if (items.length === 0) {

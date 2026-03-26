@@ -16,7 +16,11 @@ export default function LocationsAndEmail({ locations, email }) {
       ([entry]) => {
         setIsVisible(entry.isIntersecting);
       },
-      { threshold: 0.1 }
+      {
+        threshold: 0.08,
+        /* Top inset: mark “out of view” slightly sooner when scrolling back up */
+        rootMargin: '-28px 0px 0px 0px',
+      }
     );
     observer.observe(el);
     return () => observer.disconnect();
