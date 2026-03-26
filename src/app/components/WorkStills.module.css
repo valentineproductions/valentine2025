@@ -1,16 +1,10 @@
-/* Page wrapper lives on [slug]/page.js; breakout uses data attr so styles stay in this module */
+/* Page shell: class from this module on [slug]/page.js. .pageContent breakout is in globals.css (CSS modules purity). */
 
 .pageShell {
   width: 100%;
   max-width: none;
   margin: 0;
   padding: 0;
-}
-
-:global(main .pageContent:has([data-work-stills-shell])) {
-  max-width: none;
-  padding-left: 0;
-  padding-right: 0;
 }
 
 .root {

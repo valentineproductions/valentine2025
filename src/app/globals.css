@@ -248,6 +248,13 @@ main:has(.workPageMotionShell) {
   min-height: 100vh;
 }
 
+/* Work stills: full-bleed breakout for .pageContent (must be global — Next.js CSS modules forbid pure :global-only selectors) */
+main .pageContent:has([data-work-stills-shell]) {
+  max-width: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
 /* Existing styles for the non-homepage navigation bar */
 .homeNavLink {
   color: var(--foreground);
