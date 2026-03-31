@@ -25,7 +25,7 @@ export function resolveImageParallaxStrength(im, blockBaseline) {
   const B =
     typeof blockBaseline === 'number' && !Number.isNaN(blockBaseline)
       ? blockBaseline
-      : 35;
+      : 0;
   if (
     typeof im?.parallaxAdjust === 'number' &&
     !Number.isNaN(im.parallaxAdjust)

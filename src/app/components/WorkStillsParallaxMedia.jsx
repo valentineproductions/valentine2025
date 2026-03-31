@@ -1,50 +1,43 @@
 'use client';
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from './WorkStills.module.css';
 
-/** Viewport based multiplier so motion stays noticeable on large screens. */
-function motionMultiplier(vh) {
-  return Math.min(520, Math.max(220, vh * 0.55));
-}
+gsap.registerPlugin(ScrollTrigger);
 
 export default function WorkStillsParallaxMedia({ strength, rootRef, children }) {
   const wrapRef = useRef(null);
 
-  const onScroll = useCallback(() => {
+  useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
     const inner = el.querySelector('[data-parallax-inner]');
     if (!inner) return;
-
+    const root = rootRef?.current || el;
     const vh = window.innerHeight || 1;
-    const root = rootRef?.current;
+    const baseMult = Math.min(520, Math.max(220, vh * 0.55));
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+    const factor = isMobile ? 0.7 : 1;
+    const effStrength = (typeof strength === 'number' ? strength : 0) * factor;
 
-    let progress;
-    if (root) {
-      const r = root.getBoundingClientRect();
-      const blockCenter = r.top + r.height / 2;
-      progress = (blockCenter - vh / 2) / vh;
-    } else {
-      const rect = el.getBoundingClientRect();
-      const center = rect.top + rect.height / 2;
-      progress = (center - vh / 2) / vh;
-    }
+    const st = ScrollTrigger.create({
+      trigger: root,
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: true,
+      onUpdate(self) {
+        const centered = self.progress - 0.5;
+        const px = centered * (effStrength / 100) * baseMult;
+        gsap.set(inner, { y: px, force3D: true });
+      },
+    });
 
-    const mult = motionMultiplier(vh);
-    const px = progress * (strength / 100) * mult;
-    inner.style.transform = `translate3d(0, ${px}px, 0)`;
-  }, [strength, rootRef]);
-
-  useEffect(() => {
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
     return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
+      st.kill();
     };
-  }, [onScroll]);
+  }, [strength, rootRef]);
 
   return (
     <div ref={wrapRef} className={styles.parallaxWrap}>

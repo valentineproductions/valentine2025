@@ -90,3 +90,12 @@
   font-weight: 500;
   opacity: 0.8;
 }
+
+/* Responsive Styles */
+@media (max-width: 767px) {
+
+.workModeToggleMobile {
+  /* height: 70px; */
+  padding: 20px;
+}
+}

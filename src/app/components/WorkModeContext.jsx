@@ -113,9 +113,7 @@ function WorkModeProviderSuspended({ children }) {
   const reportMotionSlideIndex = useCallback(
     (i) => {
       motionSlideIndexRef.current = i;
-      if (!motionReveal) {
-        setWorkNavHidden(i > 0);
-      }
+      setWorkNavHidden(false);
     },
     [motionReveal]
   );
