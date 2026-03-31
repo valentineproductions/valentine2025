@@ -62,14 +62,12 @@ export default function HeaderNavigation() { // Default empty array
     };
     const pathNorm = (p) => (String(p || '').replace(/\/$/, '') || '/');
 
-    // Safely get logo data with fallbacks
+    // Safely get logo data with fallbacks (use white logo on Work page)
     const logoData =
-        (isHomePage ? pages[0]?.pageCompanyLogoWhite : pages[0]?.pageCompanyLogo) || {};
+        (isWorkPage || isHomePage ? pages[0]?.pageCompanyLogoWhite : pages[0]?.pageCompanyLogo) || {};
 
     const workLogoChromeClass =
-        isWorkPage && workChrome && !workChrome.workNavStillsLight
-            ? 'workNavLogoInvert'
-            : '';
+        isWorkPage ? '' : (workChrome && !workChrome?.workNavStillsLight ? 'workNavLogoInvert' : '');
 
     const handleLogoClick = () => {
         if (menuOpen) setMenuOpen(false);

@@ -12,8 +12,12 @@
   z-index: 1;
   min-height: 100vh;
   padding: 100px 0 clamp(96px, 14vw, 140px);
-  background: #faf8f6;
-  color: #5f1b19;
+  background: #5F1B19;
+  color: #fff;
+}
+
+.rootHasFirstFullBleed {
+  padding-top: 0;
 }
 
 .bgMark {
@@ -33,7 +37,20 @@
   max-height: min(70vh, 520px);
   height: auto !important;
   object-fit: contain;
-  opacity: 0.07;
+  opacity: 1;
+}
+/* Fade states controlled from view logic */
+.bgMarkImgFade {
+  opacity: 0.6;
+  transition: opacity 360ms ease-in-out;
+}
+.bgMarkImgGone {
+  opacity: 0;
+  transition: opacity 360ms ease-in-out;
+}
+.bgMarkImgHidden {
+  opacity: 0;
+  transition: opacity 180ms ease-out;
 }
 
 /* Same center as .bgMark; above watermark (z-index), below .feed; opacity driven by scroll */
@@ -63,8 +80,8 @@
   position: relative;
   z-index: 2;
   width: 100%;
-  min-height: clamp(340px, 54vh, 640px);
-  margin-bottom: clamp(240px, 5vw, 56px);
+  min-height: 0;
+  margin-bottom: 0;
   flex-shrink: 0;
   pointer-events: none;
 }
@@ -78,6 +95,38 @@
   flex-direction: column;
   gap: 200px;
   padding-bottom: clamp(120px, 18vh, 240px);
+}
+
+/* Entry overlay white logo that moves/shrinks to match bg mark */
+.heroOverlayWrap {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 50%;
+  z-index: 4;
+  pointer-events: none;
+  will-change: transform, width;
+}
+
+@media (min-width: 768px) {
+  .heroOverlayWrap {
+    top: 50%;
+  }
+}
+
+/* Final bottom logo that slides up near the end and pushes content */
+.bottomLogoWrap {
+  width: 100%;
+  max-width: 2000px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 4vw, 48px);
+  transform: translateY(110%);
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.bottomLogoWrap.visible {
+  transform: translateY(0);
 }
 
 @media (min-width: 900px) {
@@ -135,6 +184,18 @@
   width: 100%;
   max-height: min(92vh, 1200px);
   object-fit: cover;
+}
+
+/* When the first block is full bleed, make it fill the viewport */
+.feed > .blockFullBleed:first-child .mediaShell,
+.feed > .blockFullBleed:first-child .parallaxWrap,
+.feed > .blockFullBleed:first-child .imageGrid,
+.feed > .blockFullBleed:first-child .img {
+  max-height: 100vh;
+  height: 100vh;
+}
+.feed > .blockFullBleed:first-child {
+  margin-top: 0;
 }
 
 .blockFullBleed .text {

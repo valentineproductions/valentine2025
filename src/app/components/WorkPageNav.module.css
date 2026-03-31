@@ -31,10 +31,10 @@
 }
 
 .workModeToggleMobile {
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 18px;
-  gap: 6px;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 0;
+  gap: 10px;
 }
 
 .workModeSep {
@@ -48,8 +48,8 @@
 }
 
 .themeStills .workModeSep {
-  color: #5f1b19;
-  opacity: 0.45;
+  color: #fff;
+  opacity: 0.65;
 }
 
 .workModeOpt {
@@ -70,7 +70,7 @@
 }
 
 .themeStills .workModeOpt {
-  color: #5f1b19;
+  color: #fff;
 }
 
 .themeMotion .workModeOpt:focus-visible {
@@ -78,7 +78,7 @@
 }
 
 .themeStills .workModeOpt:focus-visible {
-  outline-color: #5f1b19;
+  outline-color: #fff;
 }
 
 .workModeOptActive {

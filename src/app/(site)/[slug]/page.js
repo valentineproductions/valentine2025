@@ -113,7 +113,7 @@ export default function Page() {
                             <WorkStillsView
                                 stills={pageWork.workStills}
                                 backgroundLogo={pageWork.workStillsBackgroundLogo}
-                                fallbackLogo={pageWork.pageCompanyLogo}
+                                fallbackLogo={pageWork.pageCompanyLogoWhite}
                                 pageCompanyLogo={pageWork.pageCompanyLogo}
                             />
                         ) : (

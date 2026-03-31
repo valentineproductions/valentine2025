@@ -31,6 +31,13 @@
   font-style: normal;
 }
 
+:root {
+  --valentine-purple: #5F1B19;
+  --white: #ffffff;
+  --text-dark: #5F1B19;
+  --text-light: #ffffff;
+}
+
 html,
 body {
   max-width: 100vw;
@@ -199,7 +206,7 @@ textarea:focus-visible,
   top: 0;
   left: 0;
   right: 0;
-  z-index: 10000;
+  z-index: 20000;
   background-color: transparent;
   transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -230,8 +237,20 @@ textarea:focus-visible,
 .navBar.workNavBar.workNavStillsLight .homeNavLink,
 .navBar.workNavBar.workNavStillsLight a,
 .navBar.workNavBar.workNavStillsLight span.menu-trigger {
-  color: #5f1b19;
+  color: #fff;
   text-shadow: none;
+}
+
+.navBar.workNavBar.workNavStillsLight .homeNavLink::after,
+.navBar.workNavBar.workNavStillsLight a::after,
+.navBar.workNavBar.workNavStillsLight span.menu-trigger::after {
+  background-color: #fff;
+}
+
+.navBar.workNavBar.workNavStillsLight a:focus-visible,
+.navBar.workNavBar.workNavStillsLight .homeNavLink:focus-visible,
+.navBar.workNavBar.workNavStillsLight span.menu-trigger:focus-visible {
+  outline-color: #fff;
 }
 
 .workNavLogoInvert {

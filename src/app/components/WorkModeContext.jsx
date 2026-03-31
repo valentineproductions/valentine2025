@@ -121,49 +121,15 @@ function WorkModeProviderSuspended({ children }) {
   );
 
   useEffect(() => {
-    if (!isWorkPage || mode !== 'stills') {
-      if (isWorkPage && mode === 'motion') return;
-      if (!isWorkPage) setWorkNavHidden(false);
-      return;
-    }
-    lastWindowScrollRef.current = typeof window !== 'undefined' ? window.scrollY : 0;
-    const onScroll = () => {
-      const y = window.scrollY;
-      const prev = lastWindowScrollRef.current;
-      const dy = y - prev;
-      if (y < 32) {
-        setWorkNavHidden(false);
-      } else if (dy > 6) {
-        setWorkNavHidden(true);
-      } else if (dy < -6) {
-        setWorkNavHidden(false);
-      }
-      lastWindowScrollRef.current = y;
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    setWorkNavHidden(false);
   }, [isWorkPage, mode]);
 
   useEffect(() => {
-    if (!isWorkPage || mode !== 'motion') return;
-    if (motionReveal) {
-      setWorkNavHidden(false);
-      return;
-    }
-    setWorkNavHidden(motionSlideIndexRef.current > 0);
+    setWorkNavHidden(false);
   }, [motionReveal, isWorkPage, mode]);
 
   useEffect(() => {
-    if (!isWorkPage || mode !== 'motion' || !motionReveal) return;
-    const el = document.querySelector('[data-work-motion-scroll]');
-    if (!el) return;
-    const onScroll = () => {
-      if (el.scrollTop > 40 && motionSlideIndexRef.current > 0) {
-        setMotionReveal(false);
-      }
-    };
-    el.addEventListener('scroll', onScroll, { passive: true });
-    return () => el.removeEventListener('scroll', onScroll);
+    return;
   }, [motionReveal, isWorkPage, mode]);
 
   const value = useMemo(() => {
@@ -187,21 +153,12 @@ function WorkModeProviderSuspended({ children }) {
     reportMotionSlideIndex,
   ]);
 
-  const showMotionRevealZone =
-    isWorkPage && mode === 'motion' && workNavHidden && !motionReveal;
+  const showMotionRevealZone = false;
 
   return (
     <WorkModeContext.Provider value={value}>
       {children}
-      {showMotionRevealZone && (
-        <button
-          type="button"
-          className={styles.motionRevealZone}
-          aria-label="Show navigation"
-          onMouseEnter={() => setMotionReveal(true)}
-          onClick={() => setMotionReveal(true)}
-        />
-      )}
+      {showMotionRevealZone && null}
     </WorkModeContext.Provider>
   );
 }
