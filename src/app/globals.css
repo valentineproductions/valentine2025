@@ -371,7 +371,7 @@ main .pageContent:has([data-work-stills-shell]) {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(95, 27, 25, 0.92);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease-in-out;
@@ -379,11 +379,11 @@ main .pageContent:has([data-work-stills-shell]) {
 }
 
 .menuOverlay.homeOverlay {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(95, 27, 25, 0.92);
 }
 
 .menuOverlay.pageOverlay {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(95, 27, 25, 0.92);
 }
 
 .menuOverlay.directorsOverlay {

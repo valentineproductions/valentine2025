@@ -19,6 +19,10 @@ export default function DirectorPageVideoV3({ member }) {
   const videoRefs = useRef([]);
   const swipeTouchStartRef = useRef(null);
   const projectBtnRefs = useRef([]);
+  const bioBtnRef = useRef(null);
+  const [dividerStyle, setDividerStyle] = useState(null);
+  const [dividerVisible, setDividerVisible] = useState(false);
+  const bioBarRef = useRef(null);
 
   // Build items: profileProjects with profileClip, or fallback to directorsPageClip
   const items = (() => {
@@ -154,6 +158,73 @@ export default function DirectorPageVideoV3({ member }) {
   const currentItem = items[activeIndex];
   const hasBio = member?.bio && member.bio.length > 0;
 
+  const updateDivider = useCallback(() => {
+    try {
+      const bioBtn = bioBtnRef.current;
+      const contactBtn = document.querySelector('[data-contact-trigger]');
+      if (!bioBtn || !contactBtn) {
+        setDividerStyle(null);
+        setDividerVisible(false);
+        return;
+      }
+      const contactExpanded = contactBtn.getAttribute('aria-expanded') === 'true';
+      if (bioOpen || bioClosing || contactExpanded) {
+        setDividerStyle(null);
+        setDividerVisible(false);
+        return;
+      }
+      const bioRect = bioBtn.getBoundingClientRect();
+      const contactRect = contactBtn.getBoundingClientRect();
+      const left = Math.round(bioRect.right + 10);
+      const right = Math.round(window.innerWidth - contactRect.left + 10);
+      const top = Math.round((bioRect.top + bioRect.bottom) / 2);
+      setDividerStyle({ left: `${left}px`, right: `${right}px`, top: `${top}px` });
+      setDividerVisible(true);
+    } catch (_) {
+      setDividerStyle(null);
+      setDividerVisible(false);
+    }
+  }, [bioOpen, bioClosing]);
+
+  useEffect(() => {
+    updateDivider();
+    window.addEventListener('resize', updateDivider, { passive: true });
+    return () => {
+      window.removeEventListener('resize', updateDivider);
+    };
+  }, [updateDivider, activeIndex]);
+
+  useEffect(() => {
+    const btn = document.querySelector('[data-contact-trigger]');
+    if (!btn || typeof MutationObserver === 'undefined') return;
+    const mo = new MutationObserver(updateDivider);
+    mo.observe(btn, { attributes: true, attributeFilter: ['aria-expanded'] });
+    return () => mo.disconnect();
+  }, [updateDivider]);
+
+  useEffect(() => {
+    let rafId;
+    let start = performance.now();
+    const tick = (ts) => {
+      updateDivider();
+      if (ts - start < 1800) {
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+    rafId = requestAnimationFrame(tick);
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [updateDivider]);
+
+  useEffect(() => {
+    const el = bioBarRef.current;
+    if (!el) return;
+    const onEnd = () => updateDivider();
+    el.addEventListener('animationend', onEnd);
+    return () => el.removeEventListener('animationend', onEnd);
+  }, [updateDivider]);
+
   // Remove animation class once last item finishes (enables cascade for opacity)
   const handleIconAnimationEnd = () => {
     setAnimationsDone(true);
@@ -243,10 +314,11 @@ export default function DirectorPageVideoV3({ member }) {
 
       {/* BIO link - fixed at bottom, same on mobile */}
       {hasBio && (
-        <div className={`${styles.bioBar} ${styles.bioBarAnimate}`} style={{ '--bio-delay': `${100 + items.length * 80}ms` }}>
+        <div ref={bioBarRef} className={`${styles.bioBar} ${styles.bioBarAnimate}`} style={{ '--bio-delay': `${100 + items.length * 80}ms` }}>
           <button
             type="button"
             className={styles.bioLink}
+            ref={bioBtnRef}
             onClick={() => setBioOpen(true)}
           >
             BIO
@@ -305,6 +377,13 @@ export default function DirectorPageVideoV3({ member }) {
             </div>
           </div>
         </div>
+      )}
+      {dividerStyle && (
+        <div
+          className={`${styles.bioContactDivider} ${dividerVisible ? styles.bioContactDividerVisible : ''}`}
+          style={dividerStyle}
+          aria-hidden
+        />
       )}
     </div>
   );

@@ -84,6 +84,7 @@ export default function ContactOverlay() {
         <button
           type="button"
           className={styles.contactTrigger}
+          data-contact-trigger
           onClick={() => setOpen(true)}
           aria-haspopup="dialog"
           aria-expanded={open || closing}
