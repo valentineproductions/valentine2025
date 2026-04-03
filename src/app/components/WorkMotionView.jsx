@@ -53,6 +53,8 @@ export default function WorkMotionView({ clips }) {
   const getVideoType = (url) =>
     url?.endsWith('.webm') ? 'video/webm' : 'video/mp4';
 
+  const talentLabel = (active?.talentPosition || '').trim().toUpperCase();
+
   return (
     <div
       ref={scrollRef}
@@ -76,12 +78,20 @@ export default function WorkMotionView({ clips }) {
         </section>
       ))}
       <div className={styles.metaStrip} aria-live="polite">
-        {active?.title && (
-          <span className={styles.metaTitle}>{active.title}</span>
-        )}
-        {active?.description && (
-          <span className={styles.metaDesc}>{active.description}</span>
-        )}
+        <div key={activeIndex} className={styles.metaStripInner}>
+          <div className={styles.metaLeft}>
+            {active?.title && (
+              <span className={styles.metaTitle}>{active.title}</span>
+            )}
+            {active?.description && (
+              <span className={styles.metaDesc}>{active.description}</span>
+            )}
+          </div>
+          <div className={styles.metaLine} aria-hidden />
+          {talentLabel ? (
+            <span className={styles.metaTalent}>{talentLabel}</span>
+          ) : null}
+        </div>
       </div>
     </div>
   );

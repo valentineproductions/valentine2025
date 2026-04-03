@@ -121,6 +121,38 @@ const teamMember = {
                 description: 'Name displayed below the director\'s name (e.g. project or video title).',
               },
               {
+                name: 'slug',
+                title: 'Project URL slug',
+                type: 'slug',
+                options: {
+                  maxLength: 96,
+                  /* String source ("name") does not resolve for slugs inside array objects; use parent. */
+                  source: (doc, context) => {
+                    const name = context?.parent?.name;
+                    return typeof name === 'string' ? name : '';
+                  },
+                  slugify: (input) =>
+                    String(input || '')
+                      .toLowerCase()
+                      .trim()
+                      .replace(/['"]/g, '')
+                      .replace(/\s+/g, '-')
+                      .replace(/[^a-z0-9-]/g, '')
+                      .replace(/-+/g, '-')
+                      .replace(/^-|-$/g, '')
+                      .slice(0, 96),
+                },
+                description:
+                  'Used in /directors/[director]/[project-slug]. Click Generate to fill from Video Name (e.g. Boxing Video Sample → boxing-video-sample), then edit if needed.',
+              },
+              {
+                name: 'simianEmbedUrl',
+                title: 'Simian embed URL',
+                type: 'string',
+                description:
+                  'Paste only the iframe src URL (the string inside src="..."), not the HTML wrapper. Example: https://valentine.gosimian.com/share/v/…/false/… — the site turns on autoplay for Simian URLs automatically.',
+              },
+              {
                 name: 'profileClip',
                 title: 'Profile Clip',
                 type: 'file',
@@ -133,9 +165,13 @@ const teamMember = {
             preview: {
               select: {
                 title: 'name',
+                slug: 'slug',
               },
-              prepare({ title }) {
-                return { title: title || 'Untitled' };
+              prepare({ title, slug }) {
+                return {
+                  title: title || 'Untitled',
+                  subtitle: slug?.current ? `/${slug.current}` : undefined,
+                };
               },
             },
           },

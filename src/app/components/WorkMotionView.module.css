@@ -41,10 +41,6 @@
   max-width: 2000px;
   margin: 0 auto;
   padding: 28px 24px 32px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
   pointer-events: none;
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 12px;
@@ -53,6 +49,25 @@
   text-transform: uppercase;
   color: #fff;
   text-shadow: none;
+}
+
+.metaStripInner {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 100%;
+  gap: 10px 16px;
+  animation: workMetaStripIn 0.4s ease-out both;
+}
+
+.metaLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: min(520px, 50vw);
 }
 
 .metaTitle {
@@ -67,6 +82,65 @@
   white-space: pre-wrap;
 }
 
+/* Fills space between title block and talent (same idea as director BIO–talent line) */
+.metaLine {
+  flex: 1 1 0;
+  min-width: 12px;
+  height: 1px;
+  align-self: center;
+  background: rgba(255, 255, 255, 0.85);
+  transform-origin: center center;
+  animation: workMetaLineIn 0.42s ease-out 0.06s both;
+}
+
+.metaTalent {
+  flex: 0 0 auto;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  animation: workMetaTalentIn 0.38s ease-out 0.1s both;
+}
+
+@keyframes workMetaStripIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes workMetaLineIn {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes workMetaTalentIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.4em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .metaStripInner,
+  .metaLine,
+  .metaTalent {
+    animation: none !important;
+  }
+}
+
 .empty {
   min-height: 100vh;
   display: flex;
@@ -75,6 +149,33 @@
   padding: 24px;
   color: #888;
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+/* Narrow: stack — title/desc, full-width line, talent right */
+@media (max-width: 767px) {
+  .metaStrip {
+    padding: 24px 20px 28px;
+  }
+
+  .metaStripInner {
+    flex-wrap: wrap;
+  }
+
+  .metaLeft {
+    max-width: none;
+    flex: 1 1 100%;
+  }
+
+  .metaLine {
+    flex: 0 0 auto;
+    width: 100%;
+    min-width: 0;
+    margin: 6px 0;
+  }
+
+  .metaTalent {
+    align-self: flex-end;
+  }
 }
 
 @media (min-width: 768px) {

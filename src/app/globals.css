@@ -174,18 +174,21 @@ textarea:focus-visible,
 
 .navBar.directorsNavBar .homeNavLink,
 .navBar.directorsNavBar a,
+.navBar.directorsNavBar button.homeNavLink,
 .navBar.directorsNavBar span.menu-trigger {
   color: white;
 }
 
 .navBar.directorsNavBar .homeNavLink::after,
 .navBar.directorsNavBar a::after,
+.navBar.directorsNavBar button.homeNavLink::after,
 .navBar.directorsNavBar span.menu-trigger::after {
   background-color: white;
 }
 
 .navBar.directorsNavBar .homeNavLink:hover,
 .navBar.directorsNavBar a:hover,
+.navBar.directorsNavBar button.homeNavLink:hover,
 .navBar.directorsNavBar span.menu-trigger:hover {
   color: rgb(220, 220, 220);
 }
@@ -196,6 +199,7 @@ textarea:focus-visible,
 
 .navBar.directorsNavBar a:focus-visible,
 .navBar.directorsNavBar .homeNavLink:focus-visible,
+.navBar.directorsNavBar button.homeNavLink:focus-visible,
 .navBar.directorsNavBar span.menu-trigger:focus-visible {
   outline-color: #fff;
 }
@@ -217,6 +221,7 @@ textarea:focus-visible,
 
 .navBar.workNavBar:not(.workNavStillsLight) .homeNavLink,
 .navBar.workNavBar:not(.workNavStillsLight) a,
+.navBar.workNavBar:not(.workNavStillsLight) button.homeNavLink,
 .navBar.workNavBar:not(.workNavStillsLight) span.menu-trigger {
   color: #fff;
   text-shadow: none;
@@ -224,18 +229,21 @@ textarea:focus-visible,
 
 .navBar.workNavBar:not(.workNavStillsLight) .homeNavLink::after,
 .navBar.workNavBar:not(.workNavStillsLight) a::after,
+.navBar.workNavBar:not(.workNavStillsLight) button.homeNavLink::after,
 .navBar.workNavBar:not(.workNavStillsLight) span.menu-trigger::after {
   background-color: #fff;
 }
 
 .navBar.workNavBar:not(.workNavStillsLight) a:focus-visible,
 .navBar.workNavBar:not(.workNavStillsLight) .homeNavLink:focus-visible,
+.navBar.workNavBar:not(.workNavStillsLight) button.homeNavLink:focus-visible,
 .navBar.workNavBar:not(.workNavStillsLight) span.menu-trigger:focus-visible {
   outline-color: #fff;
 }
 
 .navBar.workNavBar.workNavStillsLight .homeNavLink,
 .navBar.workNavBar.workNavStillsLight a,
+.navBar.workNavBar.workNavStillsLight button.homeNavLink,
 .navBar.workNavBar.workNavStillsLight span.menu-trigger {
   color: #fff;
   text-shadow: none;
@@ -243,12 +251,14 @@ textarea:focus-visible,
 
 .navBar.workNavBar.workNavStillsLight .homeNavLink::after,
 .navBar.workNavBar.workNavStillsLight a::after,
+.navBar.workNavBar.workNavStillsLight button.homeNavLink::after,
 .navBar.workNavBar.workNavStillsLight span.menu-trigger::after {
   background-color: #fff;
 }
 
 .navBar.workNavBar.workNavStillsLight a:focus-visible,
 .navBar.workNavBar.workNavStillsLight .homeNavLink:focus-visible,
+.navBar.workNavBar.workNavStillsLight button.homeNavLink:focus-visible,
 .navBar.workNavBar.workNavStillsLight span.menu-trigger:focus-visible {
   outline-color: #fff;
 }
@@ -311,7 +321,9 @@ main .pageContent:has([data-work-stills-shell]) {
   animation: navFadeIn 1s ease-out 1s forwards;
 }
 
-.navBar a, span.menu-trigger {
+.navBar a,
+.navBar button.homeNavLink,
+span.menu-trigger {
   color: var(--foreground);
   text-decoration: none;
   margin-left: 60px;
@@ -321,11 +333,21 @@ main .pageContent:has([data-work-stills-shell]) {
   letter-spacing: 0.32px;
 }
 
+.navBar button.homeNavLink {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
 .navBar a:first-child {
   margin-left: 0;
 }
 
-.navBar a::after, span.menu-trigger::after {
+.navBar a::after,
+.navBar button.homeNavLink::after,
+span.menu-trigger::after {
   content: '';
   position: absolute;
   bottom: -2px;
@@ -348,7 +370,9 @@ main .pageContent:has([data-work-stills-shell]) {
 }
 
 
-.navBar a:hover::after, span.menu-trigger:hover::after {
+.navBar a:hover::after,
+.navBar button.homeNavLink:hover::after,
+span.menu-trigger:hover::after {
   width: 100%;
 }
 

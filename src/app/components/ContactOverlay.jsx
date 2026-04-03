@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { useAppContext } from './AppContext';
-import { useWorkPageChrome } from './WorkModeContext';
 import styles from './ContactOverlay.module.css';
 
 function formatMailto(email) {
@@ -16,24 +15,28 @@ function formatMailto(email) {
 export default function ContactOverlay() {
   const { allData } = useAppContext();
   const pathname = usePathname();
-  const workChrome = useWorkPageChrome();
   const pageNote = allData?.pageNote;
 
   const [open, setOpen] = useState(false);
   const [closing, setClosing] = useState(false);
 
   const isStudio = pathname?.startsWith?.('/studio');
+  const isDirectorProjectVideoPage = /^\/directors\/(?!category\/)[^/]+\/[^/]+$/.test(pathname || '');
+  /** Includes listing, profiles, category, etc. Bottom bar hidden on all of these. */
   const isDirectorsPage =
     pathname === '/directors' || pathname?.startsWith?.('/directors/');
   const isWorkPage = pathname === '/work';
-  const workContactChrome =
-    isWorkPage && workChrome?.mode === 'stills'
-      ? styles.contactBarWorkStills
-      : isWorkPage && workChrome?.mode === 'motion'
-        ? styles.contactBarWorkMotion
-        : '';
 
   const handleClose = useCallback(() => setClosing(true), []);
+
+  useEffect(() => {
+    const onOpenFromNav = () => {
+      setClosing(false);
+      setOpen(true);
+    };
+    window.addEventListener('valentine-open-contact', onOpenFromNav);
+    return () => window.removeEventListener('valentine-open-contact', onOpenFromNav);
+  }, []);
 
   useEffect(() => {
     if (!open && !closing) return;
@@ -51,7 +54,7 @@ export default function ContactOverlay() {
     }
   };
 
-  if (isStudio || !pageNote) return null;
+  if (isStudio || isDirectorProjectVideoPage || !pageNote) return null;
 
   const hasIntro =
     (pageNote.copyrightBrandName && pageNote.copyrightBrandName.trim()) ||
@@ -76,22 +79,27 @@ export default function ContactOverlay() {
 
   if (!hasOverlayContent) return null;
 
+  /** Work page uses nav CONTACT only — no persistent bottom bar (motion + stills). */
+  const showContactBar = !isDirectorsPage && !isWorkPage;
+
   return (
     <>
-      <div
-        className={`${styles.contactBar} ${styles.contactBarEnter}${isDirectorsPage ? ` ${styles.contactBarLight}` : ''}${workContactChrome ? ` ${workContactChrome}` : ''}`}
-      >
-        <button
-          type="button"
-          className={styles.contactTrigger}
-          data-contact-trigger
-          onClick={() => setOpen(true)}
-          aria-haspopup="dialog"
-          aria-expanded={open || closing}
+      {showContactBar ? (
+        <div
+          className={`${styles.contactBar} ${styles.contactBarEnter}${isDirectorsPage ? ` ${styles.contactBarLight}` : ''}`}
         >
-          CONTACT
-        </button>
-      </div>
+          <button
+            type="button"
+            className={styles.contactTrigger}
+            data-contact-trigger
+            onClick={() => setOpen(true)}
+            aria-haspopup="dialog"
+            aria-expanded={open || closing}
+          >
+            CONTACT
+          </button>
+        </div>
+      ) : null}
 
       {(open || closing) && (
         <div

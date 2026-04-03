@@ -21,6 +21,91 @@
   background-color: #000;
 }
 
+/* Remaining-time indicator for multi-clip rotation (right edge, shrinks as clip plays) */
+.clipProgressTrack {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 3px;
+  z-index: 9;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.clipProgressFill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  background: #fff;
+  transform-origin: bottom center;
+}
+
+/* Same horizontal shell as nav / contact bar: max-width 2000px, padding matches .bioBar */
+.talentBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 11;
+  pointer-events: none;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.talentBarInner {
+  max-width: 2000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.talentLabel {
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+@media (min-width: 768px) {
+  .talentBar {
+    padding: 32px 20px;
+  }
+}
+
+/* Full-bleed tap target: opens full Simian page (below UI chrome; see .centerBar pointer-events) */
+.videoHitLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  text-decoration: none;
+  cursor: none;
+}
+
+.videoHitLayer[aria-disabled='true'] {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* :global — attribute-only selectors are not valid in CSS Modules without a local class */
+.wrapper :global([data-play-cursor-zone]) {
+  cursor: none;
+}
+
+.cursorDefault {
+  cursor: default;
+}
+
 .videoLayer {
   position: absolute;
   top: 0;
@@ -52,6 +137,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* Let clicks pass through empty flex space to .videoHitLayer */
+  pointer-events: none;
+}
+
+.centerBar > * {
+  pointer-events: auto;
 }
 
 /* While bio modal is open: hide in-bar title so the stacked copy in .bioColumn is the only one */
@@ -69,6 +160,11 @@
   max-width: 2000px;
   margin: 0 auto;
   padding: 10px;
+  pointer-events: none;
+}
+
+.bioBar .bioLink {
+  pointer-events: auto;
 }
 
 .bioBarAnimate {
@@ -119,6 +215,21 @@
 .projectNameSwap {
   display: inline-block;
   animation: projectNameSwapIn 0.38s ease-out both;
+}
+
+.projectNameLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.projectNameLink:hover,
+.projectNameLink:focus-visible {
+  opacity: 0.85;
+}
+
+.projectNameLink:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: 4px;
 }
 
 @keyframes projectNameSwapIn {
@@ -188,7 +299,8 @@
   background: none;
   border: none;
   padding: 2px 0;
-  cursor: pointer;
+  cursor: default;
+  text-decoration: none;
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 12px;
   font-weight: 500;

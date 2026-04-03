@@ -51,6 +51,9 @@ export default function HeaderNavigation() { // Default empty array
         }
     }, [menuOpen]);
 
+    const isDirectorProjectVideoPage = /^\/directors\/(?!category\/)[^/]+\/[^/]+$/.test(pathname || '');
+    if (isDirectorProjectVideoPage) return null;
+
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
@@ -121,6 +124,13 @@ export default function HeaderNavigation() { // Default empty array
         );
     };
 
+    const openContact = (onItemClick) => () => {
+        if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('valentine-open-contact'));
+        }
+        onItemClick?.();
+    };
+
     const renderPageLinks = (onItemClick) => (
         <>
             {slugLinks.map((slug) => {
@@ -131,6 +141,9 @@ export default function HeaderNavigation() { // Default empty array
                     </Link>
                 ) : null;
             })}
+            <button type="button" className="homeNavLink" onClick={openContact(onItemClick)}>
+                CONTACT
+            </button>
             {showInformationInNav && (
                 <Link href="/information" className="homeNavLink" onClick={onItemClick}>
                     {pathname === '/information' ? <b>Information</b> : 'Information'}

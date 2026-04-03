@@ -259,6 +259,8 @@ export async function getProject(slug) {
           },
           profileProjects[]{
             name,
+            "slug": slug.current,
+            simianEmbedUrl,
             profileClip{
               asset->{ _id, url }
             }
@@ -316,6 +318,7 @@ export async function getProject(slug) {
         workMotionClips[]{
           title,
           description,
+          talentPosition,
           "videoUrl": videoFile.asset->url
         },
         workStillsBackgroundLogo{
@@ -384,6 +387,8 @@ export async function getTeamMemberBySlug(slug) {
       },
       profileProjects[]{
         name,
+        "slug": slug.current,
+        simianEmbedUrl,
         profileClip{
           asset->{ _id, url }
         }
@@ -449,6 +454,8 @@ export async function getLegalBySlug(slug) {
             },
             profileProjects[]{
               name,
+              "slug": slug.current,
+              simianEmbedUrl,
               profileClip{
                 asset->{ _id, url }
               }
@@ -490,6 +497,7 @@ export async function getLegalBySlug(slug) {
           workMotionClips[]{
             title,
             description,
+            talentPosition,
             "videoUrl": videoFile.asset->url
           },
           workStillsBackgroundLogo{

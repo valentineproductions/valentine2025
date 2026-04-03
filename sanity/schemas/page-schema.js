@@ -163,11 +163,22 @@ const page = {
                   accept: 'video/mp4,video/webm',
                 },
               },
+              {
+                name: 'talentPosition',
+                title: 'Talent Position',
+                type: 'string',
+                description: 'e.g. Director — shown on the right of the bottom strip (uppercase on the site).',
+                placeholder: 'Director',
+                validation: (Rule) => Rule.required(),
+              },
             ],
             preview: {
-              select: { title: 'title', media: 'videoFile' },
-              prepare({ title }) {
-                return { title: title || 'Motion clip' };
+              select: { title: 'title', media: 'videoFile', talentPosition: 'talentPosition' },
+              prepare({ title, talentPosition }) {
+                return {
+                  title: title || 'Motion clip',
+                  subtitle: talentPosition ? String(talentPosition) : undefined,
+                };
               },
             },
           },

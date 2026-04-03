@@ -1,0 +1,163 @@
+.root {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+  z-index: 10000;
+}
+
+.logoLink {
+  position: fixed;
+  top: 1.25rem;
+  left: 1.25rem;
+  z-index: 10001;
+  display: block;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.logoLink:hover,
+.logoLink:focus,
+.logoLink:focus-visible {
+  text-decoration: none;
+}
+
+.logoImg {
+  width: auto;
+  height: 22px;
+  object-fit: contain;
+}
+
+.close {
+  position: fixed;
+  top: 1.25rem;
+  /* inset from Simian fullscreen control */
+  right: calc(1.25rem + 50px);
+  z-index: 10002;
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.close:hover,
+.close:focus,
+.close:focus-visible {
+  opacity: 0.85;
+  outline: none;
+  text-decoration: none;
+  box-shadow: none;
+}
+
+.playerStack {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.frame {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.framePlaceholder {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+.titleBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem 1.25rem 2.25rem;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, transparent 100%);
+}
+
+.titleLine {
+  max-width: 90vw;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: clamp(1rem, 3vw, 1.35rem);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-align: center;
+  line-height: 1.35;
+}
+
+.directorTitle {
+  font-weight: 700;
+}
+
+.projectTitle {
+  font-weight: 400;
+  opacity: 0.5;
+}
+
+.loadingBadge {
+  position: absolute;
+  bottom: 5.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  pointer-events: none;
+}
+
+.hitLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.hitLayer:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: -4px;
+}
+
+.missing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.95rem;
+  text-align: center;
+}

@@ -1,14 +1,19 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
+import gsap from 'gsap';
+import { useRouter } from 'next/navigation';
 import { PortableText } from '@portabletext/react';
 import { defaultPortableTextComponents } from '@/app/lib/portableTextConfig';
 import { useDirectorSwipeEnabled } from '@/app/lib/useDirectorSwipeEnabled';
+import DirectorProfilePlayCursor from '@/app/components/DirectorProfilePlayCursor';
+import DirectorNavigateTransition from '@/app/components/DirectorNavigateTransition';
 import styles from './DirectorPageVideoV3.module.css';
 
 const SWIPE_MIN_PX = 56;
 
 export default function DirectorPageVideoV3({ member }) {
+  const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(0);
   const [bioOpen, setBioOpen] = useState(false);
   const [bioClosing, setBioClosing] = useState(false);
@@ -18,11 +23,16 @@ export default function DirectorPageVideoV3({ member }) {
   const longPressRef = useRef(null);
   const videoRefs = useRef([]);
   const swipeTouchStartRef = useRef(null);
+  const swipeLockRef = useRef(false);
   const projectBtnRefs = useRef([]);
   const bioBtnRef = useRef(null);
   const [dividerStyle, setDividerStyle] = useState(null);
   const [dividerVisible, setDividerVisible] = useState(false);
   const bioBarRef = useRef(null);
+  const talentCornerRef = useRef(null);
+  const clipProgressFillRef = useRef(null);
+  const clipProgressQuickYRef = useRef(null);
+  const [pendingNav, setPendingNav] = useState(null);
 
   // Build items: profileProjects with profileClip, or fallback to directorsPageClip
   const items = (() => {
@@ -32,6 +42,7 @@ export default function DirectorPageVideoV3({ member }) {
         id: p.profileClip?.asset?._id || `profile-${i}`,
         name: (p.name || 'Untitled').toUpperCase(),
         url: p.profileClip?.asset?.url,
+        projectSlug: p.slug || null,
       }));
     if (profile.length > 0) return profile;
     const fallback = member?.directorsPageClip?.asset?.url;
@@ -46,15 +57,83 @@ export default function DirectorPageVideoV3({ member }) {
   }, []);
 
   useEffect(() => {
+    const bioPaused = bioOpen || bioClosing;
     videoRefs.current.forEach((video, i) => {
       if (!video) return;
       if (i === activeIndex) {
-        video.play().catch(() => {});
+        if (bioPaused) {
+          video.pause();
+        } else {
+          video.play().catch(() => {});
+        }
       } else {
         video.pause();
       }
     });
-  }, [activeIndex]);
+  }, [activeIndex, bioOpen, bioClosing]);
+
+  /**
+   * Reset clip + progress bar when switching videos. Must recreate gsap.quickTo after
+   * killTweensOf — killing tweens on the element invalidates the function returned
+   * by quickTo(), so the bar would stop updating until items.length changed.
+   */
+  useEffect(() => {
+    const v = videoRefs.current[activeIndex];
+    if (v) {
+      try {
+        v.currentTime = 0;
+      } catch (_) {}
+    }
+    const fill = clipProgressFillRef.current;
+    if (!fill || items.length <= 1) {
+      clipProgressQuickYRef.current = null;
+      return;
+    }
+    gsap.killTweensOf(fill);
+    gsap.set(fill, { transformOrigin: 'bottom center', scaleY: 1 });
+    const reduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      clipProgressQuickYRef.current = null;
+    } else {
+      clipProgressQuickYRef.current = gsap.quickTo(fill, 'scaleY', {
+        duration: 0.55,
+        ease: 'power2.out',
+      });
+    }
+  }, [activeIndex, items.length]);
+
+  const handleClipTimeUpdate = useCallback(
+    (e) => {
+      if (bioOpen || bioClosing) return;
+      const v = e.currentTarget;
+      const idx = videoRefs.current.indexOf(v);
+      if (idx !== activeIndex) return;
+      const fill = clipProgressFillRef.current;
+      if (!fill || items.length <= 1) return;
+      if (!v.duration || !isFinite(v.duration)) {
+        gsap.set(fill, { scaleY: 1 });
+        return;
+      }
+      const remaining = Math.max(0, Math.min(1, 1 - v.currentTime / v.duration));
+      const reduced =
+        typeof window !== 'undefined' &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) {
+        gsap.set(fill, { scaleY: remaining });
+      } else {
+        clipProgressQuickYRef.current?.(remaining);
+      }
+    },
+    [activeIndex, bioOpen, bioClosing, items.length]
+  );
+
+  const handleClipEnded = useCallback(() => {
+    if (bioOpen || bioClosing) return;
+    if (items.length <= 1) return;
+    setActiveIndex((i) => (i + 1) % items.length);
+  }, [items.length, bioOpen, bioClosing]);
 
   useEffect(() => {
     if (!bioOpen && !bioClosing) return;
@@ -96,6 +175,10 @@ export default function DirectorPageVideoV3({ member }) {
       const dx = t.clientX - start.x;
       const dy = t.clientY - start.y;
       if (Math.abs(dy) < SWIPE_MIN_PX || Math.abs(dy) < Math.abs(dx)) return;
+      swipeLockRef.current = true;
+      window.setTimeout(() => {
+        swipeLockRef.current = false;
+      }, 450);
       /* Finger moves up → next clip; moves down → previous */
       if (dy < 0) {
         setActiveIndex((i) => Math.min(items.length - 1, i + 1));
@@ -156,27 +239,59 @@ export default function DirectorPageVideoV3({ member }) {
   const getVideoType = (url) =>
     url?.endsWith('.webm') ? 'video/webm' : 'video/mp4';
   const currentItem = items[activeIndex];
+  const currentProjectHref =
+    currentItem?.projectSlug && member?.slug
+      ? `/directors/${member.slug}/${currentItem.projectSlug}`
+      : null;
   const hasBio = member?.bio && member.bio.length > 0;
+
+  const goToVideoPage = useCallback(
+    (href) => {
+      setPendingNav(null);
+      router.push(href);
+    },
+    [router]
+  );
+
+  const handleNavigateToVideo = useCallback(
+    (e, href) => {
+      if (!href || swipeLockRef.current) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) {
+        return;
+      }
+      e.preventDefault();
+      if (
+        typeof window !== 'undefined' &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ) {
+        router.push(href);
+        return;
+      }
+      setPendingNav({ href, x: e.clientX, y: e.clientY });
+    },
+    [router]
+  );
 
   const updateDivider = useCallback(() => {
     try {
       const bioBtn = bioBtnRef.current;
       const contactBtn = document.querySelector('[data-contact-trigger]');
-      if (!bioBtn || !contactBtn) {
+      const rightAnchor = talentCornerRef.current || contactBtn;
+      if (!bioBtn || !rightAnchor) {
         setDividerStyle(null);
         setDividerVisible(false);
         return;
       }
-      const contactExpanded = contactBtn.getAttribute('aria-expanded') === 'true';
+      const contactExpanded = contactBtn?.getAttribute('aria-expanded') === 'true';
       if (bioOpen || bioClosing || contactExpanded) {
         setDividerStyle(null);
         setDividerVisible(false);
         return;
       }
       const bioRect = bioBtn.getBoundingClientRect();
-      const contactRect = contactBtn.getBoundingClientRect();
+      const rightRect = rightAnchor.getBoundingClientRect();
       const left = Math.round(bioRect.right + 10);
-      const right = Math.round(window.innerWidth - contactRect.left + 10);
+      const right = Math.round(window.innerWidth - rightRect.left + 10);
       const top = Math.round((bioRect.top + bioRect.bottom) / 2);
       setDividerStyle({ left: `${left}px`, right: `${right}px`, top: `${top}px` });
       setDividerVisible(true);
@@ -192,7 +307,7 @@ export default function DirectorPageVideoV3({ member }) {
     return () => {
       window.removeEventListener('resize', updateDivider);
     };
-  }, [updateDivider, activeIndex]);
+  }, [updateDivider, activeIndex, member?.talentPosition]);
 
   useEffect(() => {
     const btn = document.querySelector('[data-contact-trigger]');
@@ -236,6 +351,12 @@ export default function DirectorPageVideoV3({ member }) {
       onTouchStart={handleSwipeTouchStart}
       onTouchEnd={handleSwipeTouchEnd}
     >
+      {items.length > 1 && (
+        <div className={styles.clipProgressTrack} aria-hidden>
+          <div ref={clipProgressFillRef} className={styles.clipProgressFill} />
+        </div>
+      )}
+
       {items.map((item, index) => {
         const isActive = activeIndex === index;
         return (
@@ -244,9 +365,11 @@ export default function DirectorPageVideoV3({ member }) {
             ref={(el) => (videoRefs.current[index] = el)}
             className={`${styles.videoLayer} ${isActive ? styles.active : ''}`}
             muted
-            loop
+            loop={items.length === 1}
             playsInline
             preload={index === 0 ? 'auto' : 'metadata'}
+            onTimeUpdate={handleClipTimeUpdate}
+            onEnded={items.length > 1 ? handleClipEnded : undefined}
           >
             {item.url && (
               <source src={item.url} type={getVideoType(item.url)} />
@@ -255,29 +378,61 @@ export default function DirectorPageVideoV3({ member }) {
         );
       })}
 
+      {currentProjectHref && (
+        <button
+          type="button"
+          className={styles.videoHitLayer}
+          data-play-cursor-zone
+          aria-label="Open full-screen project video"
+          onClick={(e) => handleNavigateToVideo(e, currentProjectHref)}
+        />
+      )}
+
+      <DirectorProfilePlayCursor disabled={bioOpen || bioClosing || !!pendingNav} />
+
+      {pendingNav && (
+        <DirectorNavigateTransition
+          origin={{ x: pendingNav.x, y: pendingNav.y }}
+          onComplete={() => goToVideoPage(pendingNav.href)}
+        />
+      )}
+
       {/* Center bar: vertically centered, director name + video name */}
       <div
         className={`${styles.centerBar} ${bioOpen || bioClosing ? styles.centerBarBioOpen : ''}`}
       >
         <div className={styles.directorInfo}>
           <div className={`${styles.directorInfoLine} ${styles.directorInfoLineAnimate}`}>
-            <span className={styles.directorName}>
+            <span className={`${styles.directorName} ${styles.cursorDefault}`}>
               {member?.fullName?.toUpperCase() || member?.fullName}
             </span>
             {' '}
             <br className={styles.mobileBreak} />
-            <span
-              key={currentItem?.id ?? activeIndex}
-              className={`${styles.projectName} ${styles.projectNameSwap}`}
-            >
-              {currentItem?.name || ''}
-            </span>
+            {currentProjectHref ? (
+              <a
+                key={currentItem?.id ?? activeIndex}
+                href={currentProjectHref}
+                className={`${styles.projectName} ${styles.projectNameSwap} ${styles.projectNameLink}`}
+                data-play-cursor-zone
+                onClick={(e) => handleNavigateToVideo(e, currentProjectHref)}
+              >
+                {currentItem?.name || ''}
+              </a>
+            ) : (
+              <span
+                key={currentItem?.id ?? activeIndex}
+                className={`${styles.projectName} ${styles.projectNameSwap}`}
+              >
+                {currentItem?.name || ''}
+              </span>
+            )}
           </div>
         </div>
 
         <div className={styles.projectNav} aria-label="Project navigation">
           {items.map((item, index) => {
             const isActive = activeIndex === index;
+            const rowClass = `${styles.projectRow} ${!animationsDone ? styles.projectRowAnimate : ''} ${isActive ? styles.projectRowActive : ''}`;
             return (
               <button
                 key={item.id}
@@ -285,10 +440,10 @@ export default function DirectorPageVideoV3({ member }) {
                   projectBtnRefs.current[index] = el;
                 }}
                 type="button"
-                className={`${styles.projectRow} ${!animationsDone ? styles.projectRowAnimate : ''} ${isActive ? styles.projectRowActive : ''}`}
+                className={rowClass}
                 style={{ '--icon-delay': `${index * 80}ms` }}
                 aria-current={isActive ? 'true' : undefined}
-                aria-label={`${item.name}${isActive ? ', current clip' : ''}`}
+                aria-label={`${item.name}${isActive ? ', current clip' : ''}. Select to preview this clip.`}
                 onMouseEnter={() => handleMouseEnter(index)}
                 onClick={() => handleDotClick(index)}
                 onKeyDown={(e) => handleProjectKeyDown(e, index)}
@@ -385,6 +540,21 @@ export default function DirectorPageVideoV3({ member }) {
           aria-hidden
         />
       )}
+
+      {member?.talentPosition?.trim() ? (
+        <div className={styles.talentBar}>
+          <div className={styles.talentBarInner}>
+            <span
+              ref={talentCornerRef}
+              className={styles.talentLabel}
+              data-director-talent-anchor
+              aria-hidden
+            >
+              {member.talentPosition.trim().toUpperCase()}
+            </span>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
