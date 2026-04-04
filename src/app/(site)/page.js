@@ -28,10 +28,12 @@ export default function Home() {
     <div className="homePage">
       <div className="container">
 
-        <BackgroundImage 
-          src={homePageData.homeFrame.asset.url} 
-          alt={homePageData.homeFrame.alt || "Background"} 
-        />
+        {homePageData?.homeFrame?.asset?.url && (
+          <BackgroundImage
+            src={homePageData.homeFrame.asset.url}
+            alt={homePageData.homeFrame.alt || "Background"}
+          />
+        )}
         <HomeVideo homePageData={homePageData} />
 
         <SloganSection homePageData={homePageData} />
