@@ -105,6 +105,7 @@ export default function DirectorsPageFullBleed({ directors }) {
   return (
     <div
       className={styles.wrapper}
+      data-director-blur-root
       onTouchStart={handleSwipeTouchStart}
       onTouchEnd={handleSwipeTouchEnd}
     >

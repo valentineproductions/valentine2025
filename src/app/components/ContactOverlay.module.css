@@ -90,24 +90,16 @@
 .overlay {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: 9;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 72px max(20px, calc((100vw - 2000px) / 2 + 20px)) 24px 20px;
   pointer-events: none;
 }
 
 .overlay > * {
   pointer-events: auto;
-}
-
-.overlayEnter {
-  animation: contactModalIn 0.35s ease-out both;
-}
-
-.overlayClosing {
-  animation: contactModalOut 0.3s ease-in both;
 }
 
 @keyframes contactModalIn {
@@ -128,7 +120,7 @@
   }
 }
 
-.overlayEnter .backdrop {
+.overlayEnter .backdropShade {
   animation: contactModalIn 0.35s ease-out both;
 }
 
@@ -136,7 +128,7 @@
   animation: contactPanelIn 0.4s ease-out 0.05s both;
 }
 
-.overlayClosing .backdrop {
+.overlayClosing .backdropShade {
   animation: contactModalOut 0.3s ease-in both;
 }
 
@@ -169,29 +161,45 @@
 .backdrop {
   position: absolute;
   inset: 0;
-  background: transparent;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   cursor: pointer;
+  isolation: isolate;
+}
+
+.backdropBlur {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.02);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  will-change: backdrop-filter;
+  transform: translateZ(0);
+  pointer-events: none;
+}
+
+.backdropShade {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.05);
+  pointer-events: none;
 }
 
 .inner {
   position: relative;
-  max-width: 520px;
+  max-width: 560px;
   width: 100%;
 }
 
 .panel {
   max-height: 80vh;
   overflow-y: auto;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.95);
   padding: 32px;
   border: none;
   border-radius: 12px;
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 12px;
   line-height: 1.55;
-  color: var(--valentine-purple);
+  color: #000;
   text-transform: uppercase;
 }
 
@@ -260,7 +268,7 @@
 .socialLink {
   position: relative;
   display: inline-block;
-  color: var(--valentine-purple);
+  color: #000;
   text-decoration: none;
 }
 
@@ -290,6 +298,10 @@
 }
 
 @media (max-width: 767px) {
+  .overlay {
+    padding: 64px 12px 16px;
+  }
+
   .panel {
     padding: 24px;
     max-height: 70vh;

@@ -28,7 +28,7 @@
   right: 0;
   bottom: 0;
   width: 3px;
-  z-index: 9;
+  z-index: 7;
   pointer-events: none;
   background: rgba(255, 255, 255, 0.2);
 }
@@ -49,7 +49,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 11;
+  z-index: 13;
   pointer-events: none;
   padding: 10px;
   box-sizing: border-box;
@@ -102,6 +102,15 @@
   cursor: none;
 }
 
+
+.wrapperBioBlur .videoLayer,
+.wrapperBioBlur .centerBar,
+.wrapperBioBlur .clipProgressTrack {
+  filter: blur(14px);
+  transform: translateZ(0);
+  transition: filter 0.25s ease;
+}
+
 .cursorDefault {
   cursor: default;
 }
@@ -130,7 +139,7 @@
   left: 0;
   right: 0;
   transform: translateY(-50%);
-  z-index: 10;
+  z-index: 8;
   max-width: 2000px;
   margin: 0 auto;
   padding: 24px 20px;
@@ -145,18 +154,13 @@
   pointer-events: auto;
 }
 
-/* While bio modal is open: hide in-bar title so the stacked copy in .bioColumn is the only one */
-.centerBarBioOpen .directorInfo {
-  visibility: hidden;
-}
-
 /* BIO bar - fixed at bottom, same on mobile */
 .bioBar {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 10;
+  z-index: 12;
   max-width: 2000px;
   margin: 0 auto;
   padding: 10px;
@@ -415,69 +419,74 @@
   }
 }
 
-/* Bio overlay */
-.bioOverlay {
+/*
+ * Bio modal: blur sits below header (nav z-index 10) and bio chrome; panel is a sibling so it can stack above the blur.
+ */
+.bioBlurLayer {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 100;
+  inset: 0;
+  z-index: 9;
   pointer-events: none;
 }
 
-/*
- * Same horizontal shell as .centerBar / nav: max-width 2000px, centered, matching padding.
- * Outer column only handles position + layout box; inner stack runs panel transform animation
- * so translateY(-50%) is not overwritten by keyframes.
- */
-.bioColumn {
+.bioBlurLayer .bioBackdropHit {
+  pointer-events: auto;
+}
+
+.bioBackdropHit {
   position: absolute;
-  top: 50%;
+  inset: 0;
+  cursor: pointer;
+  isolation: isolate;
+}
+
+.bioBackdropBlur {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.02);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  will-change: backdrop-filter;
+  transform: translateZ(0);
+  pointer-events: none;
+}
+
+.bioBackdropShade {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.05);
+  pointer-events: none;
+}
+
+.bioPanelDock {
+  position: fixed;
   left: 0;
   right: 0;
-  transform: translateY(-50%);
-  z-index: 101;
+  bottom: 0;
+  z-index: 11;
   max-width: 2000px;
   width: 100%;
   margin: 0 auto;
-  padding: 24px 20px;
+  padding: 16px 20px 52px;
   box-sizing: border-box;
   pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.bioPanelDockInner {
+  width: 100%;
+  max-width: 560px;
+  pointer-events: auto;
 }
 
 .bioColumnStack {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 20px;
   width: 100%;
-  max-width: min(750px, 100%);
-  pointer-events: none;
-}
-
-.bioColumnStack > * {
   pointer-events: auto;
-}
-
-.bioTitleBlock {
-  width: 100%;
-}
-
-.bioTitleBlock .directorInfoLine {
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
-}
-
-.bioOverlay > .bioBackdrop {
-  pointer-events: auto;
-}
-
-.bioOverlayEnter {
-  animation: bioModalIn 0.35s ease-out both;
-}
-
-.bioOverlayClosing {
-  animation: bioModalOut 0.3s ease-in both;
 }
 
 @keyframes bioModalIn {
@@ -489,7 +498,7 @@
   }
 }
 
-.bioOverlayEnter .bioBackdrop {
+.bioOverlayEnter .bioBackdropShade {
   animation: bioModalIn 0.35s ease-out both;
 }
 
@@ -497,7 +506,7 @@
   animation: bioModalPanelIn 0.4s ease-out 0.05s both;
 }
 
-.bioOverlayClosing .bioBackdrop {
+.bioOverlayClosing .bioBackdropShade {
   animation: bioModalOut 0.3s ease-in both;
 }
 
@@ -536,22 +545,9 @@
   }
 }
 
-.bioBackdrop {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: transparent;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  cursor: pointer;
-}
-
 .bioWrapper {
   position: relative;
   width: 100%;
-  max-width: 560px;
 }
 
 .bioContactDivider {
@@ -559,7 +555,7 @@
   height: 1px;
   background: rgba(255, 255, 255, 0.85);
   max-width: 2000px;
-  z-index: 12;
+  z-index: 14;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -572,9 +568,9 @@
 .bioPanel {
   position: relative;
   width: 100%;
-  max-height: min(80vh, 480px);
+  max-height: calc(100vh - 180px);
   overflow-y: auto;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.95);
   padding: 32px;
   border: none;
   border-radius: 12px;
@@ -584,7 +580,7 @@
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 14px;
   line-height: 1.6;
-  color: var(--valentine-purple);
+  color: #000;
   /* text-transform: lowercase; */
 }
 
@@ -600,25 +596,17 @@
   margin-bottom: 0;
 }
 
-@media (max-width: 767px) {
-  /* Title + bio stacked from upper area; room for BIO bar at bottom */
-  .bioColumn {
-    top: max(72px, 8vh);
-    transform: none;
-    /* padding: 16px 20px 96px; */
-    padding: 246px 20px 96px;
-    max-height: calc(100vh - 24px);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
+.bioContent a {
+  color: #000;
+}
 
-  .bioColumnStack {
-    gap: 16px;
-    max-width: none;
+@media (max-width: 767px) {
+  .bioPanelDock {
+    padding: 12px 20px 46px;
   }
 
   .bioPanel {
-    max-height: min(42vh, 360px);
+    max-height: calc(100vh - 168px);
     padding: 24px;
   }
 
@@ -628,15 +616,11 @@
 }
 
 @media (min-width: 768px) {
-  .bioColumn {
-    padding: 150px 20px 32px 20px;
-  }
-
-  .bioColumnStack {
-    gap: 24px;
+  .bioPanelDock {
+    padding: 24px 20px 76px;
   }
 
   .bioPanel {
-    max-height: min(70vh, 560px);
+    max-height: calc(100vh - 220px);
   }
 }

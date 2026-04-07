@@ -59,6 +59,39 @@ body.homeBody {
     background: #5F1B19;
 }
 
+
+body.contactModalOpenGeneral main {
+  filter: blur(14px);
+  transform: translateZ(0);
+  transition: filter 0.25s ease;
+}
+
+body.contactModalOpenDirector [data-director-blur-root] {
+  filter: blur(14px);
+  transform: translateZ(0);
+  transition: filter 0.25s ease;
+}
+
+body.contactModalOpenDirector [data-director-blur-root] .videoLayer,
+body.contactModalOpenDirector [data-director-blur-root] .centerBar,
+body.contactModalOpenDirector [data-director-blur-root] .clipProgressTrack,
+body.contactModalOpenDirector [data-director-blur-root] .namesOverlay {
+  filter: blur(14px);
+  transform: translateZ(0);
+  transition: filter 0.25s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.contactModalOpenGeneral main,
+  body.contactModalOpenDirector [data-director-blur-root],
+  body.contactModalOpenDirector [data-director-blur-root] .videoLayer,
+  body.contactModalOpenDirector [data-director-blur-root] .centerBar,
+  body.contactModalOpenDirector [data-director-blur-root] .clipProgressTrack,
+  body.contactModalOpenDirector [data-director-blur-root] .namesOverlay {
+    transition: none;
+  }
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -1864,11 +1897,13 @@ p.copyRightText b {
   }
 
   /* Turn it Horizontal */
-.mobileNavLinks a {
+.mobileNavLinks a,
+.mobileNavLinks button.homeNavLink {
     width: 100%;
     display: block;
     margin: 0;
     padding: 20px;
+    text-align: center;
 }
 
 

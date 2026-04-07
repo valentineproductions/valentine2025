@@ -26,6 +26,7 @@ export default function ContactOverlay() {
   const isDirectorsPage =
     pathname === '/directors' || pathname?.startsWith?.('/directors/');
   const isWorkPage = pathname === '/work';
+  const isHomePage = pathname === '/' || pathname === '';
 
   const handleClose = useCallback(() => setClosing(true), []);
 
@@ -46,6 +47,27 @@ export default function ContactOverlay() {
     document.addEventListener('keydown', onEsc);
     return () => document.removeEventListener('keydown', onEsc);
   }, [open, closing, handleClose]);
+
+  useEffect(() => {
+    const clsGeneral = 'contactModalOpenGeneral';
+    const clsDirector = 'contactModalOpenDirector';
+    if (open || closing) {
+      if (isDirectorsPage) {
+        document.body.classList.add(clsDirector);
+        document.body.classList.remove(clsGeneral);
+      } else {
+        document.body.classList.add(clsGeneral);
+        document.body.classList.remove(clsDirector);
+      }
+    } else {
+      document.body.classList.remove(clsGeneral);
+      document.body.classList.remove(clsDirector);
+    }
+    return () => {
+      document.body.classList.remove(clsGeneral);
+      document.body.classList.remove(clsDirector);
+    };
+  }, [open, closing, isDirectorsPage]);
 
   const handleAnimationEnd = (e) => {
     if (closing && e.target === e.currentTarget) {
@@ -79,8 +101,8 @@ export default function ContactOverlay() {
 
   if (!hasOverlayContent) return null;
 
-  /** Work page uses nav CONTACT only — no persistent bottom bar (motion + stills). */
-  const showContactBar = !isDirectorsPage && !isWorkPage;
+  /** Work + home: nav CONTACT only — no persistent bottom bar. */
+  const showContactBar = !isDirectorsPage && !isWorkPage && !isHomePage;
 
   return (
     <>
@@ -107,9 +129,19 @@ export default function ContactOverlay() {
           role="dialog"
           aria-modal="true"
           aria-label="Contact"
-          onAnimationEnd={handleAnimationEnd}
         >
-          <div className={styles.backdrop} onClick={handleClose} aria-hidden />
+          <div
+            className={styles.backdrop}
+            onClick={handleClose}
+            aria-hidden
+          >
+            <span className={styles.backdropBlur} aria-hidden />
+            <span
+              className={styles.backdropShade}
+              aria-hidden
+              onAnimationEnd={handleAnimationEnd}
+            />
+          </div>
           <div className={styles.inner} onClick={(e) => e.stopPropagation()}>
             <div className={styles.panel}>
               {hasIntro && (

@@ -283,7 +283,7 @@ export default function DirectorPageVideoV3({ member }) {
         return;
       }
       const contactExpanded = contactBtn?.getAttribute('aria-expanded') === 'true';
-      if (bioOpen || bioClosing || contactExpanded) {
+      if (contactExpanded) {
         setDividerStyle(null);
         setDividerVisible(false);
         return;
@@ -299,7 +299,7 @@ export default function DirectorPageVideoV3({ member }) {
       setDividerStyle(null);
       setDividerVisible(false);
     }
-  }, [bioOpen, bioClosing]);
+  }, []);
 
   useEffect(() => {
     updateDivider();
@@ -307,7 +307,7 @@ export default function DirectorPageVideoV3({ member }) {
     return () => {
       window.removeEventListener('resize', updateDivider);
     };
-  }, [updateDivider, activeIndex, member?.talentPosition]);
+  }, [updateDivider, activeIndex, member?.talentPosition, bioOpen, bioClosing]);
 
   useEffect(() => {
     const btn = document.querySelector('[data-contact-trigger]');
@@ -347,7 +347,8 @@ export default function DirectorPageVideoV3({ member }) {
 
   return (
     <div
-      className={styles.wrapper}
+      className={`${styles.wrapper} ${bioOpen || bioClosing ? styles.wrapperBioBlur : ''}`}
+      data-director-blur-root
       onTouchStart={handleSwipeTouchStart}
       onTouchEnd={handleSwipeTouchEnd}
     >
@@ -398,9 +399,7 @@ export default function DirectorPageVideoV3({ member }) {
       )}
 
       {/* Center bar: vertically centered, director name + video name */}
-      <div
-        className={`${styles.centerBar} ${bioOpen || bioClosing ? styles.centerBarBioOpen : ''}`}
-      >
+      <div className={styles.centerBar}>
         <div className={styles.directorInfo}>
           <div className={`${styles.directorInfoLine} ${styles.directorInfoLineAnimate}`}>
             <span className={`${styles.directorName} ${styles.cursorDefault}`}>
@@ -483,55 +482,56 @@ export default function DirectorPageVideoV3({ member }) {
 
       {/* Bio overlay - click anywhere to close, video keeps playing underneath */}
       {(bioOpen || bioClosing) && (
-        <div
-          className={`${styles.bioOverlay} ${bioClosing ? styles.bioOverlayClosing : styles.bioOverlayEnter}`}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Biography"
-          onAnimationEnd={handleBioAnimationEnd}
-        >
-          <div className={styles.bioBackdrop} onClick={handleBioClose} />
-          <div className={styles.bioColumn} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.bioColumnStack}>
-              <div className={styles.bioTitleBlock}>
-                <div className={styles.directorInfoLine}>
-                  <span className={styles.directorName}>
-                    {member?.fullName?.toUpperCase() || member?.fullName}
-                  </span>
-                  {' '}
-                  <br className={styles.mobileBreak} />
-                  <span
-                    key={currentItem?.id ?? activeIndex}
-                    className={`${styles.projectName} ${styles.projectNameSwap}`}
-                  >
-                    {currentItem?.name || ''}
-                  </span>
-                </div>
-              </div>
-              <div className={styles.bioWrapper}>
-                <div
-                  className={styles.bioPanel}
-                  onClick={(e) => e.stopPropagation()}
-                  onMouseDown={handleBioLongPressStart}
-                  onMouseUp={handleBioLongPressEnd}
-                  onMouseLeave={handleBioLongPressEnd}
-                  onTouchStart={handleBioLongPressStart}
-                  onTouchEnd={handleBioLongPressEnd}
-                  onContextMenu={(e) => e.preventDefault()}
-                >
+        <>
+          <div className={`${styles.bioBlurLayer} ${bioClosing ? styles.bioOverlayClosing : styles.bioOverlayEnter}`}>
+            <div
+              className={styles.bioBackdropHit}
+              role="presentation"
+              onClick={handleBioClose}
+              aria-hidden
+            >
+              <span className={styles.bioBackdropBlur} aria-hidden />
+              <span
+                className={styles.bioBackdropShade}
+                aria-hidden
+                onAnimationEnd={handleBioAnimationEnd}
+              />
+            </div>
+          </div>
+          <div
+            className={`${styles.bioPanelDock} ${bioClosing ? styles.bioOverlayClosing : styles.bioOverlayEnter}`}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Biography"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className={styles.bioPanelDockInner}>
+              <div className={styles.bioColumnStack}>
+                <div className={styles.bioWrapper}>
                   <div
-                    className={`${styles.bioContent} ${bioUppercase ? styles.bioContentUppercase : ''}`}
+                    className={styles.bioPanel}
+                    onClick={(e) => e.stopPropagation()}
+                    onMouseDown={handleBioLongPressStart}
+                    onMouseUp={handleBioLongPressEnd}
+                    onMouseLeave={handleBioLongPressEnd}
+                    onTouchStart={handleBioLongPressStart}
+                    onTouchEnd={handleBioLongPressEnd}
+                    onContextMenu={(e) => e.preventDefault()}
                   >
-                    <PortableText
-                      value={member.bio}
-                      components={defaultPortableTextComponents}
-                    />
+                    <div
+                      className={`${styles.bioContent} ${bioUppercase ? styles.bioContentUppercase : ''}`}
+                    >
+                      <PortableText
+                        value={member.bio}
+                        components={defaultPortableTextComponents}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </>
       )}
       {dividerStyle && (
         <div
