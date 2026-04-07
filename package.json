@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "patch-package"
+    "postinstall": "echo 'patch-package temporarily disabled for Sanity stability'"
   },
   "dependencies": {
     "@portabletext/react": "^3.2.1",

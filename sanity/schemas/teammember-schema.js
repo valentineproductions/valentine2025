@@ -1,3 +1,5 @@
+import SafeVideoFileInput from '../components/SafeVideoFileInput';
+
 const teamMember = {
     name: 'teamMember', 
     title: 'Team Member', 
@@ -104,6 +106,9 @@ const teamMember = {
         options: {
           accept: 'video/mp4,video/webm',
         },
+        components: {
+          input: SafeVideoFileInput,
+        },
         description: 'Short video clip (7–15 sec, MP4) for the Directors list page. When hovering this director\'s name, this clip plays as the full-bleed background. Leave empty to skip.',
       },
       {
@@ -158,6 +163,9 @@ const teamMember = {
                 type: 'file',
                 options: {
                   accept: 'video/mp4,video/webm',
+                },
+                components: {
+                  input: SafeVideoFileInput,
                 },
                 description: 'Video clip (7–15 sec, MP4) for full-bleed background. Required for this to appear on the profile.',
               },
