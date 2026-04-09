@@ -9,7 +9,7 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 // Logo taxonomy: hero (overlay white), body background (watermark), footer (tail slide-in)
-export default function WorkStillsView({ stills, backgroundLogo, fallbackLogo, pageCompanyLogo }) {
+export default function WorkStillsView({ stills, backgroundLogo, fallbackLogo, pageCompanyLogo, backgroundColor }) {
   const bottomLogoRef = useRef(null);
   const [bottomVisible, setBottomVisible] = useState(false);
   const fadeEndRef = useRef(null);
@@ -92,7 +92,7 @@ export default function WorkStillsView({ stills, backgroundLogo, fallbackLogo, p
 
   if (list.length === 0) {
     return (
-      <div className={styles.root}>
+      <div className={styles.root} style={backgroundColor ? { background: backgroundColor } : undefined}>
         <WorkStillsBackgroundMark logo={backgroundLogo} fallbackLogo={fallbackLogo || pageCompanyLogo} fadeState={bodyPhase === 'gone' ? 'gone' : bodyPhase === 'hidden' ? 'hidden' : undefined} />
         <HeroBannerLogoDown overlayLogo={fallbackLogo || pageCompanyLogo} />
         <div className={styles.heroSpacer} aria-hidden />
@@ -105,7 +105,7 @@ export default function WorkStillsView({ stills, backgroundLogo, fallbackLogo, p
 
   const firstIsFullBleed = list.length > 0 && String(list[0]?.layout) === 'fullBleed';
   return (
-    <div className={[styles.root, firstIsFullBleed ? styles.rootHasFirstFullBleed : ''].filter(Boolean).join(' ')}>
+    <div className={[styles.root, firstIsFullBleed ? styles.rootHasFirstFullBleed : ''].filter(Boolean).join(' ')} style={backgroundColor ? { background: backgroundColor } : undefined}>
       <WorkStillsBackgroundMark logo={backgroundLogo} fallbackLogo={fallbackLogo || pageCompanyLogo} fadeState={bodyPhase === 'gone' ? 'gone' : bodyPhase === 'hidden' ? 'hidden' : undefined} />
       <HeroBannerLogoDown overlayLogo={fallbackLogo || pageCompanyLogo} />
       <div className={styles.heroSpacer} aria-hidden />

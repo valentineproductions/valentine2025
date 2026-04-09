@@ -115,6 +115,7 @@ export default function Page() {
                                 backgroundLogo={pageWork.workStillsBackgroundLogo}
                                 fallbackLogo={pageWork.pageCompanyLogoWhite}
                                 pageCompanyLogo={pageWork.pageCompanyLogo}
+                                backgroundColor={pageWork.workStillsBackgroundColor}
                             />
                         ) : (
                             <WorkMotionView clips={pageWork.workMotionClips} />

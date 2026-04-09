@@ -200,6 +200,13 @@ const page = {
         ],
       },
       {
+        name: 'workStillsBackgroundColor',
+        title: 'Work page stills background color',
+        type: 'string',
+        description:
+          'Optional CSS/hex color for the Stills page background (e.g., #5F1B19). Leave empty to use the default.',
+      },
+      {
         name: 'workStills',
         title: 'Work page stills editorial',
         type: 'array',

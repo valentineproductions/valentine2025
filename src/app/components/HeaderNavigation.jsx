@@ -166,7 +166,7 @@ export default function HeaderNavigation() { // Default empty array
     const baseW = 77;
     const baseH = 18;
     const ratio = baseH / baseW;
-    const logoWidth = sizeToken === 'L' ? baseW + 200 : sizeToken === 'M' ? baseW + 100 : baseW;
+    const logoWidth = sizeToken === 'L' ? baseW + 100 : sizeToken === 'M' ? baseW + 50 : baseW;
     const logoHeight = Math.round(logoWidth * ratio);
     const logo = (
         <Image

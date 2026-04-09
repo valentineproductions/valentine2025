@@ -506,10 +506,12 @@ export async function getLegalBySlug(slug) {
             "url": asset->url,
             asset->{ _id, url }
           },
+          workStillsBackgroundColor,
           workStills[]{
             title,
             description,
             layout,
+            parallaxStrength,
             parallaxStrength,
             images[]{
               alt,
