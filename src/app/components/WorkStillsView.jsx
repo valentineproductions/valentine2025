@@ -94,7 +94,7 @@ export default function WorkStillsView({ stills, backgroundLogo, fallbackLogo, p
     return (
       <div className={styles.root} style={backgroundColor ? { background: backgroundColor } : undefined}>
         <WorkStillsBackgroundMark logo={backgroundLogo} fallbackLogo={fallbackLogo || pageCompanyLogo} fadeState={bodyPhase === 'gone' ? 'gone' : bodyPhase === 'hidden' ? 'hidden' : undefined} />
-        <HeroBannerLogoDown overlayLogo={fallbackLogo || pageCompanyLogo} />
+        <HeroBannerLogoDown overlayLogo={backgroundLogo || fallbackLogo || pageCompanyLogo} />
         <div className={styles.heroSpacer} aria-hidden />
         <div className={styles.empty}>
           <p>Add Stills in Sanity (Work page → Stills). Choose a layout, then add images.</p>
@@ -107,7 +107,7 @@ export default function WorkStillsView({ stills, backgroundLogo, fallbackLogo, p
   return (
     <div className={[styles.root, firstIsFullBleed ? styles.rootHasFirstFullBleed : ''].filter(Boolean).join(' ')} style={backgroundColor ? { background: backgroundColor } : undefined}>
       <WorkStillsBackgroundMark logo={backgroundLogo} fallbackLogo={fallbackLogo || pageCompanyLogo} fadeState={bodyPhase === 'gone' ? 'gone' : bodyPhase === 'hidden' ? 'hidden' : undefined} />
-      <HeroBannerLogoDown overlayLogo={fallbackLogo || pageCompanyLogo} />
+      <HeroBannerLogoDown overlayLogo={backgroundLogo || fallbackLogo || pageCompanyLogo} />
       <div className={styles.heroSpacer} aria-hidden />
       <div className={styles.feed}>
         {list.map((item, index) => (
@@ -116,9 +116,9 @@ export default function WorkStillsView({ stills, backgroundLogo, fallbackLogo, p
       </div>
       <div ref={fadeEndRef} aria-hidden style={{ width: 1, height: 1, margin: 0, padding: 0 }} />
       <div ref={bottomLogoRef} className={`${styles.bottomLogoWrap} ${bottomVisible ? styles.visible : ''}`}>
-        {(fallbackLogo?.asset?.url || fallbackLogo?.url || pageCompanyLogo?.asset?.url) && (
+        {(backgroundLogo?.asset?.url || backgroundLogo?.url || fallbackLogo?.asset?.url || fallbackLogo?.url || pageCompanyLogo?.asset?.url) && (
           <Image
-            src={(fallbackLogo?.asset?.url) || (fallbackLogo?.url) || (pageCompanyLogo?.asset?.url)}
+            src={(backgroundLogo?.asset?.url) || (backgroundLogo?.url) || (fallbackLogo?.asset?.url) || (fallbackLogo?.url) || (pageCompanyLogo?.asset?.url)}
             alt=""
             width={2000}
             height={500}
