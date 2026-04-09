@@ -72,6 +72,22 @@ const homepage = {
       description: 'A smaller icon for the company, used in previews.',
       group: 'general',
     },
+    {
+      name: 'navLogoSize',
+      title: 'Nav Logo Size',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'S', value: 'S' },
+          { title: 'M', value: 'M' },
+          { title: 'L', value: 'L' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'S',
+      description: 'Controls the size of the top-left navigation logo.',
+      group: 'general',
+    },
     // Page Note & Footer Group
 
     {

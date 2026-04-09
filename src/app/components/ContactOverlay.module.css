@@ -94,7 +94,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
-  padding: 72px max(20px, calc((100vw - 2000px) / 2 + 20px)) 24px 20px;
+  padding: 45px max(20px, calc((100vw - 2000px) / 2 + 20px)) 24px 20px;
   pointer-events: none;
 }
 
@@ -168,9 +168,9 @@
 .backdropBlur {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.02);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(14.4px);
+  -webkit-backdrop-filter: blur(14.4px);
   will-change: backdrop-filter;
   transform: translateZ(0);
   pointer-events: none;
@@ -192,24 +192,51 @@
 .panel {
   max-height: 80vh;
   overflow-y: auto;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 32px;
+  background: rgba(170, 170, 170, 0.7);
+  padding: 22px 32px 22px 22px;
   border: none;
   border-radius: 12px;
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 12px;
   line-height: 1.55;
   color: #000;
-  text-transform: uppercase;
+  text-transform: none;
+}
+
+.panelGrid {
+  display: grid;
+  grid-template-columns: 65% 35%;
+  grid-template-rows: 1fr 1fr;
+  gap: 16px;
+  min-height: 50vh;
+}
+
+.slotTL {
+  align-self: start;
+}
+.slotTR {
+  align-self: start;
+}
+.slotBL {
+  align-self: end;
+}
+.slotBR {
+  align-self: end;
+  justify-self: end;
+  text-align: right;
 }
 
 .introLine {
   margin: 0 0 24px 0;
   opacity: 0.95;
+  white-space: pre-wrap;
+  font-size: 26px;
+  line-height: 0.8;
+  letter-spacing: 0.2%;
 }
 
 .brandInline {
-  font-weight: 700;
+  font-weight: 400;
   /* font-size: 15px; */
   letter-spacing: 0.02em;
 }
@@ -249,14 +276,16 @@
   /* font-size: 11px; */
   font-weight: 600;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  text-transform: none;
   opacity: 0.85;
 }
 
 .cities {
-  margin: 0 0 24px 0;
+  /* margin: 0 0 24px 0; */
   padding: 0;
   opacity: 0.9;
+  font-size: 8px;
+  white-space: pre-wrap;
 }
 
 .connectLine {
@@ -264,12 +293,20 @@
   /* font-size: 13px; */
 }
 
-.email,
+.email {
+  position: relative;
+  display: inline-block;
+  color: #000;
+  text-decoration: none;
+  font-size: 26px;
+}
+
 .socialLink {
   position: relative;
   display: inline-block;
   color: #000;
   text-decoration: none;
+  font-size: 8px;
 }
 
 .email::after,
@@ -305,5 +342,16 @@
   .panel {
     padding: 24px;
     max-height: 70vh;
+  }
+  .panelGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 16px;
+    min-height: auto;
+  }
+  .slotBR {
+    justify-self: start;
+    text-align: left;
   }
 }

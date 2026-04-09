@@ -162,12 +162,18 @@ export default function HeaderNavigation() { // Default empty array
             : isDirectorsPage || (isWorkPage && workChrome?.mode === 'motion') ? 'directorsOverlay'
                 : 'pageOverlay';
 
+    const sizeToken = allData?.homepage?.navLogoSize || 'S';
+    const baseW = 77;
+    const baseH = 18;
+    const ratio = baseH / baseW;
+    const logoWidth = sizeToken === 'L' ? baseW + 200 : sizeToken === 'M' ? baseW + 100 : baseW;
+    const logoHeight = Math.round(logoWidth * ratio);
     const logo = (
         <Image
             src={logoData?.url || '/glove.svg'}
             alt={logoData?.alt || 'Valentine Logo'}
-            width={77}
-            height={18}
+            width={logoWidth}
+            height={logoHeight}
             priority
             className={workLogoChromeClass}
         />

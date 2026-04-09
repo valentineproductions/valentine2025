@@ -11,6 +11,7 @@ export async function getHomePage() {
         },
         alt
       },
+      navLogoSize,
       companyName,
       companyIcon{
         asset->{
@@ -564,6 +565,7 @@ export async function getLegalBySlug(slug) {
             },
             alt
           },
+          navLogoSize,
           pageNote->{...},
           companyName,
           companyIcon{

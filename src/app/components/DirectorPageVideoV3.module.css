@@ -106,9 +106,18 @@
 .wrapperBioBlur .videoLayer,
 .wrapperBioBlur .centerBar,
 .wrapperBioBlur .clipProgressTrack {
-  filter: blur(14px);
+  filter: blur(14.4px);
   transform: translateZ(0);
   transition: filter 0.25s ease;
+}
+
+/* Lock centerBar to viewport center while Bio is open so the same element blurs in place */
+.wrapperBioBlur .centerBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 33%;
+  transform: translate3d(0, 0, 0);
 }
 
 .cursorDefault {
@@ -138,7 +147,7 @@
   top: 50%;
   left: 0;
   right: 0;
-  transform: translateY(-50%);
+  transform: translate3d(0, -50%, 0);
   z-index: 8;
   max-width: 2000px;
   margin: 0 auto;
@@ -148,6 +157,8 @@
   align-items: center;
   /* Let clicks pass through empty flex space to .videoHitLayer */
   pointer-events: none;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .centerBar > * {
@@ -443,9 +454,9 @@
 .bioBackdropBlur {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.02);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(14.4px);
+  -webkit-backdrop-filter: blur(14.4px);
   will-change: backdrop-filter;
   transform: translateZ(0);
   pointer-events: none;
@@ -568,9 +579,10 @@
 .bioPanel {
   position: relative;
   width: 100%;
-  max-height: calc(100vh - 180px);
+  min-height: 30vh;
+  max-height: 30vh;
   overflow-y: auto;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(170, 170, 170, 0.7);
   padding: 32px;
   border: none;
   border-radius: 12px;
@@ -606,7 +618,7 @@
   }
 
   .bioPanel {
-    max-height: calc(100vh - 168px);
+    max-height: 85vh;
     padding: 24px;
   }
 
@@ -621,6 +633,6 @@
   }
 
   .bioPanel {
-    max-height: calc(100vh - 220px);
+    max-height: 85vh;
   }
 }

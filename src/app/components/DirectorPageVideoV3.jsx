@@ -245,6 +245,12 @@ export default function DirectorPageVideoV3({ member }) {
       : null;
   const hasBio = member?.bio && member.bio.length > 0;
 
+  useEffect(() => {
+    const v = videoRefs.current[activeIndex];
+    if (v) {
+      v.play().catch(() => {});
+    }
+  }, [bioOpen, bioClosing, activeIndex]);
   const goToVideoPage = useCallback(
     (href) => {
       setPendingNav(null);

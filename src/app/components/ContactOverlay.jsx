@@ -144,83 +144,69 @@ export default function ContactOverlay() {
           </div>
           <div className={styles.inner} onClick={(e) => e.stopPropagation()}>
             <div className={styles.panel}>
-              {hasIntro && (
-                <p className={styles.introLine}>
-                  {pageNote.copyrightBrandName?.trim() && (
-                    <span className={styles.brandInline}>
-                      {pageNote.copyrightBrandName.trim()}
-                    </span>
-                  )}
-                  {pageNote.copyrightBrandName?.trim() && pageNote.copyrightText?.trim()
-                    ? ' '
-                    : null}
-                  {pageNote.copyrightText?.trim() && pageNote.copyrightText.trim()}
-                </p>
-              )}
-
-              {(hasDept1 || hasDept2) && (
-                <div className={styles.departments}>
-                  {hasDept1 && (
-                    <div className={styles.deptRow}>
-                      {pageNote.aboutDepartment1?.trim() && (
-                        <span className={styles.deptLabel}>{pageNote.aboutDepartment1.trim()}</span>
+              <div className={styles.panelGrid}>
+                <div className={styles.slotTL}>
+                  {hasIntro && (
+                    <p className={styles.introLine}>
+                      {pageNote.copyrightBrandName?.trim() && (
+                        <span className={styles.brandInline}>
+                          {pageNote.copyrightBrandName.trim()}
+                        </span>
                       )}
+                      {pageNote.copyrightBrandName?.trim() && pageNote.copyrightText?.trim() ? ' ' : null}
+                      {pageNote.copyrightText?.trim() && pageNote.copyrightText.trim()}
+                    </p>
+                  )}
+                </div>
+
+                <div className={styles.slotTR} />
+
+                <div className={styles.slotBL}>
+                  {hasDept1 && (
+                    <p className={styles.connectLine}>
+                      {/* Information Page - {pageNote.aboutDepartment1?.trim() ? `${pageNote.aboutDepartment1.trim()} ` : ''} */}
                       {pageNote.aboutEmailD1?.trim() && (
                         <a href={formatMailto(pageNote.aboutEmailD1)} className={styles.email}>
                           {pageNote.aboutEmailD1.trim()}
                         </a>
                       )}
-                    </div>
+                    </p>
                   )}
-                  {hasDept2 && (
-                    <div className={styles.deptRow}>
-                      {pageNote.aboutDepartment2?.trim() && (
-                        <span className={styles.deptLabel}>{pageNote.aboutDepartment2.trim()}</span>
-                      )}
-                      {pageNote.aboutEmailD2?.trim() && (
-                        <a href={formatMailto(pageNote.aboutEmailD2)} className={styles.email}>
-                          {pageNote.aboutEmailD2.trim()}
-                        </a>
-                      )}
+                  {pageNote.workDescription?.trim() && (
+                    <p className={styles.cities} style={{ marginTop: 12 }}>
+                      {pageNote.workDescription.trim()}
+                    </p>
+                  )}
+                </div>
+
+                <div className={styles.slotBR}>
+                  {hasLinks && (
+                    <div className={styles.connect}>
+                      <p className={styles.connectLine}>
+                        {links.map((link, index) => {
+                          const isEmail =
+                            link.linkUrl &&
+                            link.linkUrl.includes('@') &&
+                            !link.linkUrl.startsWith('http://') &&
+                            !link.linkUrl.startsWith('https://');
+                          const href = isEmail ? `mailto:${link.linkUrl}` : link.linkUrl;
+                          const target = !isEmail && link.openNewTab ? '_blank' : undefined;
+                          const rel = !isEmail && link.openNewTab ? 'noopener noreferrer' : undefined;
+                          const key = link._key || `${link.linkUrl}-${link.linkTitle}-${index}`;
+                          return (
+                            <span key={key}>
+                              {index > 0 && ' / '}
+                              <a href={href} className={styles.socialLink} target={target} rel={rel}>
+                                {link.linkTitle}
+                              </a>
+                            </span>
+                          );
+                        })}
+                      </p>
                     </div>
                   )}
                 </div>
-              )}
-
-              {hasCities && (
-                <p className={styles.cities}>
-                  {cities
-                    .map((c) => (c?.cityTitle || '').trim())
-                    .filter(Boolean)
-                    .join(' / ')}
-                </p>
-              )}
-
-              {hasLinks && (
-                <div className={styles.connect}>
-                  <p className={styles.connectLine}>
-                    {links.map((link, index) => {
-                      const isEmail =
-                        link.linkUrl &&
-                        link.linkUrl.includes('@') &&
-                        !link.linkUrl.startsWith('http://') &&
-                        !link.linkUrl.startsWith('https://');
-                      const href = isEmail ? `mailto:${link.linkUrl}` : link.linkUrl;
-                      const target = !isEmail && link.openNewTab ? '_blank' : undefined;
-                      const rel = !isEmail && link.openNewTab ? 'noopener noreferrer' : undefined;
-                      const key = link._key || `${link.linkUrl}-${link.linkTitle}-${index}`;
-                      return (
-                        <span key={key}>
-                          {index > 0 && ' / '}
-                          <a href={href} className={styles.socialLink} target={target} rel={rel}>
-                            {link.linkTitle}
-                          </a>
-                        </span>
-                      );
-                    })}
-                  </p>
-                </div>
-              )}
+              </div>
             </div>
           </div>
         </div>
