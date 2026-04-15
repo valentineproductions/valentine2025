@@ -34,11 +34,12 @@ export default function WorkStillsBlock({ item }) {
         ? styles.imageGridCols2
         : '';
 
-  const renderStillImg = (im, idx, sizes) => {
+  const renderStillImg = (im, idx, sizes, driftBias = 0) => {
     const url = resolveImageUrl(im);
     if (!url) return null;
     const alt = im.alt || item.title || `Still ${idx + 1}`;
-    const s = resolveImageParallaxStrength(im, strength);
+    const sBase = resolveImageParallaxStrength(im, strength);
+    const s = Math.min(120, Math.max(0, sBase + driftBias));
     return (
       <WorkStillsParallaxMedia
         key={`${url}-${idx}`}
@@ -84,6 +85,7 @@ export default function WorkStillsBlock({ item }) {
                   im,
                   idx,
                   '(max-width: 767px) 100vw, 48vw',
+                  idx === 0 ? -20 : 20,
                 )}
               </div>
             ))}
@@ -136,12 +138,42 @@ export default function WorkStillsBlock({ item }) {
     );
   }
 
-  const isEditorial = layout === 'threeColumn';
-  const layoutMod = isEditorial
-    ? styles.blockEditorial
-    : layout === 'fullBleed'
-      ? styles.blockFullBleed
-      : styles.blockCentered;
+  if (layout === 'threeColumn') {
+    const trio = images.slice(0, 3);
+    return (
+      <article
+        ref={parallaxRootRef}
+        className={`${styles.block} ${styles.blockThreeAligned}`}
+      >
+        <div className={styles.mediaShell}>
+          {trio.length > 0 && (
+            <div className={`${styles.imageGrid} ${styles.imageGridCols3}`}>
+              {trio.map((im, idx) =>
+                renderStillImg(
+                  im,
+                  idx,
+                  '(max-width: 767px) 100vw, (max-width: 899px) 50vw, 33vw',
+                  idx === 0 ? -18 : idx === 2 ? 18 : 0,
+                ),
+              )}
+            </div>
+          )}
+        </div>
+        <div
+          className={`${styles.text} ${styles.textBelowPair} ${styles.textHelvPair}`}
+        >
+          {item.title && <h2 className={styles.title}>{item.title}</h2>}
+          {item.description && (
+            <p className={`${styles.desc} ${styles.descHelv}`}>{item.description}</p>
+          )}
+        </div>
+      </article>
+    );
+  }
+
+  const layoutMod = layout === 'fullBleed'
+    ? styles.blockFullBleed
+    : styles.blockCentered;
 
   const imageGridClass = [styles.imageGrid, gridExtra].filter(Boolean).join(' ');
 

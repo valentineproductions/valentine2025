@@ -20,7 +20,7 @@ const WORK_STILLS_LAYOUT_LIST = [
   },
   {
     title:
-      'Up to three images staggered in a row with title and description beside',
+      'One row three equal columns three images aligned then centered title and description below',
     value: 'threeColumn',
   },
 ];

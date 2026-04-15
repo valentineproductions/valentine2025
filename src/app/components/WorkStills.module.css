@@ -308,10 +308,24 @@
 }
 
 .blockStaggerPair,
-.blockPairFlat {
+.blockPairFlat,
+.blockThreeAligned {
   grid-template-columns: 1fr;
   gap: clamp(24px, 4vw, 40px);
   align-items: start;
+}
+
+.blockThreeAligned .parallaxWrap {
+  aspect-ratio: 2 / 3;
+}
+
+.blockThreeAligned .parallaxInner {
+  height: 100%;
+}
+
+.blockThreeAligned .img {
+  height: 100%;
+  object-fit: cover;
 }
 
 .mediaShellPair {
