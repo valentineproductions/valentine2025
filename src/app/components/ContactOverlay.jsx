@@ -29,15 +29,26 @@ export default function ContactOverlay() {
   const isHomePage = pathname === '/' || pathname === '';
 
   const handleClose = useCallback(() => setClosing(true), []);
+  const handleOpen = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('valentine-close-bio'));
+    }
+    setClosing(false);
+    setOpen(true);
+  }, []);
 
   useEffect(() => {
-    const onOpenFromNav = () => {
-      setClosing(false);
-      setOpen(true);
+    const onOpenFromNav = () => handleOpen();
+    const onCloseFromBio = () => {
+      if (open && !closing) setClosing(true);
     };
     window.addEventListener('valentine-open-contact', onOpenFromNav);
-    return () => window.removeEventListener('valentine-open-contact', onOpenFromNav);
-  }, []);
+    window.addEventListener('valentine-close-contact', onCloseFromBio);
+    return () => {
+      window.removeEventListener('valentine-open-contact', onOpenFromNav);
+      window.removeEventListener('valentine-close-contact', onCloseFromBio);
+    };
+  }, [handleOpen, open, closing]);
 
   useEffect(() => {
     if (!open && !closing) return;
@@ -114,7 +125,7 @@ export default function ContactOverlay() {
             type="button"
             className={styles.contactTrigger}
             data-contact-trigger
-            onClick={() => setOpen(true)}
+            onClick={handleOpen}
             aria-haspopup="dialog"
             aria-expanded={open || closing}
           >

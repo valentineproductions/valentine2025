@@ -56,6 +56,14 @@ export default function DirectorPageVideoV3({ member }) {
     setBioClosing(true);
   }, []);
 
+  const handleBioOpen = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('valentine-close-contact'));
+    }
+    setBioClosing(false);
+    setBioOpen(true);
+  }, []);
+
   useEffect(() => {
     const bioPaused = bioOpen || bioClosing;
     videoRefs.current.forEach((video, i) => {
@@ -146,6 +154,21 @@ export default function DirectorPageVideoV3({ member }) {
 
   useEffect(() => {
     if (!bioOpen && !bioClosing) setBioUppercase(false);
+  }, [bioOpen, bioClosing]);
+
+  useEffect(() => {
+    const onContactOpen = () => {
+      if (bioOpen && !bioClosing) setBioClosing(true);
+    };
+    const onBioClose = () => {
+      if (bioOpen && !bioClosing) setBioClosing(true);
+    };
+    window.addEventListener('valentine-open-contact', onContactOpen);
+    window.addEventListener('valentine-close-bio', onBioClose);
+    return () => {
+      window.removeEventListener('valentine-open-contact', onContactOpen);
+      window.removeEventListener('valentine-close-bio', onBioClose);
+    };
   }, [bioOpen, bioClosing]);
 
   const handleBioAnimationEnd = (e) => {
@@ -288,12 +311,6 @@ export default function DirectorPageVideoV3({ member }) {
         setDividerVisible(false);
         return;
       }
-      const contactExpanded = contactBtn?.getAttribute('aria-expanded') === 'true';
-      if (contactExpanded) {
-        setDividerStyle(null);
-        setDividerVisible(false);
-        return;
-      }
       const bioRect = bioBtn.getBoundingClientRect();
       const rightRect = rightAnchor.getBoundingClientRect();
       const left = Math.round(bioRect.right + 10);
@@ -352,12 +369,13 @@ export default function DirectorPageVideoV3({ member }) {
   };
 
   return (
-    <div
-      className={`${styles.wrapper} ${bioOpen || bioClosing ? styles.wrapperBioBlur : ''}`}
-      data-director-blur-root
-      onTouchStart={handleSwipeTouchStart}
-      onTouchEnd={handleSwipeTouchEnd}
-    >
+    <>
+      <div
+        className={`${styles.wrapper} ${bioOpen || bioClosing ? styles.wrapperBioBlur : ''}`}
+        data-director-blur-root
+        onTouchStart={handleSwipeTouchStart}
+        onTouchEnd={handleSwipeTouchEnd}
+      >
       {items.length > 1 && (
         <div className={styles.clipProgressTrack} aria-hidden>
           <div ref={clipProgressFillRef} className={styles.clipProgressFill} />
@@ -472,20 +490,6 @@ export default function DirectorPageVideoV3({ member }) {
         </div>
       </div>
 
-      {/* BIO link - fixed at bottom, same on mobile */}
-      {hasBio && (
-        <div ref={bioBarRef} className={`${styles.bioBar} ${styles.bioBarAnimate}`} style={{ '--bio-delay': `${100 + items.length * 80}ms` }}>
-          <button
-            type="button"
-            className={styles.bioLink}
-            ref={bioBtnRef}
-            onClick={() => setBioOpen(true)}
-          >
-            BIO
-          </button>
-        </div>
-      )}
-
       {/* Bio overlay - click anywhere to close, video keeps playing underneath */}
       {(bioOpen || bioClosing) && (
         <>
@@ -539,6 +543,22 @@ export default function DirectorPageVideoV3({ member }) {
           </div>
         </>
       )}
+      </div>
+
+      {/* Keep these outside blurred root so they stay sharp while contact is open */}
+      {hasBio && (
+        <div ref={bioBarRef} className={`${styles.bioBar} ${styles.bioBarAnimate}`} style={{ '--bio-delay': `${100 + items.length * 80}ms` }}>
+          <button
+            type="button"
+            className={styles.bioLink}
+            ref={bioBtnRef}
+            onClick={handleBioOpen}
+          >
+            BIO
+          </button>
+        </div>
+      )}
+
       {dividerStyle && (
         <div
           className={`${styles.bioContactDivider} ${dividerVisible ? styles.bioContactDividerVisible : ''}`}
@@ -561,6 +581,6 @@ export default function DirectorPageVideoV3({ member }) {
           </div>
         </div>
       ) : null}
-    </div>
+    </>
   );
 }
