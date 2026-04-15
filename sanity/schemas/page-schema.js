@@ -139,21 +139,15 @@ const page = {
         name: 'workMotionClips',
         title: 'Work Page — Motion (full-screen videos)',
         type: 'array',
-        description: 'For the Work page: one full-viewport video per row with title and description in the corner strip.',
+        description: 'For the Work page: one full-viewport video per row with brand name and campaign title in the corner strip.',
         of: [
           {
             type: 'object',
             fields: [
               {
                 name: 'title',
-                title: 'Title',
+                title: 'Brand Name',
                 type: 'string',
-              },
-              {
-                name: 'description',
-                title: 'Description',
-                type: 'text',
-                rows: 4,
               },
               {
                 name: 'videoFile',
@@ -165,10 +159,10 @@ const page = {
               },
               {
                 name: 'talentPosition',
-                title: 'Talent Position',
+                title: 'Campaign Title',
                 type: 'string',
-                description: 'e.g. Director — shown on the right of the bottom strip (uppercase on the site).',
-                placeholder: 'Director',
+                description: 'Shown on the right of the bottom strip.',
+                placeholder: 'Campaign title',
                 validation: (Rule) => Rule.required(),
               },
             ],

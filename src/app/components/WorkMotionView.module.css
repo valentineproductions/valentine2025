@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'Marjorie';
+  src:
+    url('/fonts/Marjorie/Marjorie-Regular.woff2') format('woff2'),
+    url('/fonts/Marjorie/Marjorie-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 .root {
   position: fixed;
   inset: 0;
@@ -43,51 +53,43 @@
   padding: 28px 24px 32px;
   pointer-events: none;
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 12px;
+  font-size: 23px;
   font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: normal;
+  text-transform: none;
   color: #fff;
   text-shadow: none;
 }
 
 .metaStripInner {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: center;
   width: 100%;
-  gap: 10px 16px;
+  gap: 5px 16px;
   animation: workMetaStripIn 0.4s ease-out both;
 }
 
 .metaLeft {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   min-width: 0;
-  max-width: min(520px, 50vw);
+  max-width: none;
 }
 
 .metaTitle {
-  font-weight: 700;
+  font-family: 'Marjorie', serif;
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 1;
+  text-transform: none;
 }
 
-.metaDesc {
-  font-weight: 500;
-  opacity: 0.92;
-  line-height: 1.35;
-  max-width: 520px;
-  white-space: pre-wrap;
-}
-
-/* Fills space between title block and talent (same idea as director BIO–talent line) */
 .metaLine {
-  flex: 1 1 0;
-  min-width: 12px;
+  flex: 0 0 100%;
+  min-width: 0;
+  width: 100%;
   height: 1px;
-  align-self: center;
+  align-self: stretch;
   background: rgba(255, 255, 255, 0.85);
   transform-origin: center center;
   animation: workMetaLineIn 0.42s ease-out 0.06s both;
@@ -95,8 +97,11 @@
 
 .metaTalent {
   flex: 0 0 auto;
-  letter-spacing: 0.1em;
+  text-align: right;
+  font-size: 23px;
   font-weight: 500;
+  line-height: 1;
+  text-transform: none;
   animation: workMetaTalentIn 0.38s ease-out 0.1s both;
 }
 
@@ -151,30 +156,10 @@
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
 }
 
-/* Narrow: stack — title/desc, full-width line, talent right */
+/* Narrow: keep footer padding compact */
 @media (max-width: 767px) {
   .metaStrip {
     padding: 24px 20px 28px;
-  }
-
-  .metaStripInner {
-    flex-wrap: wrap;
-  }
-
-  .metaLeft {
-    max-width: none;
-    flex: 1 1 100%;
-  }
-
-  .metaLine {
-    flex: 0 0 auto;
-    width: 100%;
-    min-width: 0;
-    margin: 6px 0;
-  }
-
-  .metaTalent {
-    align-self: flex-end;
   }
 }
 

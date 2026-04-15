@@ -53,7 +53,7 @@ export default function WorkMotionView({ clips }) {
   const getVideoType = (url) =>
     url?.endsWith('.webm') ? 'video/webm' : 'video/mp4';
 
-  const talentLabel = (active?.talentPosition || '').trim().toUpperCase();
+  const campaignTitle = (active?.talentPosition || '').trim();
 
   return (
     <div
@@ -83,14 +83,11 @@ export default function WorkMotionView({ clips }) {
             {active?.title && (
               <span className={styles.metaTitle}>{active.title}</span>
             )}
-            {active?.description && (
-              <span className={styles.metaDesc}>{active.description}</span>
-            )}
           </div>
-          <div className={styles.metaLine} aria-hidden />
-          {talentLabel ? (
-            <span className={styles.metaTalent}>{talentLabel}</span>
+          {campaignTitle ? (
+            <span className={styles.metaTalent}>{campaignTitle}</span>
           ) : null}
+          <div className={styles.metaLine} aria-hidden />
         </div>
       </div>
     </div>
