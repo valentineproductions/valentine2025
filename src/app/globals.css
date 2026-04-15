@@ -62,13 +62,13 @@ body.homeBody {
 
 
 body.contactModalOpenGeneral main {
-  filter: blur(14px);
+  filter: blur(10px);
   transform: translateZ(0);
   transition: filter 0.25s ease;
 }
 
 body.contactModalOpenDirector [data-director-blur-root] {
-  filter: blur(14px);
+  filter: blur(10px);
   transform: translateZ(0);
   transition: filter 0.25s ease;
 }
@@ -77,7 +77,7 @@ body.contactModalOpenDirector [data-director-blur-root] .videoLayer,
 body.contactModalOpenDirector [data-director-blur-root] .centerBar,
 body.contactModalOpenDirector [data-director-blur-root] .clipProgressTrack,
 body.contactModalOpenDirector [data-director-blur-root] .namesOverlay {
-  filter: blur(14px);
+  filter: blur(10px);
   transform: translateZ(0);
   transition: filter 0.25s ease;
 }
