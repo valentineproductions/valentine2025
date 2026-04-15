@@ -26,7 +26,7 @@ export default function WorkStillsParallaxMedia({ strength, rootRef, children })
       trigger: root,
       start: 'top bottom',
       end: 'bottom top',
-      scrub: true,
+      scrub: 1.2,
       onUpdate(self) {
         const centered = self.progress - 0.5;
         const px = centered * (effStrength / 100) * baseMult;

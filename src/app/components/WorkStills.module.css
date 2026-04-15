@@ -93,7 +93,7 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 200px;
+  gap: 140px;
   padding-bottom: clamp(120px, 18vh, 240px);
 }
 
@@ -136,7 +136,7 @@
 }
 @media (min-width: 900px) {
   .feed {
-    gap: 800px;
+    gap: 360px;
   }
 }
 
@@ -269,6 +269,7 @@
   text-transform: uppercase;
   margin-bottom: 10px;
   text-align: center;
+  color: var(--valentine-yellow);
 }
 
 .desc {
@@ -280,6 +281,7 @@
   max-width: 36ch;
   white-space: pre-wrap;
   text-align: center;
+  color: var(--valentine-yellow);
 }
 
 .descHelv {
@@ -290,6 +292,7 @@
   width: 100%;
   margin-left: auto;
   margin-right: auto;
+  color: var(--valentine-yellow);
 }
 
 .textBelowPair {
