@@ -40,14 +40,14 @@ export default function DirectorPageVideoV3({ member }) {
       .filter((p) => p?.profileClip?.asset?.url)
       .map((p, i) => ({
         id: p.profileClip?.asset?._id || `profile-${i}`,
-        name: (p.name || 'Untitled').toUpperCase(),
+        name: p.name || 'Untitled',
         url: p.profileClip?.asset?.url,
         projectSlug: p.slug || null,
       }));
     if (profile.length > 0) return profile;
     const fallback = member?.directorsPageClip?.asset?.url;
     if (fallback) {
-      return [{ id: 'fallback', name: (member?.fullName || '').toUpperCase(), url: fallback }];
+      return [{ id: 'fallback', name: member?.fullName || '', url: fallback }];
     }
     return [];
   })();
@@ -427,7 +427,7 @@ export default function DirectorPageVideoV3({ member }) {
         <div className={styles.directorInfo}>
           <div className={`${styles.directorInfoLine} ${styles.directorInfoLineAnimate}`}>
             <span className={`${styles.directorName} ${styles.cursorDefault}`}>
-              {member?.fullName?.toUpperCase() || member?.fullName}
+              {member?.fullName}
             </span>
             {' '}
             <br className={styles.mobileBreak} />
