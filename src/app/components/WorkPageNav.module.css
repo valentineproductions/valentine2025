@@ -1,8 +1,10 @@
 .workNavRow {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   gap: 12px;
+  position: relative;
 }
 
 .workNavLogoLink {
@@ -15,6 +17,20 @@
   display: flex;
   justify-content: center;
   min-width: 0;
+}
+
+/* Desktop: center Motion/Stills on the bar (viewport-aligned when nav is full width), not between logo and links */
+@media (min-width: 768px) {
+  .workNavCenter {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    flex: none;
+    width: max-content;
+    pointer-events: auto;
+    z-index: 1;
+  }
 }
 
 .workNavRight {

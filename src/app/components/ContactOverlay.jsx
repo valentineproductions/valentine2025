@@ -37,8 +37,16 @@ export default function ContactOverlay() {
     setOpen(true);
   }, []);
 
+  const handleToggleContact = useCallback(() => {
+    if (open && !closing) {
+      setClosing(true);
+      return;
+    }
+    handleOpen();
+  }, [open, closing, handleOpen]);
+
   useEffect(() => {
-    const onOpenFromNav = () => handleOpen();
+    const onOpenFromNav = () => handleToggleContact();
     const onCloseFromBio = () => {
       if (open && !closing) setClosing(true);
     };
@@ -48,7 +56,7 @@ export default function ContactOverlay() {
       window.removeEventListener('valentine-open-contact', onOpenFromNav);
       window.removeEventListener('valentine-close-contact', onCloseFromBio);
     };
-  }, [handleOpen, open, closing]);
+  }, [handleToggleContact, open, closing]);
 
   useEffect(() => {
     if (!open && !closing) return;
@@ -112,6 +120,17 @@ export default function ContactOverlay() {
 
   if (!hasOverlayContent) return null;
 
+  const brandName = pageNote.copyrightBrandName?.trim() || '';
+  const introParagraphsRaw = (pageNote.copyrightText || '')
+    .split(/\n\s*\n/)
+    .map((block) => block.replace(/\n+/g, ' ').trim())
+    .filter(Boolean);
+  const introParagraphs = (() => {
+    if (!brandName) return introParagraphsRaw;
+    if (introParagraphsRaw.length === 0) return [brandName];
+    return [`${brandName} ${introParagraphsRaw[0]}`, ...introParagraphsRaw.slice(1)];
+  })();
+
   /** Work + home: nav CONTACT only — no persistent bottom bar. */
   const showContactBar = !isDirectorsPage && !isWorkPage && !isHomePage;
 
@@ -125,7 +144,7 @@ export default function ContactOverlay() {
             type="button"
             className={styles.contactTrigger}
             data-contact-trigger
-            onClick={handleOpen}
+            onClick={handleToggleContact}
             aria-haspopup="dialog"
             aria-expanded={open || closing}
           >
@@ -158,15 +177,13 @@ export default function ContactOverlay() {
               <div className={styles.panelGrid}>
                 <div className={styles.slotTL}>
                   {hasIntro && (
-                    <p className={styles.introLine}>
-                      {pageNote.copyrightBrandName?.trim() && (
-                        <span className={styles.brandInline}>
-                          {pageNote.copyrightBrandName.trim()}
-                        </span>
-                      )}
-                      {pageNote.copyrightBrandName?.trim() && pageNote.copyrightText?.trim() ? ' ' : null}
-                      {pageNote.copyrightText?.trim() && pageNote.copyrightText.trim()}
-                    </p>
+                    <>
+                      {introParagraphs.map((paragraph, index) => (
+                        <p key={`intro-${index}`} className={styles.introParagraph}>
+                          {paragraph}
+                        </p>
+                      ))}
+                    </>
                   )}
                 </div>
 

@@ -64,6 +64,14 @@ export default function DirectorPageVideoV3({ member }) {
     setBioOpen(true);
   }, []);
 
+  const handleBioToggle = useCallback(() => {
+    if (bioOpen && !bioClosing) {
+      handleBioClose();
+    } else {
+      handleBioOpen();
+    }
+  }, [bioOpen, bioClosing, handleBioOpen, handleBioClose]);
+
   useEffect(() => {
     const bioPaused = bioOpen || bioClosing;
     videoRefs.current.forEach((video, i) => {
@@ -552,7 +560,7 @@ export default function DirectorPageVideoV3({ member }) {
             type="button"
             className={styles.bioLink}
             ref={bioBtnRef}
-            onClick={handleBioOpen}
+            onClick={handleBioToggle}
           >
             BIO
           </button>

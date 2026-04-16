@@ -31,6 +31,16 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Marjorie';
+  src:
+    url('/fonts/Marjorie/Marjorie-Regular.woff2') format('woff2'),
+    url('/fonts/Marjorie/Marjorie-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 :root {
   --valentine-purple: #5F1B19;
   --valentine-yellow: #FFED29;

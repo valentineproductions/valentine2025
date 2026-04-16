@@ -67,7 +67,7 @@
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.33px;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.9);
 }
@@ -204,7 +204,6 @@
 }
 
 .directorInfoLineAnimate {
-  font-family: 'Marjorie', serif;
   text-transform: none;
   animation: fadeUp 0.6s ease-out 0.1s both;
 }
@@ -221,17 +220,21 @@
 }
 
 .directorName {
-  font-weight: 700;
+  font-family: 'Marjorie', serif;
+  font-weight: 400;
 }
 
 .projectName {
-  font-weight: 400;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 300;
   opacity: 0.5;
 }
 
 .projectNameSwap {
   display: inline-block;
   animation: projectNameSwapIn 0.38s ease-out both;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 300;
 }
 
 .projectNameLink {
@@ -274,7 +277,7 @@
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.33px;
   text-transform: uppercase;
   color: white;
   cursor: pointer;
@@ -477,10 +480,10 @@
   right: 0;
   bottom: 0;
   z-index: 11;
-  max-width: 2000px;
+  max-width: 125rem;
   width: 100%;
   margin: 0 auto;
-  padding: 16px 20px 52px;
+  padding: 1rem 1.25rem 3.25rem;
   box-sizing: border-box;
   pointer-events: none;
   display: flex;
@@ -489,8 +492,10 @@
 }
 
 .bioPanelDockInner {
-  width: 100%;
-  max-width: 560px;
+  width: min(100%, 90%);
+  /* Bio modal max width 845px — not tied to contact modal (35rem) */
+  max-width: 52.8125rem;
+  box-sizing: border-box;
   pointer-events: auto;
 }
 
@@ -530,7 +535,7 @@
 @keyframes bioModalPanelIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(1.25rem);
   }
   to {
     opacity: 1;
@@ -545,7 +550,7 @@
   }
   to {
     opacity: 0;
-    transform: translateY(15px);
+    transform: translateY(0.9375rem);
   }
 }
 
@@ -580,34 +585,46 @@
 
 .bioPanel {
   position: relative;
+  box-sizing: border-box;
   width: 100%;
-  /* min-height: 30vh; */
-  min-height: 315px;
-  /* max-height: 30vh; */
-  min-width: 845px;
+  max-width: 52.8125rem;
+  /* Design footprint 845×315: max-height alone shrinks to content — min must match cap */
+  min-height: min(19.6875rem, 85vh);
+  max-height: min(19.6875rem, 85vh);
   overflow-y: auto;
   background: rgba(255, 255, 255, 0.7);
-  padding: 20px 20px;
+  padding: 1.25rem 1.25rem;
   border: none;
-  border-radius: 12px;
+  border-radius: 0.75rem;
 }
 
 .bioContent {
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 24px;
-  line-height: 0.93;
+  /* Match contact modal: full size only at 1440px+ */
+  font-size: 1.875rem;
+  line-height: 0.9;
   color: #000;
   /* text-transform: lowercase; */
 }
 
+@media (min-width: 1440px) {
+  .bioContent {
+    font-size: 2.0625rem;
+  }
+}
+
 @media (max-height: 900px), (max-width: 900px) {
   .bioPanelDockInner {
-    max-width: 100%;
+    width: min(100%, 90%);
+    max-width: 52.8125rem;
   }
 
   .bioPanel {
     width: 100%;
-    min-width: 100%;
+    min-width: 0;
+    max-width: 52.8125rem;
+    min-height: min(19.6875rem, 85vh);
+    max-height: min(19.6875rem, 85vh);
   }
 }
 
@@ -616,7 +633,7 @@
 }
 
 .bioContent p {
-  margin: 0 0 1em 0;
+  margin: 0 0 2.5rem 0;
 }
 
 .bioContent p:last-child {
@@ -629,25 +646,27 @@
 
 @media (max-width: 767px) {
   .bioPanelDock {
-    padding: 12px 20px 46px;
+    padding: 0.75rem 1.25rem 2.875rem;
   }
 
   .bioPanel {
-    max-height: 85vh;
-    padding: 24px;
+    min-height: min(19.6875rem, 85vh);
+    max-height: min(19.6875rem, 85vh);
+    padding: 1.5rem;
   }
 
   .bioContent {
-    font-size: 18px;
+    font-size: 1.4375rem;
   }
 }
 
 @media (min-width: 768px) {
   .bioPanelDock {
-    padding: 24px 20px 76px;
+    padding: 1.5rem 1.25rem 4.75rem;
   }
 
   .bioPanel {
-    max-height: 85vh;
+    min-height: min(19.6875rem, 85vh);
+    max-height: min(19.6875rem, 85vh);
   }
 }

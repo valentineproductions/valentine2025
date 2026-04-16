@@ -15,7 +15,7 @@ import styles from './WorkModeContext.module.css';
 
 export const WORK_MODE_STORAGE_KEY = 'workViewMode';
 
-/** Share Stills with `/work?stills`. Motion uses a clean `/work` URL (no query). */
+/** Stills only when URL has `/work?stills` (or legacy `?mode=stills`). Plain `/work` always opens Motion; last tab is not restored from storage. */
 export const WORK_QUERY_STILLS = 'stills';
 
 function normalizeMode(s) {
@@ -80,15 +80,8 @@ function WorkModeProviderSuspended({ children }) {
       return;
     }
 
-    try {
-      const stored = localStorage.getItem(WORK_MODE_STORAGE_KEY);
-      if (stored === 'stills') {
-        setModeState('stills');
-        router.replace('/work?stills', { scroll: false });
-        return;
-      }
-    } catch (_) {}
-
+    /* Default: Motion on every visit to /work without an explicit stills query.
+       Stills is only shown when the URL asks for it (?stills) or the user toggles in-session. */
     setModeState('motion');
     try {
       localStorage.setItem(WORK_MODE_STORAGE_KEY, 'motion');

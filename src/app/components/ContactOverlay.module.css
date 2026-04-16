@@ -94,7 +94,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
-  padding: 55px max(20px, calc((100vw - 2000px) / 2 + 20px)) 24px 20px;
+  padding: 3.4375rem max(1.25rem, calc((100vw - 125rem) / 2 + 1.25rem)) 1.5rem 1.25rem;
   pointer-events: none;
 }
 
@@ -139,7 +139,7 @@
 @keyframes contactPanelIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(1.25rem);
   }
   to {
     opacity: 1;
@@ -154,7 +154,7 @@
   }
   to {
     opacity: 0;
-    transform: translateY(15px);
+    transform: translateY(0.9375rem);
   }
 }
 
@@ -185,20 +185,25 @@
 
 .inner {
   position: relative;
-  max-width: 607px;
-  width: 100%;
+  width: min(100%, 90%);
+  max-width: 35rem;
+  box-sizing: border-box;
 }
 
 .panel {
-  min-height: 0;
-  height: min(714px, calc(100dvh - 79px));
-  max-height: min(714px, calc(100dvh - 79px));
+  box-sizing: border-box;
+  width: 100%;
+  min-height: min(50vh, 85vh);
+  max-height: 85vh;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
   background: rgba(255, 255, 255, 0.7);
-  padding: 22px 32px 22px 22px;
+  padding: 1.375rem 2rem 1.375rem 1.375rem;
   border: none;
-  border-radius: 12px;
+  border-radius: 0.75rem;
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  /* Explicit px so typography matches pre-refactor regardless of root rem */
   font-size: 12px;
   line-height: 1.55;
   color: #000;
@@ -206,12 +211,14 @@
 }
 
 .panelGrid {
+  flex: 1;
+  min-height: 0;
   display: grid;
   grid-template-columns: 70% 30%;
-  grid-template-rows: 1fr auto;
-  gap: 12px 16px;
-  min-height: 0;
-  height: 100%;
+  /* Intro uses natural height; bottom row grows and pins content to the panel bottom */
+  grid-template-rows: auto 1fr;
+  gap: 0.75rem 1rem;
+  align-items: stretch;
 }
 
 .slotTL {
@@ -221,21 +228,38 @@
   align-self: start;
 }
 .slotBL {
-  align-self: end;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 0;
 }
 .slotBR {
-  align-self: end;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   justify-self: end;
   text-align: right;
+  min-height: 0;
 }
 
-.introLine {
-  margin: 0 0 24px 0;
-  opacity: 0.95;
-  white-space: pre-wrap;
-  font-size: 33px;
-  line-height: 0.8;
+.introParagraph {
+  margin: 0 0 1.5rem 0;
+  /* Below 1440px: slightly smaller than the “hero” desktop size */
+  font-size: 1.875rem;
+  line-height: 1.1;
   letter-spacing: 0.2%;
+}
+
+@media (min-width: 1440px) {
+  .introParagraph {
+    font-size: 2.0625rem;
+  }
+}
+
+.introParagraph:last-child {
+  margin-bottom: 0;
 }
 
 .brandInline {
@@ -301,7 +325,13 @@
   display: inline-block;
   color: #000;
   text-decoration: none;
-  font-size: 33px;
+  font-size: 1.875rem;
+}
+
+@media (min-width: 1440px) {
+  .email {
+    font-size: 2.0625rem;
+  }
 }
 
 .socialLink {
@@ -339,32 +369,43 @@
 
 @media (max-width: 767px) {
   .overlay {
-    padding: 64px 12px 16px;
+    padding: 4rem 0.75rem 1rem;
   }
 
   .panel {
     padding: 24px;
-    min-height: auto;
-    max-height: min(714px, 70vh);
+    min-height: 0;
+    max-height: 85vh;
   }
 
-  .introLine {
-    font-size: 23px;
+  .introParagraph {
+    font-size: 1.4375rem;
   }
 
   .email {
-    font-size: 23px;
+    font-size: 1.4375rem;
   }
 
   .panelGrid {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
     gap: 16px;
-    min-height: auto;
   }
+
+  .slotTR:empty {
+    display: none;
+  }
+
+  .slotBL {
+    margin-top: auto;
+    justify-content: flex-end;
+  }
+
   .slotBR {
-    justify-self: start;
+    justify-content: flex-end;
     text-align: left;
+    align-self: flex-start;
   }
 }
