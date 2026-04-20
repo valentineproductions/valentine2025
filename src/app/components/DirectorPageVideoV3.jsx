@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import gsap from 'gsap';
 import { useRouter } from 'next/navigation';
 import { PortableText } from '@portabletext/react';
@@ -11,6 +11,78 @@ import DirectorNavigateTransition from '@/app/components/DirectorNavigateTransit
 import styles from './DirectorPageVideoV3.module.css';
 
 const SWIPE_MIN_PX = 56;
+
+function normalizeBioPortableText(value) {
+  if (!Array.isArray(value)) return value;
+
+  const normalized = [];
+
+  value.forEach((block, blockIndex) => {
+    if (!block || block._type !== 'block' || !Array.isArray(block.children)) {
+      normalized.push(block);
+      return;
+    }
+
+    const hasMarks =
+      Array.isArray(block.markDefs) && block.markDefs.length > 0
+        ? true
+        : block.children.some((child) => Array.isArray(child?.marks) && child.marks.length > 0);
+
+    if (hasMarks) {
+      const children = block.children.map((child, childIndex) => {
+        if (!child || typeof child.text !== 'string') return child;
+        return {
+          ...child,
+          _key: child._key || `bio-${blockIndex}-child-${childIndex}`,
+          text: child.text.replace(/\n+/g, ' '),
+        };
+      });
+      normalized.push({ ...block, children });
+      return;
+    }
+
+    const flatText = block.children
+      .map((child) => (typeof child?.text === 'string' ? child.text : ''))
+      .join('');
+    const paragraphs = flatText
+      .split(/\n\s*\n/)
+      .map((paragraph) => paragraph.replace(/\n+/g, ' ').trim())
+      .filter(Boolean);
+
+    if (paragraphs.length <= 1) {
+      if (!paragraphs[0]) return;
+      normalized.push({
+        ...block,
+        children: [
+          {
+            _type: 'span',
+            _key: `bio-${blockIndex}-span-0`,
+            text: paragraphs[0],
+            marks: [],
+          },
+        ],
+      });
+      return;
+    }
+
+    paragraphs.forEach((paragraph, paragraphIndex) => {
+      normalized.push({
+        ...block,
+        _key: `${block._key || `bio-${blockIndex}`}-paragraph-${paragraphIndex}`,
+        children: [
+          {
+            _type: 'span',
+            _key: `bio-${blockIndex}-span-${paragraphIndex}`,
+            text: paragraph,
+            marks: [],
+          },
+        ],
+      });
+    });
+  });
+
+  return normalized;
+}
 
 export default function DirectorPageVideoV3({ member }) {
   const router = useRouter();
@@ -275,6 +347,14 @@ export default function DirectorPageVideoV3({ member }) {
       ? `/directors/${member.slug}/${currentItem.projectSlug}`
       : null;
   const hasBio = member?.bio && member.bio.length > 0;
+  const normalizedBio = useMemo(() => normalizeBioPortableText(member?.bio), [member?.bio]);
+  const bioPortableTextComponents = useMemo(
+    () => ({
+      ...defaultPortableTextComponents,
+      hardBreak: () => ' ',
+    }),
+    []
+  );
 
   useEffect(() => {
     const v = videoRefs.current[activeIndex];
@@ -540,8 +620,8 @@ export default function DirectorPageVideoV3({ member }) {
                       className={`${styles.bioContent} ${bioUppercase ? styles.bioContentUppercase : ''}`}
                     >
                       <PortableText
-                        value={member.bio}
-                        components={defaultPortableTextComponents}
+                        value={normalizedBio}
+                        components={bioPortableTextComponents}
                       />
                     </div>
                   </div>

@@ -47,6 +47,13 @@
   --white: #ffffff;
   --text-dark: #5F1B19;
   --text-light: #ffffff;
+  --font-size-modal: 2rem;
+  --font-size-modal-mid: 1.7rem;
+  --font-size-modal-mobile: 1.5rem;
+  --line-height-modal: 0.9;
+  --letter-spacing-modal: -0.01em;
+  --paragraph-gap: 2.5rem;
+  --mobile-pivot: 425px;
 }
 
 html,

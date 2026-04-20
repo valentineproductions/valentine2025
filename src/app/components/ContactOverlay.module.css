@@ -245,16 +245,21 @@
 }
 
 .introParagraph {
-  margin: 0 0 1.5rem 0;
-  /* Below 1440px: slightly smaller than the “hero” desktop size */
-  font-size: 1.875rem;
-  line-height: 1.1;
-  letter-spacing: 0.2%;
+  margin: 0 0 var(--paragraph-gap) 0;
+  font-size: var(--font-size-modal-mobile);
+  line-height: var(--line-height-modal);
+  letter-spacing: var(--letter-spacing-modal);
+}
+
+@media (min-width: 768px) {
+  .introParagraph {
+    font-size: var(--font-size-modal-mid);
+  }
 }
 
 @media (min-width: 1440px) {
   .introParagraph {
-    font-size: 2.0625rem;
+    font-size: var(--font-size-modal);
   }
 }
 
@@ -325,12 +330,20 @@
   display: inline-block;
   color: #000;
   text-decoration: none;
-  font-size: 1.875rem;
+  font-size: var(--font-size-modal-mobile);
+  line-height: var(--line-height-modal);
+  letter-spacing: var(--letter-spacing-modal);
+}
+
+@media (min-width: 768px) {
+  .email {
+    font-size: var(--font-size-modal-mid);
+  }
 }
 
 @media (min-width: 1440px) {
   .email {
-    font-size: 2.0625rem;
+    font-size: var(--font-size-modal);
   }
 }
 
@@ -367,23 +380,20 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 424px) {
   .overlay {
-    padding: 4rem 0.75rem 1rem;
+    padding: 4rem 0.5rem 1rem;
+  }
+
+  .inner {
+    width: min(100%, 96%);
+    max-width: none;
   }
 
   .panel {
-    padding: 24px;
+    padding: 1rem;
     min-height: 0;
     max-height: 85vh;
-  }
-
-  .introParagraph {
-    font-size: 1.4375rem;
-  }
-
-  .email {
-    font-size: 1.4375rem;
   }
 
   .panelGrid {
@@ -407,5 +417,11 @@
     justify-content: flex-end;
     text-align: left;
     align-self: flex-start;
+  }
+}
+
+@media (min-width: 1920px) {
+  .inner {
+    max-width: 35rem;
   }
 }
