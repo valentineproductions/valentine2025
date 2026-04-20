@@ -8,6 +8,7 @@ import { defaultPortableTextComponents } from '@/app/lib/portableTextConfig';
 import { useDirectorSwipeEnabled } from '@/app/lib/useDirectorSwipeEnabled';
 import DirectorProfilePlayCursor from '@/app/components/DirectorProfilePlayCursor';
 import DirectorNavigateTransition from '@/app/components/DirectorNavigateTransition';
+import { getProfileProjectBackgroundUrl } from '@/app/lib/simianProfileVideo';
 import styles from './DirectorPageVideoV3.module.css';
 
 const SWIPE_MIN_PX = 56;
@@ -106,23 +107,31 @@ export default function DirectorPageVideoV3({ member }) {
   const clipProgressQuickYRef = useRef(null);
   const [pendingNav, setPendingNav] = useState(null);
 
-  // Build items: profileProjects with profileClip, or fallback to directorsPageClip
-  const items = (() => {
+  // Build items: profile clip upload OR Simian MP4 (proxy filename / full URL); else directors list clip
+  const items = useMemo(() => {
     const profile = (member?.profileProjects || [])
-      .filter((p) => p?.profileClip?.asset?.url)
-      .map((p, i) => ({
-        id: p.profileClip?.asset?._id || `profile-${i}`,
-        name: p.name || 'Untitled',
-        url: p.profileClip?.asset?.url,
-        projectSlug: p.slug || null,
-      }));
+      .map((p, i) => {
+        const url = getProfileProjectBackgroundUrl(p);
+        if (!url) return null;
+        const id =
+          p?.profileClip?.asset?._id ||
+          `profile-${p?.slug || i}-${url.replace(/\W+/g, '-').slice(-48)}`;
+        return {
+          id,
+          name: (p?.name || 'Untitled').trim() || 'Untitled',
+          url,
+          projectSlug: p.slug || null,
+        };
+      })
+      .filter(Boolean);
     if (profile.length > 0) return profile;
     const fallback = member?.directorsPageClip?.asset?.url;
     if (fallback) {
-      return [{ id: 'fallback', name: member?.fullName || '', url: fallback }];
+      /* Short label — center bar already shows fullName; never duplicate fullName as "project" */
+      return [{ id: 'fallback', name: 'Reel', url: fallback, projectSlug: null }];
     }
     return [];
-  })();
+  }, [member]);
 
   const handleBioClose = useCallback(() => {
     setBioClosing(true);
@@ -473,6 +482,7 @@ export default function DirectorPageVideoV3({ member }) {
       {items.map((item, index) => {
         const isActive = activeIndex === index;
         return (
+          // Profile reels (upload or Simian proxy): always muted. Full mix only on /directors/[slug]/[project].
           <video
             key={item.id}
             ref={(el) => (videoRefs.current[index] = el)}
@@ -517,26 +527,30 @@ export default function DirectorPageVideoV3({ member }) {
             <span className={`${styles.directorName} ${styles.cursorDefault}`}>
               {member?.fullName}
             </span>
-            {' '}
-            <br className={styles.mobileBreak} />
-            {currentProjectHref ? (
-              <a
-                key={currentItem?.id ?? activeIndex}
-                href={currentProjectHref}
-                className={`${styles.projectName} ${styles.projectNameSwap} ${styles.projectNameLink}`}
-                data-play-cursor-zone
-                onClick={(e) => handleNavigateToVideo(e, currentProjectHref)}
-              >
-                {currentItem?.name || ''}
-              </a>
-            ) : (
-              <span
-                key={currentItem?.id ?? activeIndex}
-                className={`${styles.projectName} ${styles.projectNameSwap}`}
-              >
-                {currentItem?.name || ''}
-              </span>
-            )}
+            {(currentItem?.name?.trim() || currentProjectHref) ? (
+              <>
+                {' '}
+                <br className={styles.mobileBreak} />
+                {currentProjectHref ? (
+                  <a
+                    key={currentItem?.id ?? activeIndex}
+                    href={currentProjectHref}
+                    className={`${styles.projectName} ${styles.projectNameSwap} ${styles.projectNameLink}`}
+                    data-play-cursor-zone
+                    onClick={(e) => handleNavigateToVideo(e, currentProjectHref)}
+                  >
+                    {currentItem?.name || ''}
+                  </a>
+                ) : (
+                  <span
+                    key={currentItem?.id ?? activeIndex}
+                    className={`${styles.projectName} ${styles.projectNameSwap}`}
+                  >
+                    {currentItem?.name || ''}
+                  </span>
+                )}
+              </>
+            ) : null}
           </div>
         </div>
 

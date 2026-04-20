@@ -151,11 +151,11 @@ const teamMember = {
                   'Used in /directors/[director]/[project-slug]. Click Generate to fill from Video Name (e.g. Boxing Video Sample → boxing-video-sample), then edit if needed.',
               },
               {
-                name: 'simianEmbedUrl',
-                title: 'Simian embed URL',
+                name: 'simianProxyFile',
+                title: 'Simian proxy file (MP4)',
                 type: 'string',
                 description:
-                  'Paste only the iframe src URL (the string inside src="..."), not the HTML wrapper. Example: https://valentine.gosimian.com/share/v/…/false/… — the site turns on autoplay for Simian URLs automatically.',
+                  'Simian MP4 for this project: use the proxy file name from metadata (e.g. Nike-x-Union-LA-Field-General-Colored_4K_mov.mp4 or adidas_-_pureboost_go--1080p-.mp4), or paste the full URL (https://valentine.gosimian.com/assets/videos/…mp4). The site plays it as native video (muted on the profile). If Profile Clip is empty, this is used as the profile background. Legacy Simian share URLs still work on the full-screen project page only — upload a profile clip for those if you need them in the profile reel.',
               },
               {
                 name: 'profileClip',
@@ -167,7 +167,8 @@ const teamMember = {
                 components: {
                   input: SafeVideoFileInput,
                 },
-                description: 'Video clip (7–15 sec, MP4) for full-bleed background. Required for this to appear on the profile.',
+                description:
+                  'Optional short MP4/WebM for the profile page background. If empty, the Simian proxy file (MP4 URL above) is used when set. Legacy Simian iframe URLs cannot drive the profile reel — use an upload or a Simian assets/videos …mp4 link in Simian proxy file.',
               },
             ],
             preview: {
@@ -184,7 +185,8 @@ const teamMember = {
             },
           },
         ],
-        description: 'Projects shown on the director profile page. Each needs a profile clip. Used as fallback: directorsPageClip when empty.',
+        description:
+          'Projects on the director profile. Each row needs either an uploaded profile clip or a Simian proxy MP4 (filename or full URL). If none qualify, the Directors page clip is used as a single fallback reel.',
       },
       {
         name: 'categories',

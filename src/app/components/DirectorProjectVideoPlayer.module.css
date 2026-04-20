@@ -79,6 +79,11 @@
   border: 0;
 }
 
+video.frame {
+  object-fit: contain;
+  background: #000;
+}
+
 .framePlaceholder {
   position: absolute;
   inset: 0;
@@ -103,21 +108,23 @@
 
 .titleLine {
   max-width: 90vw;
-  font-family: 'Helvetica Neue', Helvetica, sans-serif;
   font-size: clamp(1rem, 3vw, 1.35rem);
-  font-weight: 500;
   letter-spacing: 0.02em;
   color: #fff;
   text-align: center;
   line-height: 1.35;
+  text-transform: none;
 }
 
+/* Match director profile page: Marjorie for name, Helvetica Neue for project (same sizes/position as before) */
 .directorTitle {
-  font-weight: 700;
+  font-family: 'Marjorie', serif;
+  font-weight: 400;
 }
 
 .projectTitle {
-  font-weight: 400;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 300;
   opacity: 0.5;
 }
 
@@ -152,12 +159,49 @@
 
 .missing {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 1rem;
   width: 100%;
   height: 100%;
+  max-width: 36rem;
+  margin: 0 auto;
   padding: 2rem;
   color: rgba(255, 255, 255, 0.75);
   font-size: 0.95rem;
   text-align: center;
+}
+
+.missing p {
+  margin: 0;
+}
+
+.missingHint {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.missingHint code {
+  font-size: 0.78em;
+  word-break: break-all;
+}
+
+.videoError {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  max-width: min(32rem, calc(100vw - 3rem));
+  padding: 1rem 1.25rem;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  text-align: center;
+  color: #fff;
+  background: rgba(40, 0, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  pointer-events: none;
 }

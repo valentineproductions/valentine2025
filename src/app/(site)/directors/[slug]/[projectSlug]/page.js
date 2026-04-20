@@ -15,8 +15,13 @@ export default function DirectorProjectVideoPage({ params }) {
     ?.find((page) => page.slug === 'directors')
     ?.teamMembers?.find((m) => m.slug === directorSlug);
 
+  const slugKey = String(projectSlug || '')
+    .toLowerCase()
+    .trim();
   const project =
-    member?.profileProjects?.find((p) => p.slug === projectSlug) || null;
+    member?.profileProjects?.find(
+      (p) => String(p?.slug || '').toLowerCase().trim() === slugKey
+    ) || null;
 
   if (!member) {
     return (
@@ -41,7 +46,11 @@ export default function DirectorProjectVideoPage({ params }) {
   return (
     <div className={styles.container}>
       <DirectorProjectVideoPlayer
-        embedUrl={project.simianEmbedUrl}
+        simianSource={
+          [project.simianProxyFile, project.simianEmbedUrl].find(
+            (v) => v != null && String(v).trim() !== ''
+          ) ?? ''
+        }
         directorProfileHref={directorProfileHref}
         directorName={member.fullName}
         projectName={project.name}
