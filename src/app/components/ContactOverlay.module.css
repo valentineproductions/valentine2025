@@ -380,6 +380,19 @@
   }
 }
 
+/* Tablet+ (1025): modal footprint 607×714 (min height; width tracks 607 — not bio’s 845 cap) */
+@media (min-width: 1025px) {
+  .inner {
+    min-width: min(37.9375rem, 100%);
+    /* Floor was 607px; do not reuse 52.8125rem (845px) here or the shell blows out wide */
+    max-width: min(37.9375rem, 100%);
+  }
+
+  .panel {
+    min-height: max(44.625rem, min(50vh, 85vh));
+  }
+}
+
 @media (max-width: 424px) {
   .overlay {
     padding: 4rem 0.5rem 1rem;
@@ -411,6 +424,7 @@
   .slotBL {
     margin-top: auto;
     justify-content: flex-end;
+    padding-top: var(--paragraph-gap);
   }
 
   .slotBR {
@@ -420,8 +434,3 @@
   }
 }
 
-@media (min-width: 1920px) {
-  .inner {
-    max-width: 35rem;
-  }
-}
