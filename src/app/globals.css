@@ -333,6 +333,18 @@ main .pageContent:has([data-work-stills-shell]) {
   max-width: none;
   padding-left: 0;
   padding-right: 0;
+  /* Fills letterboxing behind stills only when this shell is mounted — not other pages */
+  background-color: #2f241c;
+}
+
+/* Tail logo uses transform — layout height ends above the painted logo; body is otherwise #fff */
+html:has([data-work-stills-shell]),
+body:has([data-work-stills-shell]) {
+  background-color: #2f241c;
+}
+
+main:has([data-work-stills-shell]) {
+  background-color: #2f241c;
 }
 
 /* Existing styles for the non-homepage navigation bar */

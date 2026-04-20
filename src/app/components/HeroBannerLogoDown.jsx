@@ -9,12 +9,23 @@ function resolveLogoUrl(logo) {
   return logo?.url || logo?.asset?.url || null;
 }
 
-export default function HeroBannerLogoDown({ overlayLogo, targetMax = 720, scrollRange = 180 }) {
+/**
+ * @param {'legacy' | 'interpolate'} scrollMode
+ *   legacy: internal scroll listener + inline styles (empty stills / fallback).
+ *   interpolate: parent sets --ws-head-* CSS variables on .root for smooth scroll.
+ */
+export default function HeroBannerLogoDown({
+  overlayLogo,
+  targetMax = 720,
+  scrollRange = 180,
+  scrollMode = 'legacy',
+}) {
   const url = resolveLogoUrl(overlayLogo);
   const [vw, setVw] = useState(typeof window === 'undefined' ? 1280 : window.innerWidth);
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
+    if (scrollMode === 'interpolate') return undefined;
     const onResize = () => setVw(window.innerWidth);
     const onScroll = () => setScrollY(window.scrollY || 0);
     onResize();
@@ -25,23 +36,44 @@ export default function HeroBannerLogoDown({ overlayLogo, targetMax = 720, scrol
       window.removeEventListener('resize', onResize);
       window.removeEventListener('scroll', onScroll);
     };
-  }, []);
+  }, [scrollMode]);
 
-  const style = useMemo(() => {
-    const maxContentPad = Math.max(0, vw - 48); // match nav side paddings (~24px each side)
+  const legacyStyle = useMemo(() => {
+    const maxContentPad = Math.max(0, vw - 48);
     const target = Math.min(targetMax, Math.floor(Math.min(maxContentPad, vw * 0.82)));
     const start = Math.floor(Math.min(2000, maxContentPad));
     const p = Math.max(0, Math.min(1, scrollY / scrollRange));
     const w = Math.round(start + (target - start) * p);
     const ty = Math.round(10 * p);
     const opacity = p >= 1 ? 0 : 1;
-    return { width: `${w}px`, transform: `translateX(-50%) translateY(${ty}px)`, opacity };
+    return {
+      width: `${w}px`,
+      transform: `translateX(-50%) translateY(${ty}px)`,
+      opacity,
+      top: '50%',
+    };
   }, [vw, scrollY, scrollRange, targetMax]);
 
   if (!url) return null;
 
+  if (scrollMode === 'interpolate') {
+    return (
+      <div className={styles.heroOverlayWrap} aria-hidden>
+        <Image
+          src={url}
+          alt=""
+          width={2000}
+          height={500}
+          sizes="100vw"
+          style={{ width: '100%', height: 'auto' }}
+          priority={false}
+        />
+      </div>
+    );
+  }
+
   return (
-    <div className={styles.heroOverlayWrap} style={style} aria-hidden>
+    <div className={styles.heroOverlayWrap} style={legacyStyle} aria-hidden>
       <Image
         src={url}
         alt=""
