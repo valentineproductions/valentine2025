@@ -14,7 +14,7 @@
   position: relative;
   z-index: 1;
   min-height: 100vh;
-  padding: 100px 0 clamp(96px, 14vw, 140px);
+  padding: 100px 0 clamp(16px, 14vw, 20px);
   background: #2f241c;
   color: #fff;
   overflow: visible;
@@ -106,7 +106,7 @@
   display: flex;
   flex-direction: column;
   gap: 440px;
-  padding-bottom: clamp(64px, 10vh, 140px);
+  padding-bottom: clamp(24px, 4vh, 64px);
 }
 
 /* Runway only between set 1 and set 2 — keep modest; scroll snap in JS follows second block position */
@@ -137,7 +137,7 @@
 .bottomRunway {
   position: relative;
   z-index: 12;
-  height: 80vh;
+  height: 68vh;
   overflow: hidden;
 }
 
@@ -184,7 +184,7 @@
 }
 
 .feed > .feedItemWrap:last-child .block {
-  margin-bottom: clamp(72px, 7vw, 220px);
+  margin-bottom: clamp(24px, 4vw, 80px);
 }
 
 .block {
@@ -482,7 +482,7 @@
   }
 
   .feed > .feedItemWrap:last-child .block {
-    margin-bottom: clamp(180px, 11vw, 246px);
+    margin-bottom: clamp(48px, 8vw, 96px);
   }
 
 }
