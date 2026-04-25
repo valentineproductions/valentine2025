@@ -93,21 +93,30 @@ export default function WorkStillsView({ stills, backgroundLogo, fallbackLogo, p
     const tailLogo = tailLogoRef.current;
     if (!root || !runway || !tailLogo) return undefined;
 
+    const updateTail = (self) => {
+      const mainFadeProgress = clamp(self.progress / 0.45, 0, 1);
+      const tailProgress = clamp((self.progress - 0.45) / 0.55, 0, 1);
+      bottomProgressRef.current = mainFadeProgress;
+      root.style.setProperty('--ws-head-visibility', mainFadeProgress >= 1 ? 'hidden' : 'visible');
+      tailLogo.style.pointerEvents = tailProgress >= 1 ? 'auto' : 'none';
+      scheduleFrame();
+      gsap.set(tailLogo, { xPercent: -50, yPercent: (1 - tailProgress) * 100 });
+    };
+
     gsap.set(tailLogo, { xPercent: -50, yPercent: 100 });
+    tailLogo.style.pointerEvents = 'none';
     const trigger = ScrollTrigger.create({
       trigger: runway,
       start: 'top bottom',
       end: 'bottom bottom',
       scrub: true,
-      onUpdate(self) {
-        const mainFadeProgress = clamp(self.progress / 0.45, 0, 1);
-        const tailProgress = clamp((self.progress - 0.45) / 0.55, 0, 1);
-        bottomProgressRef.current = mainFadeProgress;
-        scheduleFrame();
-        gsap.set(tailLogo, { xPercent: -50, yPercent: (1 - tailProgress) * 100 });
-      },
+      onUpdate: updateTail,
+      onRefresh: updateTail,
     });
-    requestAnimationFrame(() => ScrollTrigger.refresh());
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+      updateTail(trigger);
+    });
 
     return () => trigger.kill();
   }, [list.length, scheduleFrame]);

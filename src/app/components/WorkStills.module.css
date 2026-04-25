@@ -23,6 +23,7 @@
   --ws-head-top: 50%;
   --ws-head-width: min(2000px, calc(100vw - 48px));
   --ws-head-z: 9999;
+  --ws-head-visibility: visible;
   --ws-body-opacity: 0;
   --ws-tail-y: 60vh;
 }
@@ -125,6 +126,7 @@
   width: var(--ws-head-width, auto);
   max-width: 100vw;
   opacity: var(--ws-head-opacity, 1);
+  visibility: var(--ws-head-visibility, visible);
   transform: translate(-50%, -50%);
   z-index: var(--ws-head-z, 9999);
   pointer-events: none;
