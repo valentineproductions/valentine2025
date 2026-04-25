@@ -22,8 +22,9 @@
   --ws-head-opacity: 1;
   --ws-head-top: 50%;
   --ws-head-width: min(2000px, calc(100vw - 48px));
+  --ws-head-z: 9999;
   --ws-body-opacity: 0;
-  --ws-tail-ty: 110%;
+  --ws-tail-y: 60vh;
 }
 
 .rootHasFirstFullBleed {
@@ -125,27 +126,29 @@
   max-width: 100vw;
   opacity: var(--ws-head-opacity, 1);
   transform: translate(-50%, -50%);
-  z-index: 20;
+  z-index: var(--ws-head-z, 9999);
   pointer-events: none;
   will-change: transform, width, opacity;
 }
 
-/* Final bottom logo — translateY driven by --ws-tail-ty; above feed, below fixed nav */
+/* Final bottom logo — pixel translate avoids Safari reserving an extra percent-based scroll gap */
 .bottomLogoWrap {
   position: relative;
   z-index: 12;
   width: 100%;
   max-width: 2000px;
+  height: 0;
   margin: 0 auto;
   padding: 0 clamp(24px, 4vw, 48px);
-  transform: translateY(var(--ws-tail-ty, 110%));
+  overflow: visible;
+  transform: translateY(var(--ws-tail-y, 0px));
   transition: none;
   will-change: transform;
 }
 
 @media (max-width: 767px) {
   .bottomLogoWrap {
-    margin-bottom: 40px;
+    margin-bottom: 0;
   }
 }
 @media (min-width: 900px) {

@@ -1,5 +1,7 @@
 'use client';
 
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import WorkStillsBackgroundMark from './WorkStillsBackgroundMark';
 import HeroBannerLogoDown from './HeroBannerLogoDown';
 import WorkStillsBlock from './WorkStillsBlock';
@@ -7,6 +9,8 @@ import { resolveStillsImages } from './workStillsUtils';
 import styles from './WorkStills.module.css';
 import Image from 'next/image';
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+
+gsap.registerPlugin(ScrollTrigger);
 
 // Logo taxonomy: hero (overlay white), body background (watermark), footer (tail slide-in)
 // Intro: head aligns over scroll distance snapScrollY (runway → second set), then binary snap (no overlap).
@@ -25,6 +29,10 @@ export default function WorkStillsView({ stills, backgroundLogo, fallbackLogo, p
   const secondBlockRef = useRef(null);
   const bottomLogoRef = useRef(null);
   const fadeEndRef = useRef(null);
+  const firstVisualProgressRef = useRef(null);
+  const firstVisualStartRef = useRef(null);
+  const firstVisualTopRef = useRef(null);
+  const headStartScrollYRef = useRef(null);
   const rafPending = useRef(false);
 
   const list = Array.isArray(stills)
@@ -39,41 +47,56 @@ export default function WorkStillsView({ stills, backgroundLogo, fallbackLogo, p
     const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
     const sy = typeof window !== 'undefined' ? window.scrollY : 0;
 
-    const blockEl = firstBlockRef.current;
-    const blockRect = blockEl?.getBoundingClientRect();
-    const secondEl = secondBlockRef.current;
+    const firstEl = firstBlockRef.current;
     const fadeEl = fadeEndRef.current;
     const fadeRect = fadeEl?.getBoundingClientRect();
 
-    const docTop = (el) => {
-      if (!el || typeof window === 'undefined') return 0;
-      return el.getBoundingClientRect().top + window.scrollY;
-    };
+    // Hair reacts to first-still visual motion; Head is gated and continues from 50 -> 30.
+    const totalTravel = Math.max(600, vh * 0.9);
+    const hairTravel = totalTravel * 0.55;
+    const headTravel = totalTravel * 0.45;
 
-    const blockH = blockEl?.offsetHeight ?? vh * 0.65;
-    /** Scroll distance over which the head completes align + snap — tied to runway before set 2. */
-    let snapScrollY;
-    if (blockEl && secondEl) {
-      const secondTopDoc = docTop(secondEl);
-      snapScrollY = secondTopDoc - vh * 0.94;
-    } else {
-      snapScrollY = Math.max(vh * 1.15, blockH * 1.5);
+    let visualDeltaPx = sy;
+    if (firstEl) {
+      const firstRect = firstEl.getBoundingClientRect();
+      const visualProgress = firstVisualProgressRef.current;
+      const visualStart = firstVisualStartRef.current;
+      if (visualProgress !== null && visualStart !== null) {
+        visualDeltaPx = Math.max(0, (visualProgress - visualStart) * (vh + firstRect.height));
+      } else {
+        if (firstVisualTopRef.current === null) firstVisualTopRef.current = firstRect.top;
+        visualDeltaPx = Math.max(0, firstVisualTopRef.current - firstRect.top);
+      }
     }
-    snapScrollY = Math.max(240, snapScrollY);
 
-    const pAlign = clamp(sy / snapScrollY, 0, 1);
-    const inAlignPhase = sy < snapScrollY;
-    const headOpacity = inAlignPhase ? 1 : 0;
-    const bodyIntroOpacity = inAlignPhase ? 0 : 1;
-
-    const blockCenterY = blockRect ? blockRect.top + blockRect.height / 2 : vh / 2;
-    const viewportCenterY = vh / 2;
-    const headTopPx = blockCenterY + (viewportCenterY - blockCenterY) * pAlign;
+    const hairProgress = clamp(visualDeltaPx / hairTravel, 0, 1);
+    if (hairProgress >= 1 && headStartScrollYRef.current === null) {
+      headStartScrollYRef.current = sy;
+    } else if (hairProgress < 1) {
+      headStartScrollYRef.current = null;
+    }
+    const headBaseY = headStartScrollYRef.current ?? sy;
+    const headProgress = hairProgress >= 1 ? clamp((sy - headBaseY) / headTravel, 0, 1) : 0;
+    const topProgress = hairProgress < 1
+      ? hairProgress * 0.5
+      : 0.5 + headProgress * 0.5;
+    const headOpacity = topProgress < 1 ? 1 : 0;
+    const bodyIntroOpacity = topProgress >= 1 ? 1 : 0;
 
     const maxContentPad = Math.max(0, vw - 48);
     const targetW = Math.min(720, Math.floor(Math.min(maxContentPad, vw * 0.82)));
     const startW = Math.floor(Math.min(2000, maxContentPad));
+    // Strict linear mapping: full responsive width -> Body size.
+    const pAlign = topProgress;
     const headW = Math.round(startW + (targetW - startW) * pAlign);
+
+    // Fixed start anchor at viewport bottom so movement starts immediately on first scroll px.
+    const startHeadH = startW * (500 / 2000);
+    const visibleBottomPad = 16;
+    const startBottomY = vh - visibleBottomPad;
+    const startCenterY = startBottomY - startHeadH / 2;
+    const targetCenterY = vh / 2;
+    const headTopPx = startCenterY + (targetCenterY - startCenterY) * pAlign;
 
     let s = 0;
     if (fadeRect && Number.isFinite(fadeRect.top)) {
@@ -94,16 +117,18 @@ export default function WorkStillsView({ stills, backgroundLogo, fallbackLogo, p
     }
 
     const bodyOpacity = bodyIntroOpacity * bodyExitOpacity;
-    const tailTyPercent = (1 - tailProgress) * 110;
+    const img = bottomLogoRef.current?.querySelector('img');
+    const h = img?.offsetHeight || 0;
+    const tailTravel = h || vh * 0.6;
+    const tailYPx = Math.round((1 - tailProgress) * tailTravel * 1.1);
 
     root.style.setProperty('--ws-head-opacity', String(headOpacity));
     root.style.setProperty('--ws-head-top', `${headTopPx}px`);
     root.style.setProperty('--ws-head-width', `${headW}px`);
+    root.style.setProperty('--ws-head-z', topProgress < 1 ? '9999' : '0');
     root.style.setProperty('--ws-body-opacity', String(bodyOpacity));
-    root.style.setProperty('--ws-tail-ty', `${tailTyPercent}%`);
+    root.style.setProperty('--ws-tail-y', `${tailYPx}px`);
 
-    const img = bottomLogoRef.current?.querySelector('img');
-    const h = img?.offsetHeight || 0;
     if (typeof document !== 'undefined') {
       document.documentElement.style.setProperty('--tail-offset', `${Math.round(tailProgress * h)}px`);
     }
@@ -129,18 +154,58 @@ export default function WorkStillsView({ stills, backgroundLogo, fallbackLogo, p
 
     const block = firstBlockRef.current;
     const block2 = secondBlockRef.current;
+    const handleResize = () => {
+      if ((window.scrollY || 0) <= 2) {
+        firstVisualProgressRef.current = null;
+        firstVisualStartRef.current = null;
+        firstVisualTopRef.current = block?.getBoundingClientRect().top ?? null;
+        headStartScrollYRef.current = null;
+      }
+      ScrollTrigger.refresh();
+      scheduleFrame();
+    };
     window.addEventListener('scroll', scheduleFrame, { passive: true });
-    window.addEventListener('resize', scheduleFrame, { passive: true });
+    window.addEventListener('resize', handleResize, { passive: true });
 
-    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(() => scheduleFrame()) : null;
+    const ro = typeof ResizeObserver !== 'undefined'
+      ? new ResizeObserver(() => {
+        ScrollTrigger.refresh();
+        scheduleFrame();
+      })
+      : null;
     if (block && ro) ro.observe(block);
     if (block2 && ro) ro.observe(block2);
+
+    let firstSt = null;
+    if (block) {
+      firstSt = ScrollTrigger.create({
+        trigger: block,
+        start: 'top bottom',
+        end: 'bottom top',
+        onRefresh(self) {
+          firstVisualProgressRef.current = self.progress;
+          if (firstVisualStartRef.current === null) {
+            firstVisualStartRef.current = self.progress;
+          }
+          if (firstVisualTopRef.current === null) {
+            firstVisualTopRef.current = block.getBoundingClientRect().top;
+          }
+          scheduleFrame();
+        },
+        onUpdate(self) {
+          if (firstVisualStartRef.current === null) firstVisualStartRef.current = self.progress;
+          firstVisualProgressRef.current = self.progress;
+          scheduleFrame();
+        },
+      });
+    }
 
     scheduleFrame();
 
     return () => {
       window.removeEventListener('scroll', scheduleFrame);
-      window.removeEventListener('resize', scheduleFrame);
+      window.removeEventListener('resize', handleResize);
+      firstSt?.kill();
       ro?.disconnect();
       if (typeof document !== 'undefined') {
         document.documentElement.style.setProperty('--tail-offset', '0px');
