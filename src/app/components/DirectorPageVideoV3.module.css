@@ -634,6 +634,15 @@
   }
 }
 
+@media (max-width: 767px) {
+  .bioPanel {
+    min-height: 0;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}
+
 @media (max-height: 900px), (max-width: 900px) {
   .bioPanelDockInner {
     width: min(100%, 90%);
@@ -668,17 +677,9 @@
 
   .bioPanelDockInner {
     width: min(100%, 96%);
-    --bio-panel-locked-h: min(
-      var(--bio-card-h),
-      90vh,
-      calc(min(var(--bio-card-w), 96vw) * 225 / 605)
-    );
   }
 
   .bioPanel {
-    min-height: var(--bio-panel-locked-h);
-    max-height: var(--bio-panel-locked-h);
-    height: var(--bio-panel-locked-h);
     padding: 0.65rem 0.7rem;
   }
 }

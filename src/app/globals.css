@@ -54,8 +54,8 @@
   --bio-card-h: 14.0625rem; /* 225 */
   /* Smaller type to sit inside the wire cut (tune in follow-up passes) */
   --font-size-modal: 1.45rem; /* 17px */
-  --font-size-modal-mid: 0.9375rem; /* 15px */
-  --font-size-modal-mobile: 0.875rem; /* 14px */
+  --font-size-modal-mid: 1.45rem; /* 15px */
+  --font-size-modal-mobile: 1.45rem; /* 14px */
   --font-size-modal-huge: 1.125rem; /* 18px on ultra-wide */
   --line-height-modal: 1.12;
   --letter-spacing-modal: -0.01em;

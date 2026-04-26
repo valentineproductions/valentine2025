@@ -410,6 +410,29 @@
   }
 }
 
+/* Tablet/desktop: wire height from .inner --contact-panel-locked-h; <768: grow with text, min 480px when it fits */
+@media (max-width: 767px) {
+  .panel {
+    min-height: min(30rem, 90vh);
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  /* Grow with panel (min 480) so row 1 can be 1fr: intro stays top, email/cities row pins to card bottom */
+  .panelGrid {
+    flex: 1 1 auto;
+    min-height: 0;
+    align-self: stretch;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: 1fr auto;
+    overflow: visible;
+    gap: 0.75rem 1rem;
+  }
+}
+
 @media (max-width: 424px) {
   .overlay {
     padding: 4rem 0.5rem 1rem;
@@ -419,18 +442,10 @@
     width: min(100%, 96%);
     max-width: none;
     --contact-wire-w: min(var(--contact-card-w), 96vw);
-    --contact-panel-locked-h: min(
-      var(--contact-card-h),
-      88vh,
-      calc(min(var(--contact-card-w), 96vw) * 475 / 412)
-    );
   }
 
   .panel {
     padding: 0.75rem 0.85rem;
-    min-height: var(--contact-panel-locked-h);
-    max-height: var(--contact-panel-locked-h);
-    height: var(--contact-panel-locked-h);
   }
 
   .panelGrid {
