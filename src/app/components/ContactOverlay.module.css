@@ -183,27 +183,37 @@
   pointer-events: none;
 }
 
+/* 412px wire — scales down with viewport; h/w = 475/412 always */
 .inner {
   position: relative;
-  width: min(100%, 90%);
-  max-width: 35rem;
+  --contact-wire-w: min(var(--contact-card-w), calc(100vw - 2rem));
+  /* Single height token: wire 475px, or proportional to width, or viewport cap */
+  --contact-panel-locked-h: min(
+    var(--contact-card-h),
+    90vh,
+    calc(var(--contact-wire-w) * 475 / 412)
+  );
+  width: var(--contact-wire-w);
+  max-width: var(--contact-card-w);
   box-sizing: border-box;
 }
 
 .panel {
   box-sizing: border-box;
   width: 100%;
-  min-height: min(50vh, 85vh);
-  max-height: 85vh;
-  overflow-y: auto;
+  /* Inherit --contact-panel-locked-h from .inner — fixed 412×475 (or scaled); not content height */
+  min-height: var(--contact-panel-locked-h);
+  max-height: var(--contact-panel-locked-h);
+  height: var(--contact-panel-locked-h);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   background: rgba(255, 255, 255, 0.7);
-  padding: 1.375rem 2rem 1.375rem 1.375rem;
+  padding: 1rem 1.25rem 1rem 1rem;
   border: none;
   border-radius: 0.75rem;
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
-  /* Explicit px so typography matches pre-refactor regardless of root rem */
+  /* Explicit px so small UI (dept labels) stays readable under modal type */
   font-size: 12px;
   line-height: 1.55;
   color: #000;
@@ -213,12 +223,14 @@
 .panelGrid {
   flex: 1;
   min-height: 0;
+  overflow-y: auto;
   display: grid;
-  grid-template-columns: 70% 30%;
-  /* Intro uses natural height; bottom row grows and pins content to the panel bottom */
+  /* 70/30 was clipping “Instagram / LinkedIn” in slotBR; auto width fits link copy */
+  grid-template-columns: minmax(0, 1fr) auto;
+  /* Second row grows so email/cities sit at bottom of 475px wire */
   grid-template-rows: auto 1fr;
   gap: 0.75rem 1rem;
-  align-items: stretch;
+  align-items: start;
 }
 
 .slotTL {
@@ -257,9 +269,15 @@
   }
 }
 
-@media (min-width: 1440px) {
+@media (min-width: 1360px) and (max-width: 2649px) {
   .introParagraph {
     font-size: var(--font-size-modal);
+  }
+}
+
+@media (min-width: 2650px) {
+  .introParagraph {
+    font-size: var(--font-size-modal-huge);
   }
 }
 
@@ -316,13 +334,19 @@
   /* margin: 0 0 24px 0; */
   padding: 0;
   opacity: 0.9;
-  font-size: 11px;
+  font-size: 8px;
   white-space: pre-wrap;
 }
 
 .connectLine {
   margin: 0;
   /* font-size: 13px; */
+}
+
+/* Right column: single line so “LinkedIn” is not cut by wrap + narrow track */
+.slotBR .connectLine {
+  white-space: nowrap;
+  overflow: visible;
 }
 
 .email {
@@ -341,9 +365,15 @@
   }
 }
 
-@media (min-width: 1440px) {
+@media (min-width: 1360px) and (max-width: 2649px) {
   .email {
     font-size: var(--font-size-modal);
+  }
+}
+
+@media (min-width: 2650px) {
+  .email {
+    font-size: var(--font-size-modal-huge);
   }
 }
 
@@ -352,7 +382,7 @@
   display: inline-block;
   color: #000;
   text-decoration: none;
-  font-size: 11px;
+  font-size: 8px;
 }
 
 .email::after,
@@ -380,19 +410,6 @@
   }
 }
 
-/* Tablet+ (1025): modal footprint 607×714 (min height; width tracks 607 — not bio’s 845 cap) */
-@media (min-width: 1025px) {
-  .inner {
-    min-width: min(37.9375rem, 100%);
-    /* Floor was 607px; do not reuse 52.8125rem (845px) here or the shell blows out wide */
-    max-width: min(37.9375rem, 100%);
-  }
-
-  .panel {
-    min-height: max(44.625rem, min(50vh, 85vh));
-  }
-}
-
 @media (max-width: 424px) {
   .overlay {
     padding: 4rem 0.5rem 1rem;
@@ -401,12 +418,19 @@
   .inner {
     width: min(100%, 96%);
     max-width: none;
+    --contact-wire-w: min(var(--contact-card-w), 96vw);
+    --contact-panel-locked-h: min(
+      var(--contact-card-h),
+      88vh,
+      calc(min(var(--contact-card-w), 96vw) * 475 / 412)
+    );
   }
 
   .panel {
-    padding: 1rem;
-    min-height: 0;
-    max-height: 85vh;
+    padding: 0.75rem 0.85rem;
+    min-height: var(--contact-panel-locked-h);
+    max-height: var(--contact-panel-locked-h);
+    height: var(--contact-panel-locked-h);
   }
 
   .panelGrid {

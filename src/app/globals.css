@@ -47,12 +47,19 @@
   --white: #ffffff;
   --text-dark: #5F1B19;
   --text-light: #ffffff;
-  --font-size-modal: 2rem;
-  --font-size-modal-mid: 1.7rem;
-  --font-size-modal-mobile: 1.5rem;
-  --line-height-modal: 0.9;
+  /* Alex wire: contact card 412×475px, bio 605×225 @ 16px root — use rem and aspect only */
+  --contact-card-w: 25.75rem; /* 412 */
+  --contact-card-h: 29.6875rem; /* 475 */
+  --bio-card-w: 37.8125rem; /* 605 */
+  --bio-card-h: 14.0625rem; /* 225 */
+  /* Smaller type to sit inside the wire cut (tune in follow-up passes) */
+  --font-size-modal: 1.45rem; /* 17px */
+  --font-size-modal-mid: 0.9375rem; /* 15px */
+  --font-size-modal-mobile: 0.875rem; /* 14px */
+  --font-size-modal-huge: 1.125rem; /* 18px on ultra-wide */
+  --line-height-modal: 1.12;
   --letter-spacing-modal: -0.01em;
-  --paragraph-gap: 2.5rem;
+  --paragraph-gap: 1rem;
   --mobile-pivot: 425px;
 }
 

@@ -491,10 +491,16 @@
   justify-content: flex-start;
 }
 
+/* Alex wire: bio card 605×225 — h / w = 225/605; scales with min(100%, 90vw) */
 .bioPanelDockInner {
   width: min(100%, 90%);
-  /* Bio modal max width 845px — not tied to contact modal (35rem) */
-  max-width: 52.8125rem;
+  max-width: var(--bio-card-w);
+  /* Locked 605×225 (scaled): required on parent so .bioPanel can inherit */
+  --bio-panel-locked-h: min(
+    var(--bio-card-h),
+    90vh,
+    calc(min(var(--bio-card-w), 90vw) * 225 / 605)
+  );
   box-sizing: border-box;
   pointer-events: auto;
 }
@@ -587,13 +593,14 @@
   position: relative;
   box-sizing: border-box;
   width: 100%;
-  max-width: 52.8125rem;
-  /* Design footprint 845×315: max-height alone shrinks to content — min must match cap */
-  min-height: min(19.6875rem, 85vh);
-  max-height: min(19.6875rem, 85vh);
+  max-width: var(--bio-card-w);
+  /* max-height alone lets the box shrink to content (~77px); lock to wire */
+  min-height: var(--bio-panel-locked-h);
+  max-height: var(--bio-panel-locked-h);
+  height: var(--bio-panel-locked-h);
   overflow-y: auto;
   background: rgba(255, 255, 255, 0.7);
-  padding: 1.25rem 1.25rem;
+  padding: 0.75rem 0.9rem;
   border: none;
   border-radius: 0.75rem;
 }
@@ -601,7 +608,8 @@
 .bioContent {
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
   font-size: var(--font-size-modal-mobile);
-  line-height: var(--line-height-modal);
+  /* 225px-tall wire: slightly more leading than --line-height-modal */
+  line-height: 1.18;
   letter-spacing: var(--letter-spacing-modal);
   color: #000;
   /* text-transform: lowercase; */
@@ -613,24 +621,27 @@
   }
 }
 
-@media (min-width: 1440px) {
+/* Laptop+ type: aligns with 1360px+ panel tier */
+@media (min-width: 1360px) and (max-width: 2649px) {
   .bioContent {
     font-size: var(--font-size-modal);
+  }
+}
+
+@media (min-width: 2650px) {
+  .bioContent {
+    font-size: var(--font-size-modal-huge);
   }
 }
 
 @media (max-height: 900px), (max-width: 900px) {
   .bioPanelDockInner {
     width: min(100%, 90%);
-    max-width: 52.8125rem;
   }
 
   .bioPanel {
     width: 100%;
     min-width: 0;
-    max-width: 52.8125rem;
-    min-height: min(19.6875rem, 85vh);
-    max-height: min(19.6875rem, 85vh);
   }
 }
 
@@ -657,19 +668,18 @@
 
   .bioPanelDockInner {
     width: min(100%, 96%);
+    --bio-panel-locked-h: min(
+      var(--bio-card-h),
+      90vh,
+      calc(min(var(--bio-card-w), 96vw) * 225 / 605)
+    );
   }
 
   .bioPanel {
-    min-height: min(19.6875rem, 85vh);
-    max-height: min(19.6875rem, 85vh);
-    padding: 1rem;
-  }
-
-}
-
-@media (min-width: 1920px) {
-  .bioPanelDockInner {
-    max-width: 52.8125rem;
+    min-height: var(--bio-panel-locked-h);
+    max-height: var(--bio-panel-locked-h);
+    height: var(--bio-panel-locked-h);
+    padding: 0.65rem 0.7rem;
   }
 }
 
@@ -677,9 +687,10 @@
   .bioPanelDock {
     padding: 1.5rem 1.25rem 4.75rem;
   }
+}
 
-  .bioPanel {
-    min-height: min(19.6875rem, 85vh);
-    max-height: min(19.6875rem, 85vh);
+@media (min-width: 1360px) and (max-width: 2649px) {
+  .bioPanelDock {
+    padding: 1.2rem 1rem 3.8rem;
   }
 }
