@@ -57,6 +57,18 @@ export function getProfileProjectBackgroundUrl(project) {
 }
 
 /**
+ * Directors list background clip: Simian MP4 first, uploaded fallback second.
+ *
+ * @param {{ directorsPageClipSimian?: string; directorsPageClip?: { asset?: { url?: string } } } | null | undefined} member
+ * @returns {string}
+ */
+export function getDirectorPageClipUrl(member) {
+  const playback = resolveProfileProjectPlayback(member?.directorsPageClipSimian);
+  if (playback.kind === 'mp4') return playback.src;
+  return member?.directorsPageClip?.asset?.url || '';
+}
+
+/**
  * Profile project Simian source: proxy filename (new) or legacy share/embed URL.
  *
  * @param {string|null|undefined} raw

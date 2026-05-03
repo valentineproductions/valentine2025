@@ -255,6 +255,7 @@ export async function getProject(slug) {
             embedCode,
             videoName
           },
+          directorsPageClipSimian,
           directorsPageClip{
             asset->{ _id, url }
           },
@@ -321,6 +322,7 @@ export async function getProject(slug) {
           title,
           description,
           talentPosition,
+          simianEmbedUrl,
           "videoUrl": videoFile.asset->url
         },
         workStillsBackgroundLogo{
@@ -384,6 +386,7 @@ export async function getTeamMemberBySlug(slug) {
         embedCode,
         videoName
       },
+      directorsPageClipSimian,
       directorsPageClip{
         asset->{ _id, url }
       },
@@ -452,6 +455,7 @@ export async function getLegalBySlug(slug) {
               embedCode,
               videoName
             },
+            directorsPageClipSimian,
             directorsPageClip{
               asset->{ _id, url }
             },
@@ -502,6 +506,7 @@ export async function getLegalBySlug(slug) {
             title,
             description,
             talentPosition,
+            simianEmbedUrl,
             "videoUrl": videoFile.asset->url
           },
           workStillsBackgroundLogo{

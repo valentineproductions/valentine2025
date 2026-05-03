@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import { useDirectorSwipeEnabled } from '@/app/lib/useDirectorSwipeEnabled';
+import { getDirectorPageClipUrl } from '@/app/lib/simianProfileVideo';
 import styles from './DirectorsPageFullBleed.module.css';
 
 const SWIPE_MIN_PX = 56;
@@ -16,7 +17,12 @@ export default function DirectorsPageFullBleed({ directors }) {
 
   const withClips = useMemo(
     () =>
-      (directors || []).filter((d) => d?.directorsPageClip?.asset?.url),
+      (directors || [])
+        .map((director) => {
+          const clipUrl = getDirectorPageClipUrl(director);
+          return clipUrl ? { ...director, directorsPageClipUrl: clipUrl } : null;
+        })
+        .filter(Boolean),
     [directors]
   );
 
@@ -110,7 +116,7 @@ export default function DirectorsPageFullBleed({ directors }) {
       onTouchEnd={handleSwipeTouchEnd}
     >
       {withClips.map((director, index) => {
-        const url = director.directorsPageClip?.asset?.url;
+        const url = director.directorsPageClipUrl;
         const isActive = activeIndex === index;
 
         return (

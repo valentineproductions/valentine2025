@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useCallback, useState } from 'react';
+import { useEffect, useRef, useCallback, useState, useMemo } from 'react';
+import { resolveProfileProjectPlayback } from '@/app/lib/simianProfileVideo';
 import { useWorkPageChrome } from './WorkModeContext';
 import styles from './WorkMotionView.module.css';
 
@@ -9,7 +10,26 @@ export default function WorkMotionView({ clips }) {
   const scrollRef = useRef(null);
   const videoRefs = useRef([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const list = Array.isArray(clips) ? clips.filter((c) => c?.videoUrl) : [];
+  const list = useMemo(
+    () =>
+      Array.isArray(clips)
+        ? clips
+            .map((clip) => {
+              const simianPlayback = resolveProfileProjectPlayback(clip?.simianEmbedUrl);
+              const preferredUrl =
+                simianPlayback.kind === 'mp4' ? simianPlayback.src : clip?.videoUrl || '';
+
+              if (!preferredUrl) return null;
+
+              return {
+                ...clip,
+                videoUrl: preferredUrl,
+              };
+            })
+            .filter(Boolean)
+        : [],
+    [clips]
+  );
 
   const updateActiveFromScroll = useCallback(() => {
     const el = scrollRef.current;
@@ -45,7 +65,7 @@ export default function WorkMotionView({ clips }) {
   if (list.length === 0) {
     return (
       <div className={styles.empty}>
-        <p>Add Motion clips in Sanity (Work page → Motion videos).</p>
+        <p>Add Motion clips in Sanity using a Simian MP4 / proxy file or an uploaded video file.</p>
       </div>
     );
   }

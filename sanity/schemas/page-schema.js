@@ -156,6 +156,14 @@ const page = {
                 options: {
                   accept: 'video/mp4,video/webm',
                 },
+                description: 'Optional. Better to use the Simian MP4 / proxy file below.',
+              },
+              {
+                name: 'simianEmbedUrl',
+                title: 'Simian embed URL',
+                type: 'string',
+                description:
+                  'Go to Simian > Media Library > Edit Media > Metadata and use the "PROXY FILE" from the first letter through .mp4. If there is no proxy, the regular file name also works.',
               },
               {
                 name: 'talentPosition',

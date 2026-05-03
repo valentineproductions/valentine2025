@@ -8,7 +8,10 @@ import { defaultPortableTextComponents } from '@/app/lib/portableTextConfig';
 import { useDirectorSwipeEnabled } from '@/app/lib/useDirectorSwipeEnabled';
 import DirectorProfilePlayCursor from '@/app/components/DirectorProfilePlayCursor';
 import DirectorNavigateTransition from '@/app/components/DirectorNavigateTransition';
-import { getProfileProjectBackgroundUrl } from '@/app/lib/simianProfileVideo';
+import {
+  getDirectorPageClipUrl,
+  getProfileProjectBackgroundUrl,
+} from '@/app/lib/simianProfileVideo';
 import styles from './DirectorPageVideoV3.module.css';
 
 const SWIPE_MIN_PX = 56;
@@ -125,7 +128,7 @@ export default function DirectorPageVideoV3({ member }) {
       })
       .filter(Boolean);
     if (profile.length > 0) return profile;
-    const fallback = member?.directorsPageClip?.asset?.url;
+    const fallback = getDirectorPageClipUrl(member);
     if (fallback) {
       /* Short label — center bar already shows fullName; never duplicate fullName as "project" */
       return [{ id: 'fallback', name: 'Reel', url: fallback, projectSlug: null }];

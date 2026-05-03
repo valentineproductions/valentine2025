@@ -100,8 +100,15 @@ const teamMember = {
         description: 'Array of Simian video embeds for this team member.',
       },
       {
+        name: 'directorsPageClipSimian',
+        title: 'Directors Page Clip (Simian)',
+        type: 'string',
+        description:
+          'Preferred for the Directors list background clip. Go to Simian > Media Library > Edit Media > Metadata and use the "PROXY FILE" from the first letter through .mp4. If there is no proxy, the regular file name also works.',
+      },
+      {
         name: 'directorsPageClip',
-        title: 'Directors Page Clip',
+        title: 'Directors Page Clip (Upload)',
         type: 'file',
         options: {
           accept: 'video/mp4,video/webm',
@@ -109,7 +116,8 @@ const teamMember = {
         components: {
           input: SafeVideoFileInput,
         },
-        description: 'Short video clip (7–15 sec, MP4) for the Directors list page. When hovering this director\'s name, this clip plays as the full-bleed background. Leave empty to skip.',
+        description:
+          'Optional upload for the same Directors list background clip. If the Simian field above is set, it is used first. Leave both empty to skip.',
       },
       {
         name: 'profileProjects',
@@ -132,7 +140,7 @@ const teamMember = {
                 options: {
                   maxLength: 96,
                   /* String source ("name") does not resolve for slugs inside array objects; use parent. */
-                  source: (doc, context) => {
+                  source: (_doc, context) => {
                     const name = context?.parent?.name;
                     return typeof name === 'string' ? name : '';
                   },
@@ -155,7 +163,7 @@ const teamMember = {
                 title: 'Simian proxy file (MP4)',
                 type: 'string',
                 description:
-                  'Simian MP4 for this project: use the proxy file name from metadata (e.g. Nike-x-Union-LA-Field-General-Colored_4K_mov.mp4 or adidas_-_pureboost_go--1080p-.mp4), or paste the full URL (https://valentine.gosimian.com/assets/videos/…mp4). The site plays it as native video (muted on the profile). If Profile Clip is empty, this is used as the profile background. Legacy Simian share URLs still work on the full-screen project page only — upload a profile clip for those if you need them in the profile reel.',
+                  'Simian MP4 for this project: use the proxy file name from metadata (e.g. Nike-x-Union-LA-Field-General-Colored_4K_mov.mp4 or adidas_-_pureboost_go--1080p-.mp4). If there is no proxy, the regular file name also works. You can also paste the full URL (https://valentine.gosimian.com/assets/videos/…mp4). The site plays it as native video (muted on the profile). If Profile Clip is empty, this is used as the profile background. Legacy Simian share URLs still work on the full-screen project page only — upload a profile clip for those if you need them in the profile reel.',
               },
               {
                 name: 'profileClip',
