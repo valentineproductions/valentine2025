@@ -31,6 +31,38 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Marjorie';
+  src:
+    url('/fonts/Marjorie/Marjorie-Regular.woff2') format('woff2'),
+    url('/fonts/Marjorie/Marjorie-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  --valentine-purple: #5F1B19;
+  --valentine-yellow: #FFED29;
+  --white: #ffffff;
+  --text-dark: #5F1B19;
+  --text-light: #ffffff;
+  /* Alex wire: contact card 412×475px, bio 605×225 @ 16px root — use rem and aspect only */
+  --contact-card-w: 25.75rem; /* 412 */
+  --contact-card-h: 29.6875rem; /* 475 */
+  --bio-card-w: 37.8125rem; /* 605 */
+  --bio-card-h: 14.0625rem; /* 225 */
+  /* Smaller type to sit inside the wire cut (tune in follow-up passes) */
+  --font-size-modal: 1.45rem; /* 17px */
+  --font-size-modal-mid: 1.45rem; /* 15px */
+  --font-size-modal-mobile: 1.45rem; /* 14px */
+  --font-size-modal-huge: 1.125rem; /* 18px on ultra-wide */
+  --line-height-modal: 1.12;
+  --letter-spacing-modal: -0.01em;
+  --paragraph-gap: 1rem;
+  --mobile-pivot: 425px;
+}
+
 html,
 body {
   max-width: 100vw;
@@ -50,6 +82,39 @@ body {
 
 body.homeBody {
     background: #5F1B19;
+}
+
+
+body.contactModalOpenGeneral main {
+  filter: blur(10px);
+  transform: translateZ(0);
+  transition: filter 0.25s ease;
+}
+
+body.contactModalOpenDirector [data-director-blur-root] {
+  filter: blur(10px);
+  transform: translateZ(0);
+  transition: filter 0.25s ease;
+}
+
+body.contactModalOpenDirector [data-director-blur-root] .videoLayer,
+body.contactModalOpenDirector [data-director-blur-root] .centerBar,
+body.contactModalOpenDirector [data-director-blur-root] .clipProgressTrack,
+body.contactModalOpenDirector [data-director-blur-root] .namesOverlay {
+  filter: blur(10px);
+  transform: translateZ(0);
+  transition: filter 0.25s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.contactModalOpenGeneral main,
+  body.contactModalOpenDirector [data-director-blur-root],
+  body.contactModalOpenDirector [data-director-blur-root] .videoLayer,
+  body.contactModalOpenDirector [data-director-blur-root] .centerBar,
+  body.contactModalOpenDirector [data-director-blur-root] .clipProgressTrack,
+  body.contactModalOpenDirector [data-director-blur-root] .namesOverlay {
+    transition: none;
+  }
 }
 
 * {
@@ -156,6 +221,139 @@ textarea:focus-visible,
   width: 100%;
 }
 
+/* Directors page nav - white text over full-bleed video */
+.navBar.directorsNavBar {
+  background-color: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.navBar.directorsNavBar .homeNavLink,
+.navBar.directorsNavBar a,
+.navBar.directorsNavBar button.homeNavLink,
+.navBar.directorsNavBar span.menu-trigger {
+  color: white;
+}
+
+.navBar.directorsNavBar .homeNavLink::after,
+.navBar.directorsNavBar a::after,
+.navBar.directorsNavBar button.homeNavLink::after,
+.navBar.directorsNavBar span.menu-trigger::after {
+  background-color: white;
+}
+
+.navBar.directorsNavBar .homeNavLink:hover,
+.navBar.directorsNavBar a:hover,
+.navBar.directorsNavBar button.homeNavLink:hover,
+.navBar.directorsNavBar span.menu-trigger:hover {
+  color: rgb(220, 220, 220);
+}
+
+.navBar.directorsNavBar img {
+  filter: brightness(0) invert(1);
+}
+
+.navBar.directorsNavBar a:focus-visible,
+.navBar.directorsNavBar .homeNavLink:focus-visible,
+.navBar.directorsNavBar button.homeNavLink:focus-visible,
+.navBar.directorsNavBar span.menu-trigger:focus-visible {
+  outline-color: #fff;
+}
+
+/* Work page nav — motion: plain white; stills: plain #5f1b19 (no shadows) */
+.navBar.workNavBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20000;
+  background-color: transparent;
+  transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navBar.workNavBar.workNavHidden {
+  transform: translateY(-100%);
+}
+
+.navBar.workNavBar:not(.workNavStillsLight) .homeNavLink,
+.navBar.workNavBar:not(.workNavStillsLight) a,
+.navBar.workNavBar:not(.workNavStillsLight) button.homeNavLink,
+.navBar.workNavBar:not(.workNavStillsLight) span.menu-trigger {
+  color: #fff;
+  text-shadow: none;
+}
+
+.navBar.workNavBar:not(.workNavStillsLight) .homeNavLink::after,
+.navBar.workNavBar:not(.workNavStillsLight) a::after,
+.navBar.workNavBar:not(.workNavStillsLight) button.homeNavLink::after,
+.navBar.workNavBar:not(.workNavStillsLight) span.menu-trigger::after {
+  background-color: #fff;
+}
+
+.navBar.workNavBar:not(.workNavStillsLight) a:focus-visible,
+.navBar.workNavBar:not(.workNavStillsLight) .homeNavLink:focus-visible,
+.navBar.workNavBar:not(.workNavStillsLight) button.homeNavLink:focus-visible,
+.navBar.workNavBar:not(.workNavStillsLight) span.menu-trigger:focus-visible {
+  outline-color: #fff;
+}
+
+.navBar.workNavBar.workNavStillsLight .homeNavLink,
+.navBar.workNavBar.workNavStillsLight a,
+.navBar.workNavBar.workNavStillsLight button.homeNavLink,
+.navBar.workNavBar.workNavStillsLight span.menu-trigger {
+  color: #fff;
+  text-shadow: none;
+}
+
+.navBar.workNavBar.workNavStillsLight .homeNavLink::after,
+.navBar.workNavBar.workNavStillsLight a::after,
+.navBar.workNavBar.workNavStillsLight button.homeNavLink::after,
+.navBar.workNavBar.workNavStillsLight span.menu-trigger::after {
+  background-color: #fff;
+}
+
+.navBar.workNavBar.workNavStillsLight a:focus-visible,
+.navBar.workNavBar.workNavStillsLight .homeNavLink:focus-visible,
+.navBar.workNavBar.workNavStillsLight button.homeNavLink:focus-visible,
+.navBar.workNavBar.workNavStillsLight span.menu-trigger:focus-visible {
+  outline-color: #fff;
+}
+
+.workNavLogoInvert {
+  filter: brightness(0) invert(1);
+}
+
+.workPageMotionShell {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+main:has(.workPageMotionShell) {
+  min-height: 100vh;
+}
+
+/* Work stills: full-bleed breakout for .pageContent (must be global — Next.js CSS modules forbid pure :global-only selectors) */
+main .pageContent:has([data-work-stills-shell]) {
+  max-width: none;
+  padding-left: 0;
+  padding-right: 0;
+  /* Fills letterboxing behind stills only when this shell is mounted — not other pages */
+  background-color: #2f241c;
+}
+
+/* Tail logo uses transform — layout height ends above the painted logo; body is otherwise #fff */
+html:has([data-work-stills-shell]),
+body:has([data-work-stills-shell]) {
+  background-color: #2f241c;
+}
+
+main:has([data-work-stills-shell]) {
+  background-color: #2f241c;
+}
+
 /* Existing styles for the non-homepage navigation bar */
 .homeNavLink {
   color: var(--foreground);
@@ -193,7 +391,9 @@ textarea:focus-visible,
   animation: navFadeIn 1s ease-out 1s forwards;
 }
 
-.navBar a, span.menu-trigger {
+.navBar a,
+.navBar button.homeNavLink,
+span.menu-trigger {
   color: var(--foreground);
   text-decoration: none;
   margin-left: 60px;
@@ -203,11 +403,21 @@ textarea:focus-visible,
   letter-spacing: 0.32px;
 }
 
+.navBar button.homeNavLink {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
 .navBar a:first-child {
   margin-left: 0;
 }
 
-.navBar a::after, span.menu-trigger::after {
+.navBar a::after,
+.navBar button.homeNavLink::after,
+span.menu-trigger::after {
   content: '';
   position: absolute;
   bottom: -2px;
@@ -230,7 +440,9 @@ textarea:focus-visible,
 }
 
 
-.navBar a:hover::after, span.menu-trigger:hover::after {
+.navBar a:hover::after,
+.navBar button.homeNavLink:hover::after,
+span.menu-trigger:hover::after {
   width: 100%;
 }
 
@@ -253,7 +465,7 @@ textarea:focus-visible,
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(95, 27, 25, 0.92);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease-in-out;
@@ -261,11 +473,15 @@ textarea:focus-visible,
 }
 
 .menuOverlay.homeOverlay {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(95, 27, 25, 0.92);
 }
 
 .menuOverlay.pageOverlay {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(95, 27, 25, 0.92);
+}
+
+.menuOverlay.directorsOverlay {
+  background-color: rgba(95, 27, 25, 0.92);
 }
 
 .menuOverlay.visible {
@@ -361,21 +577,21 @@ header.navBar.homeNavBar + main {
 }
 
 
-.homePage section > *:not(.locationsNemail) {
-  /* Target all direct children that are NOT .locationsNemail */
+.homePage section > *:not([data-locations-email]) {
+  /* Target all direct children that are NOT LocationsAndEmail */
   margin-top: auto; /* Push them towards the top (due to space-between) */
   margin-bottom: auto; /* Keep them centered vertically within the available space */
   text-align: center;
   width: 100%;
 }
 
-.homePage section.one > *:not(.locationsNemail) {
+.homePage section.one > *:not([data-locations-email]) {
   /* Special handling for the first section if needed */
   margin-top: auto;
   margin-bottom: auto;
 }
 
-.homePage section.two > *:not(.locationsNemail) {
+.homePage section.two > *:not([data-locations-email]) {
   /* Special handling for the second section if needed */
   margin-top: auto;
   margin-bottom: auto;
@@ -390,47 +606,10 @@ header.navBar.homeNavBar + main {
   margin:20px; /*I need this one for it to appear*/
 }
 
-.homePage section.four > *:not(.locationsNemail) {
+.homePage section.four > *:not([data-locations-email]) {
   /* Special handling for the fourth section if needed */
   margin-top: auto;
   margin-bottom: auto;
-}
-
-.locationsNemail {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: 10px 0 20px 0;
-  font-family: 'Helvetica Neue', sans-serif;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 500;
-  gap: 6px;
-}
-
-.locationsNemail2 {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: 10px 0 20px 0;
-  font-family: 'Helvetica Neue', sans-serif;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 500;
-  gap: 6px;
-}
-
-.locationsCodes,
-.homeEmail {
-  margin: 0;
-}
-
-.homeEmail a {
-  text-decoration: none;
 }
 
 #VideoBG, .videos {
@@ -489,7 +668,7 @@ section.sloganVideo.two {
 
 
 /* Shadow to help read text over home video */
-header.navBar.homeNavBar a, .homeBody .menu-trigger, section.sloganVideo h2, .locationsNemail p, .locationsNemail a, .locationsNemail2 p, .locationsNemail2 a, .servicesDescription p, .servicesLists, .servicesSection h2, .processSection h2, .processDescription, .processDescription p, .approachContainer p, .approachContainer h2, section.approachSection .pageNote {
+header.navBar.homeNavBar a, .homeBody .menu-trigger, section.sloganVideo h2, .servicesDescription p, .servicesLists, .servicesSection h2, .processSection h2, .processDescription, .processDescription p, .approachContainer p, .approachContainer h2, section.approachSection .pageNote {
   color: white;
   text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
   text-align: center;
@@ -802,6 +981,23 @@ header.navBar.homeNavBar a, .homeBody .menu-trigger, section.sloganVideo h2, .lo
 
   @media (max-width: 767px) {
 
+  /* Home: reduce phantom scroll / rubber-band past last section (mobile 100vh vs dynamic toolbar) */
+  .homePage .container {
+    height: 100vh;
+    max-height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow-y: auto;
+    overscroll-behavior-y: none;
+  }
+
+  .homePage .approachContainer {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    flex: 1 1 auto;
+  }
+
   .servicesSection h2 {
     padding: 100px 0 0 0;
   }
@@ -902,26 +1098,7 @@ header.navBar.homeNavBar a, .homeBody .menu-trigger, section.sloganVideo h2, .lo
   }
 }
 
-.homeLastVideoFooter {
-  display: none;
-  width: 100%;
-  padding: 20px 10px 50px 10px;
-  bottom: 0;
-  left: 0;
-  z-index: 10;
-}
-
-.homeLastVideoFooter.footerVisible {
-  display: block;
-}
-
-.homeLastVideoFooter.footerFixed {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-}
+/* homeLastVideoFooter base styles moved to HomeVideoFooter.module.css */
 
 .homeLastVideoFooter .pageNote {
   display: flex;
@@ -1757,11 +1934,13 @@ p.copyRightText b {
   }
 
   /* Turn it Horizontal */
-.mobileNavLinks a {
+.mobileNavLinks a,
+.mobileNavLinks button.homeNavLink {
     width: 100%;
     display: block;
     margin: 0;
     padding: 20px;
+    text-align: center;
 }
 
 
@@ -1799,9 +1978,6 @@ p.copyRightText b {
 
   .sideBar .connectSection {
       margin-bottom: 0px;
-  }
-  .locationsCodes, .homeEmail{
-    margin: 0 12px;
   }
   /* WIP */
   .clientInfo {

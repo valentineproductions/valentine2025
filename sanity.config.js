@@ -1,12 +1,12 @@
 import {defineConfig} from 'sanity'
 import React from 'react';
-import {structureTool} from 'sanity/structure'
 import deskStructure from './sanity/deskStructure'
 import schemas from './sanity/schemas'; //Barrel file
 
 const vercelEnv = process.env.VERCEL_ENV;
 const isPreview = vercelEnv === 'preview';
 const isDev = process.env.NODE_ENV === 'development';
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'pl746aq8';
 const datasetFromEnv = process.env.NEXT_PUBLIC_SANITY_DATASET;
 const datasetOverride = (isPreview || isDev) ? 'staging' : (datasetFromEnv || 'production');
 
@@ -41,7 +41,7 @@ const config = defineConfig({
     title: 'Valentine Studio',
 
     // Use environment variables for projectId and dataset
-    projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+    projectId,
     dataset: datasetOverride,
     
     apiVersion: "2025-05-19",

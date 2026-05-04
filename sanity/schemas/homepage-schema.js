@@ -72,6 +72,22 @@ const homepage = {
       description: 'A smaller icon for the company, used in previews.',
       group: 'general',
     },
+    {
+      name: 'navLogoSize',
+      title: 'Nav Logo Size',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'S', value: 'S' },
+          { title: 'M', value: 'M' },
+          { title: 'L', value: 'L' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'S',
+      description: 'Controls the size of the top-left navigation logo.',
+      group: 'general',
+    },
     // Page Note & Footer Group
 
     {
@@ -93,8 +109,7 @@ const homepage = {
       title: 'Page Note',
       type: 'reference',
       to: { type: 'pageNote' },
-      description: 'Page note to associate with this homepage.',
-      validation: Rule => Rule.required(),
+      description: 'Page note to associate with this homepage. If empty, it will display the 2 fields above (Locations or Info & Email) in that area instead.',
       group: 'pageNoteGroup',
     },
     {

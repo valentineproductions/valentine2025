@@ -29,16 +29,6 @@ export default function BackgroundImage({ src, alt }) {
     };
   }, []);
 
-  useEffect(() => {
-    const footer = document.querySelector('.homeLastVideoFooter');
-    if (!footer) return;
-    if (isFooterVisible) {
-      footer.classList.add('footerFixed', 'footerVisible');
-    } else {
-      footer.classList.remove('footerFixed', 'footerVisible');
-    }
-  }, [isFooterVisible]);
-
   return (
     <div className='coolBG' 
       ref={containerRef}

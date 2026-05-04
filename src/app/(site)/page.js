@@ -10,6 +10,7 @@ import ProcessAccordion from "../components/ProcessAccordion";
 import ApproachSection from "../components/ApproachSection";
 import PageNoteFooter from "../components/PageNoteFooter";
 import HomeFooter from "../components/HomeFooter";
+import FooterVisibilityController from "../components/FooterVisibilityController";
 
 
 // export const revalidate = 300; // Revalidate every 5 minutes
@@ -28,10 +29,10 @@ export default function Home() {
     <div className="homePage">
       <div className="container">
 
-        {homePageData?.homeFrame?.asset?.url && (
-          <BackgroundImage
-            src={homePageData.homeFrame.asset.url}
-            alt={homePageData.homeFrame.alt || "Background"}
+        {homePageData.homeFrame?.asset?.url && (
+          <BackgroundImage 
+            src={homePageData.homeFrame.asset.url} 
+            alt={homePageData.homeFrame.alt || "Background"} 
           />
         )}
         <HomeVideo homePageData={homePageData} />
@@ -62,7 +63,8 @@ export default function Home() {
         )}
         
         <ApproachSection homePageData={homePageData} />
-        <PageNoteFooter pageNote={homePageData.pageNote} />
+        <PageNoteFooter pageNote={homePageData.pageNote} locations={homePageData.locations} email={homePageData.email} />
+        <FooterVisibilityController />
         
       </div>
     </div>

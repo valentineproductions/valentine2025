@@ -11,6 +11,7 @@ export async function getHomePage() {
         },
         alt
       },
+      navLogoSize,
       companyName,
       companyIcon{
         asset->{
@@ -254,6 +255,19 @@ export async function getProject(slug) {
             embedCode,
             videoName
           },
+          directorsPageClipSimian,
+          directorsPageClip{
+            asset->{ _id, url }
+          },
+          profileProjects[]{
+            name,
+            "slug": slug.current,
+            simianProxyFile,
+            simianEmbedUrl,
+            profileClip{
+              asset->{ _id, url }
+            }
+          },
         },
         projects[]->{
           _id,
@@ -303,6 +317,36 @@ export async function getProject(slug) {
           copyrightText,
           copyrightBrandName,
           copyrightYear
+        },
+        workMotionClips[]{
+          title,
+          description,
+          talentPosition,
+          simianEmbedUrl,
+          "videoUrl": videoFile.asset->url
+        },
+        workStillsBackgroundLogo{
+          alt,
+          "url": asset->url,
+          asset->{ _id, url }
+        },
+        workStills[]{
+          title,
+          description,
+          layout,
+          parallaxStrength,
+          images[]{
+            alt,
+            parallaxStrength,
+            parallaxAdjust,
+            "url": asset->url,
+            asset->{ _id, url }
+          },
+          image{
+            alt,
+            "url": asset->url,
+            asset->{ _id, url }
+          }
         }
       }`,
       { slug }
@@ -341,6 +385,19 @@ export async function getTeamMemberBySlug(slug) {
       videos[]{
         embedCode,
         videoName
+      },
+      directorsPageClipSimian,
+      directorsPageClip{
+        asset->{ _id, url }
+      },
+      profileProjects[]{
+        name,
+        "slug": slug.current,
+        simianProxyFile,
+        simianEmbedUrl,
+        profileClip{
+          asset->{ _id, url }
+        }
       },
     }`,
     { slug }
@@ -398,6 +455,19 @@ export async function getLegalBySlug(slug) {
               embedCode,
               videoName
             },
+            directorsPageClipSimian,
+            directorsPageClip{
+              asset->{ _id, url }
+            },
+            profileProjects[]{
+              name,
+              "slug": slug.current,
+              simianProxyFile,
+              simianEmbedUrl,
+              profileClip{
+                asset->{ _id, url }
+              }
+            },
           },
           projects[]->{   // Added from getFullPagesData
             _id,
@@ -432,8 +502,41 @@ export async function getLegalBySlug(slug) {
               }
             }
           },
+          workMotionClips[]{
+            title,
+            description,
+            talentPosition,
+            simianEmbedUrl,
+            "videoUrl": videoFile.asset->url
+          },
+          workStillsBackgroundLogo{
+            alt,
+            "url": asset->url,
+            asset->{ _id, url }
+          },
+          workStillsBackgroundColor,
+          workStills[]{
+            title,
+            description,
+            layout,
+            parallaxStrength,
+            parallaxStrength,
+            images[]{
+              alt,
+              parallaxStrength,
+              parallaxAdjust,
+              "url": asset->url,
+              asset->{ _id, url }
+            },
+            image{
+              alt,
+              "url": asset->url,
+              asset->{ _id, url }
+            }
+          },
         },
         "careersPage": *[_type == "careersPage"][0]{
+          showInNav,
           title,
           description,
           locations,
@@ -472,6 +575,7 @@ export async function getLegalBySlug(slug) {
             },
             alt
           },
+          navLogoSize,
           pageNote->{...},
           companyName,
           companyIcon{
@@ -529,6 +633,7 @@ export async function getLegalBySlug(slug) {
           keywords
         },
         "aboutPageV2": *[_type == "aboutPageV2"][0]{
+          showInNav,
           title,
           pageDescription,
           backgroundOpacity,

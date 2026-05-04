@@ -101,7 +101,7 @@ export const deskStructure = async (S, context) => {
           S.documentTypeList('legal').title('Legal Pages')
         ),
       ...S.documentTypeListItems().filter(
-        (item) => !['careersPage', 'jobPosting', 'application', 'legal'].includes(item.getId())
+        (item) => !['careersPage', 'jobPosting', 'application', 'legal', 'aboutPage'].includes(item.getId())
       ),
     ]);
 };

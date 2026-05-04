@@ -1,0 +1,697 @@
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #000;
+}
+
+/* Remaining-time indicator for multi-clip rotation (right edge, shrinks as clip plays) */
+.clipProgressTrack {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 3px;
+  z-index: 7;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.clipProgressFill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  background: #fff;
+  transform-origin: bottom center;
+}
+
+/* Same horizontal shell as nav / contact bar: max-width 2000px, padding matches .bioBar */
+.talentBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 13;
+  pointer-events: none;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.talentBarInner {
+  max-width: 2000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.talentLabel {
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.33px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+@media (min-width: 768px) {
+  .talentBar {
+    padding: 32px 20px;
+  }
+}
+
+/* Full-bleed tap target: opens full Simian page (below UI chrome; see .centerBar pointer-events) */
+.videoHitLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  text-decoration: none;
+  cursor: none;
+}
+
+.videoHitLayer[aria-disabled='true'] {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* :global — attribute-only selectors are not valid in CSS Modules without a local class */
+.wrapper :global([data-play-cursor-zone]) {
+  cursor: none;
+}
+
+
+.wrapperBioBlur .videoLayer,
+.wrapperBioBlur .centerBar,
+.wrapperBioBlur .clipProgressTrack {
+  filter: blur(10px);
+  transform: translateZ(0);
+  transition: filter 0.25s ease;
+}
+
+/* Lock centerBar to viewport center while Bio is open so the same element blurs in place */
+.wrapperBioBlur .centerBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 33%;
+  transform: translate3d(0, 0, 0);
+}
+
+.cursorDefault {
+  cursor: default;
+}
+
+.videoLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  pointer-events: none;
+}
+
+.videoLayer.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+/* Center bar: vertically centered in viewport, max-width aligns with nav */
+.centerBar {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translate3d(0, -50%, 0);
+  z-index: 8;
+  max-width: 2000px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* Let clicks pass through empty flex space to .videoHitLayer */
+  pointer-events: none;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.centerBar > * {
+  pointer-events: auto;
+}
+
+/* BIO bar - fixed at bottom, same on mobile */
+.bioBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 12;
+  max-width: 2000px;
+  margin: 0 auto;
+  padding: 10px;
+  pointer-events: none;
+}
+
+.bioBar .bioLink {
+  pointer-events: auto;
+}
+
+.bioBarAnimate {
+  opacity: 0;
+  animation: fadeUp 0.5s ease-out both;
+  animation-delay: var(--bio-delay, 400ms);
+}
+
+.directorInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.directorInfoLine {
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: white;
+  /* text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5); */
+}
+
+.directorInfoLineAnimate {
+  text-transform: none;
+  animation: fadeUp 0.6s ease-out 0.1s both;
+}
+
+/* Mobile: line break after director name */
+.mobileBreak {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .mobileBreak {
+    display: block;
+  }
+}
+
+.directorName {
+  font-family: 'Marjorie', serif;
+  font-weight: 400;
+}
+
+.projectName {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  opacity: 0.5;
+}
+
+.projectNameSwap {
+  display: inline-block;
+  animation: projectNameSwapIn 0.38s ease-out both;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 300;
+}
+
+.projectNameLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.projectNameLink:hover,
+.projectNameLink:focus-visible {
+  opacity: 0.85;
+}
+
+.projectNameLink:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: 4px;
+}
+
+@keyframes projectNameSwapIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.45em);
+  }
+  to {
+    opacity: 0.5;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projectNameSwap {
+    animation: none;
+  }
+}
+
+.bioLink {
+  position: relative;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.33px;
+  text-transform: uppercase;
+  color: white;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  align-self: flex-start;
+}
+
+.bioLink::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: white;
+  transition: width 0.3s ease;
+}
+
+.bioLink:hover::after {
+  width: 100%;
+}
+
+.bioLink:hover {
+  opacity: 0.9;
+}
+
+/* Project nav - icon + name side by side */
+.projectNav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 30px;
+}
+
+.projectRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 2px 0;
+  cursor: default;
+  text-decoration: none;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: right;
+  transition: opacity 0.2s ease;
+}
+
+.projectRowAnimate {
+  opacity: 0;
+  animation: iconFadeUp 0.5s ease-out both;
+  animation-delay: var(--icon-delay, 0ms);
+}
+
+@keyframes iconFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.projectRow:hover,
+.projectRow.projectRowActive {
+  color: white;
+  opacity: 1;
+}
+
+.projectRow:not(.projectRowActive) {
+  opacity: 0.5;
+}
+
+.projectItemName {
+  white-space: nowrap;
+}
+
+/* Desktop: names hidden by default, animate in on projectNav hover or row focus */
+@media (min-width: 768px) {
+  .projectRow {
+    position: relative;
+    z-index: 0;
+    /* Wider hit area: ~200px left of icons, ~25px extra top/bottom (50px total height) */
+    padding: 27px 0 27px 200px;
+    margin: -25px 0 -25px -200px;
+  }
+
+  .projectRow:hover,
+  .projectRow:focus-visible {
+    z-index: 2;
+  }
+
+  .projectRow:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.95);
+    outline-offset: 6px;
+  }
+
+  .projectItemName {
+    max-width: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(6px);
+    transition: max-width 0.3s ease, opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .projectNav:hover .projectItemName,
+  .projectRow:focus-visible .projectItemName {
+    max-width: 280px;
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Play / stop bullets from public/play-bullet.svg + stop-bullet.svg */
+.mediaIconImg {
+  display: block;
+  flex-shrink: 0;
+  width: 5px;
+  height: auto;
+  aspect-ratio: 281 / 318;
+  object-fit: contain;
+  transition: opacity 0.2s ease;
+}
+
+/* Mobile: show icons only, hide names (title already under director name) */
+@media (max-width: 767px) {
+  .projectItemName {
+    display: none;
+  }
+
+  .projectRow {
+    gap: 0;
+    padding: 4px 0;
+  }
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+  .centerBar {
+    padding: 32px 20px;
+  }
+
+  .bioBar {
+    padding: 32px 20px;
+  }
+
+  .directorInfoLine {
+    font-size: 84px;
+  }
+}
+
+/*
+ * Bio modal: blur sits below header (nav z-index 10) and bio chrome; panel is a sibling so it can stack above the blur.
+ */
+.bioBlurLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+}
+
+.bioBlurLayer .bioBackdropHit {
+  pointer-events: auto;
+}
+
+.bioBackdropHit {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  isolation: isolate;
+}
+
+.bioBackdropBlur {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  will-change: backdrop-filter;
+  transform: translateZ(0);
+  pointer-events: none;
+}
+
+.bioBackdropShade {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.05);
+  pointer-events: none;
+}
+
+.bioPanelDock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 11;
+  max-width: 125rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 3.25rem;
+  box-sizing: border-box;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+/* Alex wire: bio card 605×225 — h / w = 225/605; scales with min(100%, 90vw) */
+.bioPanelDockInner {
+  width: min(100%, 90%);
+  max-width: var(--bio-card-w);
+  /* Locked 605×225 (scaled): required on parent so .bioPanel can inherit */
+  --bio-panel-locked-h: min(
+    var(--bio-card-h),
+    90vh,
+    calc(min(var(--bio-card-w), 90vw) * 225 / 605)
+  );
+  box-sizing: border-box;
+  pointer-events: auto;
+}
+
+.bioColumnStack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  pointer-events: auto;
+}
+
+@keyframes bioModalIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.bioOverlayEnter .bioBackdropShade {
+  animation: bioModalIn 0.35s ease-out both;
+}
+
+.bioOverlayEnter .bioColumnStack {
+  animation: bioModalPanelIn 0.4s ease-out 0.05s both;
+}
+
+.bioOverlayClosing .bioBackdropShade {
+  animation: bioModalOut 0.3s ease-in both;
+}
+
+.bioOverlayClosing .bioColumnStack {
+  animation: bioModalPanelOut 0.25s ease-in both;
+}
+
+@keyframes bioModalPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bioModalPanelOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(0.9375rem);
+  }
+}
+
+@keyframes bioModalOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.bioWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.bioContactDivider {
+  position: fixed;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.85);
+  max-width: 2000px;
+  z-index: 14;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.bioContactDividerVisible {
+  opacity: 1;
+}
+
+.bioPanel {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--bio-card-w);
+  /* max-height alone lets the box shrink to content (~77px); lock to wire */
+  min-height: var(--bio-panel-locked-h);
+  max-height: var(--bio-panel-locked-h);
+  height: var(--bio-panel-locked-h);
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 0.75rem 0.9rem;
+  border: none;
+  border-radius: 0.75rem;
+}
+
+.bioContent {
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: var(--font-size-modal-mobile);
+  /* 225px-tall wire: slightly more leading than --line-height-modal */
+  line-height: 1.18;
+  letter-spacing: var(--letter-spacing-modal);
+  color: #000;
+  /* text-transform: lowercase; */
+}
+
+@media (min-width: 768px) {
+  .bioContent {
+    font-size: var(--font-size-modal-mid);
+  }
+}
+
+/* Laptop+ type: aligns with 1360px+ panel tier */
+@media (min-width: 1360px) and (max-width: 2649px) {
+  .bioContent {
+    font-size: var(--font-size-modal);
+  }
+}
+
+@media (min-width: 2650px) {
+  .bioContent {
+    font-size: var(--font-size-modal-huge);
+  }
+}
+
+@media (max-width: 767px) {
+  .bioPanel {
+    min-height: 0;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}
+
+@media (max-height: 900px), (max-width: 900px) {
+  .bioPanelDockInner {
+    width: min(100%, 90%);
+  }
+
+  .bioPanel {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+.bioContent.bioContentUppercase {
+  text-transform: uppercase;
+}
+
+.bioContent p {
+  margin: 0 0 var(--paragraph-gap) 0;
+}
+
+.bioContent p:last-child {
+  margin-bottom: 0;
+}
+
+.bioContent a {
+  color: #000;
+}
+
+@media (max-width: 424px) {
+  .bioPanelDock {
+    padding: 0.75rem 0.5rem 2.875rem;
+  }
+
+  .bioPanelDockInner {
+    width: min(100%, 96%);
+  }
+
+  .bioPanel {
+    padding: 0.65rem 0.7rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .bioPanelDock {
+    padding: 1.5rem 1.25rem 4.75rem;
+  }
+}
+
+@media (min-width: 1360px) and (max-width: 2649px) {
+  .bioPanelDock {
+    padding: 1.2rem 1rem 3.8rem;
+  }
+}

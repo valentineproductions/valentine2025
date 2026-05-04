@@ -1,0 +1,493 @@
+/* Page shell: class from this module on [slug]/page.js. .pageContent breakout is in globals.css (CSS modules purity). */
+
+.pageShell {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  /* Stills-only shell (see [slug]/page.js); keeps edge-to-edge fill without touching other routes */
+  background-color: #2f241c;
+}
+
+.root {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 100px 0 clamp(16px, 14vw, 20px);
+  background: #2f241c;
+  color: #fff;
+  overflow: visible;
+  /* Work stills scroll choreography (set from JS on .root for smooth rAF updates) */
+  --ws-head-opacity: 1;
+  --ws-head-top: 50%;
+  --ws-head-width: min(2000px, calc(100vw - 48px));
+  --ws-head-z: 9999;
+  --ws-head-visibility: visible;
+  --ws-body-opacity: 0;
+  --ws-tail-y: 60vh;
+}
+
+.rootHasFirstFullBleed {
+  padding-top: 0;
+}
+
+.bgMark {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  user-select: none;
+}
+
+.bgMarkImg {
+  width: min(88vw, 720px) !important;
+  max-width: min(88vw, 720px);
+  max-height: min(70vh, 520px);
+  height: auto !important;
+  object-fit: contain;
+  opacity: 1;
+}
+/* Fade states controlled from view logic */
+.bgMarkImgFade {
+  opacity: 0.6;
+  transition: opacity 360ms ease-in-out;
+}
+.bgMarkImgGone {
+  opacity: 0;
+  transition: opacity 360ms ease-in-out;
+}
+.bgMarkImgHidden {
+  opacity: 0;
+  transition: opacity 180ms ease-out;
+}
+
+/* Same center as .bgMark; above watermark (z-index), below .feed; opacity driven by scroll */
+.sloganLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  user-select: none;
+  will-change: opacity;
+}
+
+/* Colored logo — same max frame as .bgMarkImg so it sits in the same center */
+.sloganLayerImg {
+  width: min(88vw, 720px) !important;
+  max-width: min(88vw, 720px);
+  max-height: min(70vh, 520px);
+  height: auto !important;
+  object-fit: contain;
+}
+
+/* Scrollable gap so the colored logo reads as its own “hero” before the stills feed */
+.heroSpacer {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-height: 0;
+  margin-bottom: 0;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.feed {
+  position: relative;
+  z-index: 2;
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 440px;
+  padding-bottom: clamp(24px, 4vh, 64px);
+}
+
+/* Runway only between set 1 and set 2 — keep modest; scroll snap in JS follows second block position */
+.feed > .feedItemWrap:first-child {
+  margin-bottom: clamp(14vh, 18vw, 220px);
+}
+
+.feedItemWrap {
+  width: 100%;
+}
+
+/* Entry overlay white logo — stills scroll drives --ws-* on .root */
+.heroOverlayWrap {
+  position: fixed;
+  left: 50%;
+  top: var(--ws-head-top, 50%);
+  width: var(--ws-head-width, auto);
+  max-width: 100vw;
+  opacity: var(--ws-head-opacity, 1);
+  visibility: var(--ws-head-visibility, visible);
+  transform: translate(-50%, -50%);
+  z-index: var(--ws-head-z, 9999);
+  pointer-events: none;
+  will-change: transform, width, opacity;
+}
+
+/* Final bottom logo — pixel translate avoids Safari reserving an extra percent-based scroll gap */
+.bottomRunway {
+  position: relative;
+  z-index: 12;
+  height: 68vh;
+  overflow: hidden;
+}
+
+.tailLogoWrap {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  z-index: 12;
+  width: 100%;
+  max-width: 2000px;
+  box-sizing: border-box;
+  padding: 0 clamp(24px, 4vw, 48px);
+  will-change: transform;
+}
+
+.bottomLogoWrap {
+  position: relative;
+  z-index: 12;
+  width: 100%;
+  max-width: 2000px;
+  height: 0;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 4vw, 48px);
+  overflow: visible;
+  transform: translateY(var(--ws-tail-y, 0px));
+  transition: none;
+  will-change: transform;
+}
+
+@media (max-width: 767px) {
+  .bottomLogoWrap {
+    margin-bottom: 0;
+  }
+}
+@media (min-width: 900px) {
+  /* Was 360px — stacked with first-child runway and read as one huge void */
+  .feed {
+    gap: clamp(440px, 12vw, 500px);
+  }
+}
+
+.feed > .feedItemWrap:first-child .block {
+  margin-top: clamp(12px, 3vw, 40px);
+}
+
+.feed > .feedItemWrap:last-child .block {
+  margin-bottom: clamp(24px, 4vw, 80px);
+}
+
+.block {
+  position: relative;
+  display: grid;
+  gap: 28px;
+  padding: 0 24px;
+  align-items: center;
+}
+
+.mediaShell {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.blockFullBleed {
+  grid-template-columns: 1fr;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.blockFullBleed .mediaShell {
+  position: relative;
+  width: 100vw;
+  max-width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.blockFullBleed .parallaxWrap {
+  border-radius: 0;
+  max-height: min(92vh, 1200px);
+}
+
+.blockFullBleed .imageGrid {
+  max-height: min(92vh, 1200px);
+}
+
+.blockFullBleed .img {
+  width: 100%;
+  max-height: min(92vh, 1200px);
+  object-fit: cover;
+}
+
+/* When the first block is full bleed, make it fill the viewport */
+.feed > .feedItemWrap:first-child .blockFullBleed .mediaShell,
+.feed > .feedItemWrap:first-child .blockFullBleed .parallaxWrap,
+.feed > .feedItemWrap:first-child .blockFullBleed .imageGrid,
+.feed > .feedItemWrap:first-child .blockFullBleed .img {
+  max-height: 100vh;
+  height: 100vh;
+}
+.feed > .feedItemWrap:first-child .blockFullBleed {
+  margin-top: 0;
+}
+
+.blockFullBleed .text {
+  padding: 24px 24px 0;
+  max-width: 2000px;
+  margin: 0 auto;
+}
+
+@media (min-width: 900px) {
+  .blockFullBleed .text {
+    padding: 32px clamp(24px, 4vw, 48px) 0;
+  }
+}
+
+.imageGrid {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .imageGridCols2,
+  .imageGridCols3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .imageGridCols3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .imageGridCols2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.text {
+  position: relative;
+  z-index: 2;
+}
+
+.parallaxWrap {
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.parallaxInner {
+  will-change: transform;
+  transition: none;
+}
+
+.img {
+  width: 100%;
+  height: auto;
+  display: block;
+  vertical-align: middle;
+}
+
+.title {
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  text-align: center;
+  color: var(--valentine-yellow);
+}
+
+.desc {
+  /* font-family: 'Baskerville', serif; */
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  /* font-style: italic; */
+  font-size: 14px;
+  line-height: 1.35;
+  max-width: 36ch;
+  white-space: pre-wrap;
+  text-align: center;
+  color: var(--valentine-yellow);
+}
+
+.descHelv {
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  max-width: 100%;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--valentine-yellow);
+}
+
+.textBelowPair {
+  text-align: center;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 720px;
+}
+
+.textHelvPair .title {
+  text-align: center;
+}
+
+.blockStaggerPair,
+.blockPairFlat,
+.blockThreeAligned {
+  grid-template-columns: 1fr;
+  gap: clamp(24px, 4vw, 40px);
+  align-items: start;
+}
+
+.blockThreeAligned .parallaxWrap {
+  aspect-ratio: 2 / 3;
+}
+
+.blockThreeAligned .parallaxInner {
+  height: 100%;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.blockThreeAligned .img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.mediaShellPair {
+  width: 100%;
+}
+
+.pairRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(14px, 3vw, 28px);
+  align-items: start;
+  justify-items: stretch;
+}
+
+@media (min-width: 768px) {
+  .pairRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+.pairCell {
+  min-width: 0;
+}
+
+.pairRowFlat {
+  min-height: 0;
+}
+
+.blockPairFlat .pairRowFlat .pairCell:nth-child(2) {
+  margin-top: 0;
+}
+
+.blockEditorial {
+  grid-template-columns: 1fr;
+}
+
+.empty {
+  position: relative;
+  z-index: 2;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  color: #888;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+@media (min-width: 900px) {
+  .blockEditorial {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.75fr);
+    gap: clamp(32px, 5vw, 80px);
+    padding: 0 clamp(24px, 4vw, 48px);
+  }
+
+  .blockEditorial .imageGridCols3 {
+    align-items: start;
+  }
+
+  .blockEditorial .imageGridCols3 > :nth-child(1) {
+    margin-top: clamp(36px, 9vw, 120px);
+  }
+
+  .blockEditorial .imageGridCols3 > :nth-child(2) {
+    margin-top: 0;
+  }
+
+  .blockEditorial .imageGridCols3 > :nth-child(3) {
+    margin-top: clamp(72px, 16vw, 220px);
+  }
+
+  .blockEditorial .imageGridCols2 > :nth-child(2) {
+    margin-top: clamp(40px, 11vw, 140px);
+  }
+
+  .blockEditorial .text {
+    padding-top: 0.5rem;
+  }
+
+  .blockEditorial .text .title {
+    text-align: left;
+  }
+
+  .feed > .feedItemWrap:nth-child(even) .blockEditorial .text .title {
+    text-align: right;
+  }
+
+  .feed > .feedItemWrap:nth-child(even) .blockEditorial .mediaShell {
+    order: 2;
+  }
+
+  .feed > .feedItemWrap:nth-child(even) .blockEditorial .text {
+    order: 1;
+    text-align: right;
+  }
+
+  .feed > .feedItemWrap:nth-child(even) .blockEditorial .desc {
+    margin-left: auto;
+  }
+}
+
+.blockCentered {
+  grid-template-columns: 1fr;
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  .blockCentered {
+    width: 100%;
+  }
+
+  .feed > .feedItemWrap:last-child .block {
+    margin-bottom: clamp(48px, 8vw, 96px);
+  }
+
+}
+
+.blockCentered .desc {
+  margin-left: auto;
+  margin-right: auto;
+}

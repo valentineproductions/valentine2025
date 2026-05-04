@@ -1,0 +1,170 @@
+@font-face {
+  font-family: 'Marjorie';
+  src:
+    url('/fonts/Marjorie/Marjorie-Regular.woff2') format('woff2'),
+    url('/fonts/Marjorie/Marjorie-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+.root {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  background: #000;
+}
+
+.slide {
+  min-height: 100dvh;
+  min-height: 100vh;
+  height: 100dvh;
+  height: 100vh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.metaStrip {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  max-width: 2000px;
+  margin: 0 auto;
+  padding: 28px 24px 32px;
+  pointer-events: none;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 23px;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+  color: #fff;
+  text-shadow: none;
+}
+
+.metaStripInner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  gap: 5px 16px;
+  animation: workMetaStripIn 0.4s ease-out both;
+}
+
+.metaLeft {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: none;
+}
+
+.metaTitle {
+  font-family: 'Marjorie', serif;
+  font-size: 23px;
+  font-weight: 500;
+  line-height: 1;
+  text-transform: none;
+}
+
+.metaLine {
+  flex: 0 0 100%;
+  min-width: 0;
+  width: 100%;
+  height: 1px;
+  align-self: stretch;
+  background: rgba(255, 255, 255, 0.85);
+  transform-origin: center center;
+  animation: workMetaLineIn 0.42s ease-out 0.06s both;
+}
+
+.metaTalent {
+  flex: 0 0 auto;
+  text-align: right;
+  font-size: 23px;
+  font-weight: 500;
+  line-height: 1;
+  text-transform: none;
+  animation: workMetaTalentIn 0.38s ease-out 0.1s both;
+}
+
+@keyframes workMetaStripIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes workMetaLineIn {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes workMetaTalentIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.4em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .metaStripInner,
+  .metaLine,
+  .metaTalent {
+    animation: none !important;
+  }
+}
+
+.empty {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  color: #888;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+/* Narrow: keep footer padding compact */
+@media (max-width: 767px) {
+  .metaStrip {
+    padding: 24px 20px 28px;
+  }
+}
+
+@media (min-width: 768px) {
+  .metaStrip {
+    padding: 32px 32px 40px;
+  }
+}

@@ -1,3 +1,5 @@
+import SafeVideoFileInput from '../components/SafeVideoFileInput';
+
 const teamMember = {
     name: 'teamMember', 
     title: 'Team Member', 
@@ -96,6 +98,103 @@ const teamMember = {
           },
         ],
         description: 'Array of Simian video embeds for this team member.',
+      },
+      {
+        name: 'directorsPageClipSimian',
+        title: 'Directors Page Clip (Simian)',
+        type: 'string',
+        description:
+          'Preferred for the Directors list background clip. Go to Simian > Media Library > Edit Media > Metadata and use the "PROXY FILE" from the first letter through .mp4. If there is no proxy, the regular file name also works.',
+      },
+      {
+        name: 'directorsPageClip',
+        title: 'Directors Page Clip (Upload)',
+        type: 'file',
+        options: {
+          accept: 'video/mp4,video/webm',
+        },
+        components: {
+          input: SafeVideoFileInput,
+        },
+        description:
+          'Optional upload for the same Directors list background clip. If the Simian field above is set, it is used first. Leave both empty to skip.',
+      },
+      {
+        name: 'profileProjects',
+        title: 'Profile Projects',
+        type: 'array',
+        of: [
+          {
+            type: 'object',
+            fields: [
+              {
+                name: 'name',
+                title: 'Video Name',
+                type: 'string',
+                description: 'Name displayed below the director\'s name (e.g. project or video title).',
+              },
+              {
+                name: 'slug',
+                title: 'Project URL slug',
+                type: 'slug',
+                options: {
+                  maxLength: 96,
+                  /* String source ("name") does not resolve for slugs inside array objects; use parent. */
+                  source: (_doc, context) => {
+                    const name = context?.parent?.name;
+                    return typeof name === 'string' ? name : '';
+                  },
+                  slugify: (input) =>
+                    String(input || '')
+                      .toLowerCase()
+                      .trim()
+                      .replace(/['"]/g, '')
+                      .replace(/\s+/g, '-')
+                      .replace(/[^a-z0-9-]/g, '')
+                      .replace(/-+/g, '-')
+                      .replace(/^-|-$/g, '')
+                      .slice(0, 96),
+                },
+                description:
+                  'Used in /directors/[director]/[project-slug]. Click Generate to fill from Video Name (e.g. Boxing Video Sample → boxing-video-sample), then edit if needed.',
+              },
+              {
+                name: 'simianProxyFile',
+                title: 'Simian proxy file (MP4)',
+                type: 'string',
+                description:
+                  'Simian MP4 for this project: use the proxy file name from metadata (e.g. Nike-x-Union-LA-Field-General-Colored_4K_mov.mp4 or adidas_-_pureboost_go--1080p-.mp4). If there is no proxy, the regular file name also works. You can also paste the full URL (https://valentine.gosimian.com/assets/videos/…mp4). The site plays it as native video (muted on the profile). If Profile Clip is empty, this is used as the profile background. Legacy Simian share URLs still work on the full-screen project page only — upload a profile clip for those if you need them in the profile reel.',
+              },
+              {
+                name: 'profileClip',
+                title: 'Profile Clip',
+                type: 'file',
+                options: {
+                  accept: 'video/mp4,video/webm',
+                },
+                components: {
+                  input: SafeVideoFileInput,
+                },
+                description:
+                  'Optional short MP4/WebM for the profile page background. If empty, the Simian proxy file (MP4 URL above) is used when set. Legacy Simian iframe URLs cannot drive the profile reel — use an upload or a Simian assets/videos …mp4 link in Simian proxy file.',
+              },
+            ],
+            preview: {
+              select: {
+                title: 'name',
+                slug: 'slug',
+              },
+              prepare({ title, slug }) {
+                return {
+                  title: title || 'Untitled',
+                  subtitle: slug?.current ? `/${slug.current}` : undefined,
+                };
+              },
+            },
+          },
+        ],
+        description:
+          'Projects on the director profile. Each row needs either an uploaded profile clip or a Simian proxy MP4 (filename or full URL). If none qualify, the Directors page clip is used as a single fallback reel.',
       },
       {
         name: 'categories',

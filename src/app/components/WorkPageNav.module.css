@@ -1,0 +1,117 @@
+.workNavRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 12px;
+  position: relative;
+}
+
+.workNavLogoLink {
+  margin-right: 0;
+  flex-shrink: 0;
+}
+
+.workNavCenter {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+/* Desktop: center Motion/Stills on the bar (viewport-aligned when nav is full width), not between logo and links */
+@media (min-width: 768px) {
+  .workNavCenter {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    flex: none;
+    width: max-content;
+    pointer-events: auto;
+    z-index: 1;
+  }
+}
+
+.workNavRight {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.workModeToggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.workModeToggleMobile {
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 0;
+  gap: 10px;
+}
+
+.workModeSep {
+  user-select: none;
+  font-weight: 900;
+}
+
+.themeMotion .workModeSep {
+  color: #fff;
+  opacity: 0.65;
+}
+
+.themeStills .workModeSep {
+  color: #fff;
+  opacity: 0.65;
+}
+
+.workModeOpt {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.32px;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  text-shadow: none;
+}
+
+.themeMotion .workModeOpt {
+  color: #fff;
+}
+
+.themeStills .workModeOpt {
+  color: #fff;
+}
+
+.themeMotion .workModeOpt:focus-visible {
+  outline-color: #fff;
+}
+
+.themeStills .workModeOpt:focus-visible {
+  outline-color: #fff;
+}
+
+.workModeOptActive {
+  font-weight: 700;
+  opacity: 1;
+}
+
+.workModeOptMuted {
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+/* Responsive Styles */
+@media (max-width: 767px) {
+
+.workModeToggleMobile {
+  /* height: 70px; */
+  padding: 20px;
+}
+}

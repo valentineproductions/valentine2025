@@ -1,11 +1,8 @@
 'use client';
 
-import { PortableText } from "@portabletext/react";
-import { defaultPortableTextComponents } from "@/app/lib/portableTextConfig";
 import { useAppContext } from "@/app/components/AppContext";
 import { use } from 'react';
-import VideoGridV2 from "@/app/components/VideoGridV2";
-import PageFooter from "@/app/components/PageFooter";
+import DirectorPageVideoV3 from "@/app/components/DirectorPageVideoV3";
 import styles from './page.module.css';
 
 export default function TeamMemberPage({ params }) {
@@ -27,24 +24,7 @@ export default function TeamMemberPage({ params }) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.pageContainer}>
-        <header className={styles.header}>
-          <h1 className={styles.memberName}>{member.fullName}</h1>
-          {member.bio && member.bio.length > 0 && (
-            <div className={styles.bio}>
-              <PortableText value={member.bio} components={defaultPortableTextComponents} />
-            </div>
-          )}
-        </header>
-
-        <div className={styles.content}>
-          {member.videos && member.videos.length > 0 && (
-            <VideoGridV2 videos={member.videos} />
-          )}
-        </div>
-
-        <PageFooter pageNote={allData?.pageNote || allData?.homepage?.pageNote || allData?.aboutPage?.pageNote} />
-      </div>
+      <DirectorPageVideoV3 member={member} />
     </div>
   );
 }

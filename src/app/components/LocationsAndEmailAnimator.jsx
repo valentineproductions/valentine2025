@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useIntersection } from 'react-use';
 import gsap from 'gsap';
+import LocationsAndEmail from './LocationsAndEmail';
 
 const LocationsAndEmailAnimator = ({ locations, email }) => {
   const containerRef = useRef(null);
@@ -29,10 +30,10 @@ const LocationsAndEmailAnimator = ({ locations, email }) => {
   const fadeOut = () => {
     if (containerRef.current && hasAnimated.current) {
       gsap.to(containerRef.current, {
-        duration: 1,
+        duration: 0.25,
         opacity: 0,
-        y: -20,
-        ease: "power2.out"
+        y: -12,
+        ease: 'power2.out',
       });
       hasAnimated.current = false;
     }
@@ -59,13 +60,8 @@ const LocationsAndEmailAnimator = ({ locations, email }) => {
   }, [intersection]);
 
   return (
-    <div ref={containerRef} className="locationsNemail" style={{ opacity: 0, transform: 'translateY(20px)' }}>
-      <div className="locationsCodes">
-        <p>{locations}</p>
-      </div>
-      <div className="homeEmail">
-        <a href={`mailto:${email}`}>{email}</a>
-      </div>
+    <div ref={containerRef} style={{ opacity: 0, transform: 'translateY(20px)' }}>
+      <LocationsAndEmail locations={locations} email={email} />
     </div>
   );
 };

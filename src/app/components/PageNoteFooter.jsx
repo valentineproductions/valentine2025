@@ -1,7 +1,24 @@
 'use client';
 import styles from './PageFooter.module.css';
-const PageNoteFooter = ({ pageNote }) => {
-  if (!pageNote) return null;
+import footerStyles from './HomeVideoFooter.module.css';
+import LocationsAndEmail from './LocationsAndEmail';
+
+const PageNoteFooter = ({ pageNote, locations, email }) => {
+  // When no pageNote, fall back to locations + email if either exists
+  const hasFallbackContent = !pageNote && (locations?.trim() || email?.trim());
+  if (!pageNote && !hasFallbackContent) return null;
+
+  const wrapperClass = `homeLastVideoFooter ${footerStyles.wrapper}`;
+
+  // Fallback: display locations & email when pageNote is not selected
+  if (hasFallbackContent) {
+    return (
+      <div className={wrapperClass}>
+        <LocationsAndEmail locations={locations} email={email} />
+      </div>
+    );
+  }
+
   const hasWork = (pageNote.workTitle && pageNote.workTitle.trim() !== '') || (pageNote.workDescription && pageNote.workDescription.trim() !== '');
   const hasConnect = Array.isArray(pageNote.connectLinks) && pageNote.connectLinks.length > 0;
   const tokens = (pageNote.workDescription || '')
@@ -9,7 +26,7 @@ const PageNoteFooter = ({ pageNote }) => {
     .map(s => s.trim())
     .filter(Boolean);
   return (
-    <div className="homeLastVideoFooter">
+    <div className={wrapperClass}>
       <div className={styles.pageNote}>
         <div className={styles.leftSide}>
           {hasWork && (

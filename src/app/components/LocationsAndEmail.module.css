@@ -1,0 +1,48 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0 40px 0;
+  font-family: 'Helvetica Neue', sans-serif;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+  gap: 6px;
+  color: white;
+  text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  /* Fast when leaving view (scroll back up) */
+  transition: opacity 0.22s ease-out, transform 0.22s ease-out;
+}
+
+.root.visible {
+  opacity: 1;
+  transform: translateY(0);
+  /* Slower entrance + delay unchanged; overrides .root for show only */
+  transition: opacity 0.55s ease-out 0.45s, transform 0.55s ease-out 0.45s;
+}
+
+.locationsCodes,
+.email {
+  margin: 0;
+}
+
+.email a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.email a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+  .locationsCodes,
+  .email {
+    margin: 0 12px;
+  }
+}

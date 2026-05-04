@@ -1,0 +1,475 @@
+/* Persistent CONTACT bar — aligned with site max-width */
+.contactBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 25;
+  max-width: 2000px;
+  margin: 0 auto;
+  padding: 10px;
+  pointer-events: none;
+}
+
+/* Match nav (e.g. menu-trigger): delayed fade + slide up — all pages */
+.contactBarEnter {
+  opacity: 0;
+  transform: translateY(4px);
+  animation: contactBarNavFade 1s ease-out 1s forwards;
+}
+
+@keyframes contactBarNavFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contactBarEnter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.contactTrigger {
+  pointer-events: auto;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--foreground, #1a1a1a);
+  cursor: pointer;
+  position: relative;
+  align-self: flex-end;
+  margin-left: auto;
+  display: block;
+}
+
+.contactTrigger::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+
+.contactTrigger:hover::after {
+  width: 100%;
+}
+
+/* Home: white trigger matches light nav (body.homeBody from HomeChecker) */
+:global(.homeBody) .contactTrigger {
+  color: white;
+}
+
+/* Directors full-bleed: white trigger (class set from pathname, same rule as HeaderNavigation) */
+.contactBarLight .contactTrigger {
+  color: white;
+  text-shadow: none;
+}
+
+.contactBarWorkMotion .contactTrigger {
+  color: #fff;
+  text-shadow: none;
+}
+
+.contactBarWorkStills .contactTrigger {
+  color: #fff;
+  text-shadow: none;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 3.4375rem max(1.25rem, calc((100vw - 125rem) / 2 + 1.25rem)) 1.5rem 1.25rem;
+  pointer-events: none;
+}
+
+.overlay > * {
+  pointer-events: auto;
+}
+
+@keyframes contactModalIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes contactModalOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.overlayEnter .backdropShade {
+  animation: contactModalIn 0.35s ease-out both;
+}
+
+.overlayEnter .inner {
+  animation: contactPanelIn 0.4s ease-out 0.05s both;
+}
+
+.overlayClosing .backdropShade {
+  animation: contactModalOut 0.3s ease-in both;
+}
+
+.overlayClosing .inner {
+  animation: contactPanelOut 0.25s ease-in both;
+}
+
+@keyframes contactPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes contactPanelOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(0.9375rem);
+  }
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  isolation: isolate;
+}
+
+.backdropBlur {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  will-change: backdrop-filter;
+  transform: translateZ(0);
+  pointer-events: none;
+}
+
+.backdropShade {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.05);
+  pointer-events: none;
+}
+
+/* 412px wire — scales down with viewport; h/w = 475/412 always */
+.inner {
+  position: relative;
+  --contact-wire-w: min(var(--contact-card-w), calc(100vw - 2rem));
+  /* Single height token: wire 475px, or proportional to width, or viewport cap */
+  --contact-panel-locked-h: min(
+    var(--contact-card-h),
+    90vh,
+    calc(var(--contact-wire-w) * 475 / 412)
+  );
+  width: var(--contact-wire-w);
+  max-width: var(--contact-card-w);
+  box-sizing: border-box;
+}
+
+.panel {
+  box-sizing: border-box;
+  width: 100%;
+  /* Inherit --contact-panel-locked-h from .inner — fixed 412×475 (or scaled); not content height */
+  min-height: var(--contact-panel-locked-h);
+  max-height: var(--contact-panel-locked-h);
+  height: var(--contact-panel-locked-h);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 1rem 1.25rem 1rem 1rem;
+  border: none;
+  border-radius: 0.75rem;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  /* Explicit px so small UI (dept labels) stays readable under modal type */
+  font-size: 12px;
+  line-height: 1.55;
+  color: #000;
+  text-transform: none;
+}
+
+.panelGrid {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  /* 70/30 was clipping “Instagram / LinkedIn” in slotBR; auto width fits link copy */
+  grid-template-columns: minmax(0, 1fr) auto;
+  /* Second row grows so email/cities sit at bottom of 475px wire */
+  grid-template-rows: auto 1fr;
+  gap: 0.75rem 1rem;
+  align-items: start;
+}
+
+.slotTL {
+  align-self: start;
+}
+.slotTR {
+  align-self: start;
+}
+.slotBL {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 0;
+}
+.slotBR {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  justify-self: end;
+  text-align: right;
+  min-height: 0;
+}
+
+.introParagraph {
+  margin: 0 0 var(--paragraph-gap) 0;
+  font-size: var(--font-size-modal-mobile);
+  line-height: var(--line-height-modal);
+  letter-spacing: var(--letter-spacing-modal);
+}
+
+@media (min-width: 768px) {
+  .introParagraph {
+    font-size: var(--font-size-modal-mid);
+  }
+}
+
+@media (min-width: 1360px) and (max-width: 2649px) {
+  .introParagraph {
+    font-size: var(--font-size-modal);
+  }
+}
+
+@media (min-width: 2650px) {
+  .introParagraph {
+    font-size: var(--font-size-modal-huge);
+  }
+}
+
+.introParagraph:last-child {
+  margin-bottom: 0;
+}
+
+.brandInline {
+  font-weight: 400;
+  /* font-size: 15px; */
+  letter-spacing: 0.02em;
+}
+
+.departments {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.deptRow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+@media (min-width: 768px) {
+  .deptRow {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: baseline;
+    gap: 7px 7px;
+  }
+
+  .deptLabel {
+    flex-shrink: 0;
+  }
+
+  .email {
+    white-space: nowrap;
+  }
+}
+
+.deptLabel {
+  /* font-size: 11px; */
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: none;
+  opacity: 0.85;
+}
+
+.cities {
+  /* margin: 0 0 24px 0; */
+  padding: 0;
+  opacity: 0.9;
+  font-size: 8px;
+  white-space: pre-wrap;
+}
+
+.connectLine {
+  margin: 0;
+  /* font-size: 13px; */
+}
+
+/* Right column: single line so “LinkedIn” is not cut by wrap + narrow track */
+.slotBR .connectLine {
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.email {
+  position: relative;
+  display: inline-block;
+  color: #000;
+  text-decoration: none;
+  font-size: var(--font-size-modal-mobile);
+  line-height: var(--line-height-modal);
+  letter-spacing: var(--letter-spacing-modal);
+}
+
+@media (min-width: 768px) {
+  .email {
+    font-size: var(--font-size-modal-mid);
+  }
+}
+
+@media (min-width: 1360px) and (max-width: 2649px) {
+  .email {
+    font-size: var(--font-size-modal);
+  }
+}
+
+@media (min-width: 2650px) {
+  .email {
+    font-size: var(--font-size-modal-huge);
+  }
+}
+
+.socialLink {
+  position: relative;
+  display: inline-block;
+  color: #000;
+  text-decoration: none;
+  font-size: 8px;
+}
+
+.email::after,
+.socialLink::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+
+.email:hover::after,
+.email:focus-visible::after,
+.socialLink:hover::after,
+.socialLink:focus-visible::after {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .contactBar {
+    padding: 32px 20px;
+  }
+}
+
+/* Tablet/desktop: wire height from .inner --contact-panel-locked-h; <768: grow with text, min 480px when it fits */
+@media (max-width: 767px) {
+  .panel {
+    min-height: min(30rem, 90vh);
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  /* Grow with panel (min 480) so row 1 can be 1fr: intro stays top, email/cities row pins to card bottom */
+  .panelGrid {
+    flex: 1 1 auto;
+    min-height: 0;
+    align-self: stretch;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: 1fr auto;
+    overflow: visible;
+    gap: 0.75rem 1rem;
+  }
+}
+
+@media (max-width: 424px) {
+  .overlay {
+    padding: 4rem 0.5rem 1rem;
+  }
+
+  .inner {
+    width: min(100%, 96%);
+    max-width: none;
+    --contact-wire-w: min(var(--contact-card-w), 96vw);
+  }
+
+  .panel {
+    padding: 0.75rem 0.85rem;
+  }
+
+  .panelGrid {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    gap: 16px;
+  }
+
+  .slotTR:empty {
+    display: none;
+  }
+
+  .slotBL {
+    margin-top: auto;
+    justify-content: flex-end;
+    padding-top: var(--paragraph-gap);
+  }
+
+  .slotBR {
+    justify-content: flex-end;
+    text-align: left;
+    align-self: flex-start;
+  }
+}
+

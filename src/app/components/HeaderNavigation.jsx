@@ -7,17 +7,31 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import MenuAnimation from './MenuAnimation';
 import { useAppContext } from './AppContext';
+import { useWorkPageChrome } from './WorkModeContext';
+import workPageNav from './WorkPageNav.module.css';
 
 export default function HeaderNavigation() { // Default empty array
     
     const pathname = usePathname();
+    const workChrome = useWorkPageChrome();
     // console.log("Current PATH :", pathname); // To check the current page
     const isHomePage = pathname === '/';
-    const headerClasses = `navBar ${isHomePage ? 'homeNavBar' : ''}`;
+    const isDirectorsPage = pathname === '/directors' || pathname?.startsWith?.('/directors/');
+    const isWorkPage = pathname === '/work';
+    const headerClasses = [
+        'navBar',
+        isHomePage ? 'homeNavBar' : '',
+        isDirectorsPage ? 'directorsNavBar' : '',
+        isWorkPage ? 'workNavBar' : '',
+        isWorkPage && workChrome?.workNavHidden ? 'workNavHidden' : '',
+        isWorkPage && workChrome?.workNavStillsLight ? 'workNavStillsLight' : '',
+    ].filter(Boolean).join(' ');
     const [isMobile, setIsMobile] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const { allData } = useAppContext();
     const pages = allData?.pages || []; // Access the 'pages' array
+    const showCareersInNav = allData?.careersPage?.showInNav !== false;
+    const showInformationInNav = allData?.aboutPageV2?.showInNav !== false;
     // console.log("K------NAV WORKS Page Data:", pages); // Is working
 
     useEffect(() => {
@@ -37,6 +51,9 @@ export default function HeaderNavigation() { // Default empty array
         }
     }, [menuOpen]);
 
+    const isDirectorProjectVideoPage = /^\/directors\/(?!category\/)[^/]+\/[^/]+$/.test(pathname || '');
+    if (isDirectorProjectVideoPage) return null;
+
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
@@ -48,36 +65,158 @@ export default function HeaderNavigation() { // Default empty array
     };
     const pathNorm = (p) => (String(p || '').replace(/\/$/, '') || '/');
 
-    // Safely get logo data with fallbacks
-    const logoData = (isHomePage 
-        ? pages[0]?.pageCompanyLogoWhite 
-        : pages[0]?.pageCompanyLogo) || {};
+    // Safely get logo data with fallbacks (use white logo on Work page)
+    const logoData =
+        (isWorkPage || isHomePage ? pages[0]?.pageCompanyLogoWhite : pages[0]?.pageCompanyLogo) || {};
+
+    const workLogoChromeClass =
+        isWorkPage ? '' : (workChrome && !workChrome?.workNavStillsLight ? 'workNavLogoInvert' : '');
 
     const handleLogoClick = () => {
         if (menuOpen) setMenuOpen(false);
     };
 
+    const slugLinks = isWorkPage ? ['directors'] : ['work', 'directors'];
+
+    const WorkModeToggle = ({ mobile }) => {
+        if (!workChrome) return null;
+        const theme = workChrome.workNavStillsLight
+            ? workPageNav.themeStills
+            : workPageNav.themeMotion;
+        return (
+            <div
+                className={[
+                    workPageNav.workModeToggle,
+                    mobile ? workPageNav.workModeToggleMobile : '',
+                    theme,
+                ].filter(Boolean).join(' ')}
+                role="group"
+                aria-label="Work view mode"
+            >
+                <button
+                    type="button"
+                    className={[
+                        workPageNav.workModeOpt,
+                        workChrome.mode === 'motion'
+                            ? workPageNav.workModeOptActive
+                            : workPageNav.workModeOptMuted,
+                    ].join(' ')}
+                    onClick={() => { workChrome.setMode('motion'); if (mobile) setMenuOpen(false); }}
+                >
+                    Motion
+                </button>
+                <span className={workPageNav.workModeSep} aria-hidden>
+                    /
+                </span>
+                <button
+                    type="button"
+                    className={[
+                        workPageNav.workModeOpt,
+                        workChrome.mode === 'stills'
+                            ? workPageNav.workModeOptActive
+                            : workPageNav.workModeOptMuted,
+                    ].join(' ')}
+                    onClick={() => { workChrome.setMode('stills'); if (mobile) setMenuOpen(false); }}
+                >
+                    Stills
+                </button>
+            </div>
+        );
+    };
+
+    const openContact = (onItemClick) => () => {
+        if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('valentine-open-contact'));
+        }
+        onItemClick?.();
+    };
+
+    const renderPageLinks = (onItemClick) => (
+        <>
+            {slugLinks.map((slug) => {
+                const page = pages.find((p) => p.slug === slug);
+                return page ? (
+                    <Link key={page._id} href={toHref(page.slug)} onClick={onItemClick}>
+                        {pathNorm(pathname) === toHref(page.slug) ? <b>{page.navTitle}</b> : page.navTitle}
+                    </Link>
+                ) : null;
+            })}
+            <button type="button" className="homeNavLink" onClick={openContact(onItemClick)}>
+                CONTACT
+            </button>
+            {showInformationInNav && (
+                <Link href="/information" className="homeNavLink" onClick={onItemClick}>
+                    {pathname === '/information' ? <b>Information</b> : 'Information'}
+                </Link>
+            )}
+            {showCareersInNav && (
+                <Link href="/careers" className="homeNavLink" onClick={onItemClick}>
+                    {pathname === '/careers' ? <b>Careers</b> : 'Careers'}
+                </Link>
+            )}
+        </>
+    );
+
+    const overlayClass =
+        isHomePage ? 'homeOverlay'
+            : isDirectorsPage || (isWorkPage && workChrome?.mode === 'motion') ? 'directorsOverlay'
+                : 'pageOverlay';
+
+    const sizeToken = allData?.homepage?.navLogoSize || 'S';
+    const baseW = 77;
+    const baseH = 18;
+    const ratio = baseH / baseW;
+    const logoWidth = sizeToken === 'L' ? baseW + 100 : sizeToken === 'M' ? baseW + 50 : baseW;
+    const logoHeight = Math.round(logoWidth * ratio);
+    const logo = (
+        <Image
+            src={logoData?.url || '/glove.svg'}
+            alt={logoData?.alt || 'Valentine Logo'}
+            width={logoWidth}
+            height={logoHeight}
+            priority
+            className={workLogoChromeClass}
+        />
+    );
+
     return (
         <header className={headerClasses}>
-            <Link href="/" className="homeNavLink" onClick={handleLogoClick}>
-                <Image
-                    src={logoData?.url || "/glove.svg"}
-                    alt={logoData?.alt || "Valentine Logo"} 
-                    width={77}
-                    height={18}
-                    priority
-                />
-            </Link>
+            {isMobile ? (
+                <Link href="/" className="homeNavLink" onClick={handleLogoClick}>
+                    {logo}
+                </Link>
+            ) : isWorkPage ? (
+                <div className={workPageNav.workNavRow}>
+                    <Link href="/" className={`homeNavLink ${workPageNav.workNavLogoLink}`} onClick={handleLogoClick}>
+                        {logo}
+                    </Link>
+                    <div className={workPageNav.workNavCenter}>
+                        <WorkModeToggle mobile={false} />
+                    </div>
+                    <div className={`${workPageNav.workNavRight} homeNavLinksContainer`}>
+                        {renderPageLinks()}
+                    </div>
+                </div>
+            ) : (
+                <>
+                    <Link href="/" className="homeNavLink" onClick={handleLogoClick}>
+                        {logo}
+                    </Link>
+                    <div className="homeNavLinksContainer">
+                        {renderPageLinks()}
+                    </div>
+                </>
+            )}
             {isMobile && menuOpen && (
                 <div
-                    className={`menuOverlay ${isHomePage ? 'homeOverlay' : 'pageOverlay'} visible`}
+                    className={`menuOverlay ${overlayClass} visible`}
                     onClick={() => setMenuOpen(false)}
                 />
             )}
             {isMobile ? (
                 <div className="mobileNavContainer">
-                    <span 
-                        className={`menu-trigger ${menuOpen ? 'menu-open' : ''}`} 
+                    <span
+                        className={`menu-trigger ${menuOpen ? 'menu-open' : ''}`}
                         role="button"
                         tabIndex={0}
                         onClick={toggleMenu}
@@ -85,47 +224,17 @@ export default function HeaderNavigation() { // Default empty array
                     >
                         {menuOpen ? 'MENU' : 'MENU'}
                     </span>
-                    
-                    {/* Menu content that toggles */}
+
                     {menuOpen && (
                         <MenuAnimation isOpen={menuOpen}>
                             <div className="mobileNavLinks">
-                                {[ 'work', 'directors' ].map((slug) => {
-                                    const page = pages.find(p => p.slug === slug);
-                                    return page ? (
-                                        <Link key={page._id} href={toHref(page.slug)} onClick={toggleMenu}>
-                                            {pathNorm(pathname) === toHref(page.slug) ? <b>{page.navTitle}</b> : page.navTitle}
-                                        </Link>
-                                    ) : null;
-                                })}
-                                <Link href="/information" className="homeNavLink" onClick={toggleMenu}>
-                                    {pathname === "/information" ? <b>Information</b> : "Information"}
-                                </Link>
-                                <Link href="/careers" className="homeNavLink" onClick={toggleMenu}>
-                                    {pathname === "/careers" ? <b>Careers</b> : "Careers"}
-                                </Link>
+                                {isWorkPage && <WorkModeToggle mobile />}
+                                {renderPageLinks(toggleMenu)}
                             </div>
                         </MenuAnimation>
                     )}
                 </div>
-            ) : (
-                <div className="homeNavLinksContainer">
-                    {[ 'work', 'directors' ].map((slug) => {
-                        const page = pages.find(p => p.slug === slug);
-                        return page ? (
-                            <Link key={page._id} href={toHref(page.slug)}>
-                                {pathNorm(pathname) === toHref(page.slug) ? <b>{page.navTitle}</b> : page.navTitle}
-                            </Link>
-                        ) : null;
-                    })}
-                    <Link href="/information" className="homeNavLink">
-                        {pathname === "/information" ? <b>Information</b> : "Information"}
-                    </Link>
-                    <Link href="/careers" className="homeNavLink">
-                        {pathname === "/careers" ? <b>Careers</b> : "Careers"}
-                    </Link>
-                </div>
-            )}
+            ) : null}
         </header>
     );
 }
