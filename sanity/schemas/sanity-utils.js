@@ -339,11 +339,15 @@ export async function getProject(slug) {
             alt,
             parallaxStrength,
             parallaxAdjust,
+            crop,
+            hotspot,
             "url": asset->url,
             asset->{ _id, url }
           },
           image{
             alt,
+            crop,
+            hotspot,
             "url": asset->url,
             asset->{ _id, url }
           }
@@ -525,11 +529,15 @@ export async function getLegalBySlug(slug) {
               alt,
               parallaxStrength,
               parallaxAdjust,
+              crop,
+              hotspot,
               "url": asset->url,
               asset->{ _id, url }
             },
             image{
               alt,
+              crop,
+              hotspot,
               "url": asset->url,
               asset->{ _id, url }
             }

@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import WorkStillsBackgroundMark from './WorkStillsBackgroundMark';
 import HeroBannerLogoDown from './HeroBannerLogoDown';
 import WorkStillsBlock from './WorkStillsBlock';
-import { resolveStillsImages } from './workStillsUtils';
+import { resolveStillsImages, sanityImageLoader } from './workStillsUtils';
 import styles from './WorkStills.module.css';
 import Image from 'next/image';
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
@@ -150,7 +150,7 @@ export default function WorkStillsView({ stills, backgroundLogo, fallbackLogo, p
             ref={index === 0 ? firstBlockRef : index === 1 ? secondBlockRef : undefined}
             className={styles.feedItemWrap}
           >
-            <WorkStillsBlock item={item} />
+            <WorkStillsBlock item={item} priority={index === 0} />
           </div>
         ))}
       </div>
@@ -165,6 +165,7 @@ export default function WorkStillsView({ stills, backgroundLogo, fallbackLogo, p
               sizes="(max-width: 2000px) 100vw, 2000px"
               style={{ width: '100%', height: 'auto', display: 'block' }}
               priority={false}
+              loader={sanityImageLoader}
               onLoadingComplete={() => {
                 ScrollTrigger.refresh();
                 scheduleFrame();

@@ -26,7 +26,7 @@ export default function WorkStillsParallaxMedia({ strength, rootRef, children })
 
     // Overscan prevents edge exposure during larger vertical travel.
     gsap.set(inner, {
-      scale: maxShift > 0 ? 1.2 : 1,
+      scale: maxShift > 0 ? 1.1 : 1,
       transformOrigin: 'center center',
       force3D: true,
     });

@@ -7,10 +7,18 @@ import {
   resolveImageUrl,
   resolveStillsImages,
   resolveImageParallaxStrength,
+  resolveImageObjectPosition,
+  sanityImageLoader,
 } from './workStillsUtils';
 import styles from './WorkStills.module.css';
 
-export default function WorkStillsBlock({ item }) {
+const FULL_BLEED_SIZES = '100vw';
+const CENTERED_SIZES = '(max-width: 767px) 100vw, 60vw';
+const TWO_COLUMN_SIZES = '(max-width: 767px) 100vw, 55vw';
+const THREE_COLUMN_SIZES =
+  '(max-width: 767px) 100vw, (max-width: 899px) 55vw, 38vw';
+
+export default function WorkStillsBlock({ item, priority = false }) {
   const parallaxRootRef = useRef(null);
   const layoutRaw = item.layout;
   const layout =
@@ -40,6 +48,7 @@ export default function WorkStillsBlock({ item }) {
     const alt = im.alt || item.title || `Still ${idx + 1}`;
     const sBase = resolveImageParallaxStrength(im, strength);
     const s = Math.min(120, Math.max(0, sBase + driftBias));
+    const objectPosition = resolveImageObjectPosition(im);
     return (
       <WorkStillsParallaxMedia
         key={`${url}-${idx}`}
@@ -53,6 +62,10 @@ export default function WorkStillsBlock({ item }) {
           height={1500}
           className={styles.img}
           sizes={sizes}
+          quality={89}
+          loader={sanityImageLoader}
+          priority={priority && idx === 0}
+          style={objectPosition ? { objectPosition } : undefined}
         />
       </WorkStillsParallaxMedia>
     );
@@ -84,7 +97,7 @@ export default function WorkStillsBlock({ item }) {
                 {renderStillImg(
                   im,
                   idx,
-                  '(max-width: 767px) 100vw, 48vw',
+                  TWO_COLUMN_SIZES,
                   idx === 0 ? -20 : 20,
                 )}
               </div>
@@ -120,7 +133,7 @@ export default function WorkStillsBlock({ item }) {
                 {renderStillImg(
                   im,
                   idx,
-                  '(max-width: 767px) 100vw, 48vw',
+                  TWO_COLUMN_SIZES,
                 )}
               </div>
             ))}
@@ -152,7 +165,7 @@ export default function WorkStillsBlock({ item }) {
                 renderStillImg(
                   im,
                   idx,
-                  '(max-width: 767px) 100vw, (max-width: 899px) 50vw, 33vw',
+                  THREE_COLUMN_SIZES,
                   idx === 0 ? -18 : idx === 2 ? 18 : 0,
                 ),
               )}
@@ -176,6 +189,7 @@ export default function WorkStillsBlock({ item }) {
     : styles.blockCentered;
 
   const imageGridClass = [styles.imageGrid, gridExtra].filter(Boolean).join(' ');
+  const fallbackSizes = layout === 'fullBleed' ? FULL_BLEED_SIZES : CENTERED_SIZES;
 
   return (
     <article ref={parallaxRootRef} className={`${styles.block} ${layoutMod}`}>
@@ -186,7 +200,7 @@ export default function WorkStillsBlock({ item }) {
               renderStillImg(
                 im,
                 idx,
-                '(max-width: 767px) 100vw, (max-width: 899px) 50vw, 33vw',
+                fallbackSizes,
               ),
             )}
           </div>
