@@ -10,6 +10,7 @@
     "postinstall": "echo 'patch-package temporarily disabled for Sanity stability'"
   },
   "dependencies": {
+    "@next/third-parties": "^16.2.6",
     "@portabletext/react": "^3.2.1",
     "@vercel/analytics": "^1.5.0",
     "gsap": "^3.13.0",

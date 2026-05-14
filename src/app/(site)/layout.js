@@ -1,12 +1,13 @@
 import "./../globals.css";
 import Script from "next/script";
+import { GoogleTagManager } from "@next/third-parties/google";
 import { headers } from "next/headers";
 import { AppProvider } from "../components/AppContext";
 import HeaderNavigation from "../components/HeaderNavigation";
 import ContactOverlay from "../components/ContactOverlay";
 import { WorkModeProvider } from "../components/WorkModeContext";
 import HomeChecker from "../components/HomeChecker";
-import { getAllPagesData, getHomeSEOData } from "../../../sanity/schemas/sanity-utils";
+import { getAllPagesData, getHomeSEOData, getSiteSettings } from "../../../sanity/schemas/sanity-utils";
 import { Analytics } from "@vercel/analytics/next"
 
 const META_PIXEL_ID = "1250437307179904";
@@ -46,21 +47,19 @@ export default async function RootLayout({ children }) {
   const host = headersList.get("host") || "";
   const isLocalhost = host.includes("localhost") || host.includes("127.0.0.1");
 
-  const allData = await getAllPagesData();
+  const [allData, siteSettings] = await Promise.all([
+    getAllPagesData(),
+    getSiteSettings(),
+  ]);
+  const gtmId = siteSettings?.googleTagManagerId?.trim() || "";
   // console.log("All Data:", allData); //  line to check the data structure
   const pages = allData?.pages || [];
-  
-  const homePageData = allData?.homepage || null;
-  // console.log("Home @ Layout------:", homePageData); // Search for workTitle, had to add the PageNote in the query
-  const aboutPageData = allData?.aboutPage || null;
-  // console.log("ABT @ Layout------:", aboutPageData); // Is working
-  const pagesData = allData?.pages || []; // Or adjust as needed for TALENT/WORK
-  // console.log("PGs @ Layout------:", pagesData); // Check if there are 2 pages, yes, 0 Talent, 1 Work
   
   // Layout of the Pages //Except Studio - - - - - PAGES
   return (
     <html lang="en">
       <head>
+        {gtmId && <GoogleTagManager gtmId={gtmId} />}
         {!isLocalhost && (
           <noscript>
             <img
@@ -74,6 +73,17 @@ export default async function RootLayout({ children }) {
         )}
       </head>
       <body>
+      {gtmId && (
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+            title="Google Tag Manager"
+          />
+        </noscript>
+      )}
       <AppProvider initialData={allData}>
         <WorkModeProvider>
           <HomeChecker />

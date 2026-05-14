@@ -41,6 +41,15 @@ export const deskStructure = async (S, context) => {
     .title('Content')
     .items([
       S.listItem()
+        .title('Site Settings')
+        .id('siteSettings')
+        .child(
+          S.document()
+            .schemaType('siteSettings')
+            .documentId('siteSettings')
+            .title('Site Settings')
+        ),
+      S.listItem()
         .title('Careers Data')
         .child(
           S.list()
@@ -101,7 +110,7 @@ export const deskStructure = async (S, context) => {
           S.documentTypeList('legal').title('Legal Pages')
         ),
       ...S.documentTypeListItems().filter(
-        (item) => !['careersPage', 'jobPosting', 'application', 'legal', 'aboutPage'].includes(item.getId())
+        (item) => !['careersPage', 'jobPosting', 'application', 'legal', 'aboutPage', 'siteSettings'].includes(item.getId())
       ),
     ]);
 };

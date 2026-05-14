@@ -3,6 +3,8 @@ import React from 'react';
 import deskStructure from './sanity/deskStructure'
 import schemas from './sanity/schemas'; //Barrel file
 
+const singletonTypes = ['siteSettings'];
+const singletonActions = new Set(['publish', 'discardChanges', 'restore']);
 const vercelEnv = process.env.VERCEL_ENV;
 const isPreview = vercelEnv === 'preview';
 const isDev = process.env.NODE_ENV === 'development';
@@ -48,6 +50,23 @@ const config = defineConfig({
     basePath: "/admin", 
   
     plugins: [deskStructure],
+    document: {
+        newDocumentOptions: (prev, { creationContext }) => {
+            if (creationContext.type === 'global') {
+                return prev.filter(
+                    (templateItem) => !singletonTypes.includes(templateItem.templateId)
+                );
+            }
+
+            return prev;
+        },
+        actions: (prev, context) =>
+            singletonTypes.includes(context.schemaType)
+                ? prev.filter(
+                    ({ action }) => action && singletonActions.has(action)
+                )
+                : prev
+    },
     studio: {
         components: {
             navbar: DatasetBadgeNavbar

@@ -372,6 +372,14 @@ export async function getHomeSEOData() {
   }));
 }
 
+export async function getSiteSettings() {
+  return createClient(clientConfig).fetch(
+    groq`*[_type == "siteSettings" && _id == "siteSettings"][0]{
+      googleTagManagerId
+    }`
+  );
+}
+
 export async function getTeamMemberBySlug(slug) {
   return createClient(clientConfig).fetch(
     groq`*[_type == "teamMember" && slug.current == $slug][0]{
