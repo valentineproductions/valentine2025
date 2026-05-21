@@ -81,7 +81,27 @@
 
 video.frame {
   object-fit: contain;
+  object-position: center;
   background: #000;
+}
+
+/* Mobile: center-crop landscape reels to fill the viewport */
+@media (max-width: 767px) {
+  video.frame {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* object-fit does not apply to iframes — scale embed to cover like video */
+  iframe.frame {
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 56.25vw;
+    min-height: 100vh;
+    min-width: 177.78vh;
+    transform: translate(-50%, -50%);
+  }
 }
 
 .framePlaceholder {
