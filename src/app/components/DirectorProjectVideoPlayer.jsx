@@ -32,8 +32,18 @@ export default function DirectorProjectVideoPlayer({
   const [videoError, setVideoError] = useState(false);
   /** Drives cursor icon — mirrors <video>.paused */
   const [videoUiPaused, setVideoUiPaused] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  const [muted, setMuted] = useState(false);
   const videoRef = useRef(null);
   const cursorZoneRef = useRef(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    const apply = () => setIsMobile(mq.matches);
+    apply();
+    mq.addEventListener('change', apply);
+    return () => mq.removeEventListener('change', apply);
+  }, []);
 
   useEffect(() => {
     setVideoError(false);
@@ -94,6 +104,46 @@ export default function DirectorProjectVideoPlayer({
     setVideoError(true);
   }, []);
 
+  const toggleMute = useCallback(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = !v.muted;
+    setMuted(v.muted);
+  }, []);
+
+  const toggleFullscreen = useCallback(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (document.fullscreenElement) {
+      document.exitFullscreen?.().catch(() => {});
+      return;
+    }
+    if (typeof v.webkitEnterFullscreen === 'function') {
+      v.webkitEnterFullscreen();
+      return;
+    }
+    v.requestFullscreen?.().catch(() => {});
+  }, []);
+
+  const togglePictureInPicture = useCallback(async () => {
+    const v = videoRef.current;
+    if (!v || !document.pictureInPictureEnabled) return;
+    try {
+      if (document.pictureInPictureElement === v) {
+        await document.exitPictureInPicture();
+      } else {
+        await v.requestPictureInPicture();
+      }
+    } catch {
+      /* PiP denied or unsupported */
+    }
+  }, []);
+
+  const showMobileVideoControls =
+    isMobile && playback.kind === 'mp4' && Boolean(mp4Src) && !videoLoading && !videoError;
+  const pipSupported =
+    typeof document !== 'undefined' && 'pictureInPictureEnabled' in document;
+
   const directorDisplay = directorName?.trim() || 'Director';
   const projectDisplay = (projectName || 'Video').trim();
 
@@ -106,11 +156,11 @@ export default function DirectorProjectVideoPlayer({
           <Image
             src={logoUrl}
             alt={logoAlt}
-            width={120}
-            height={28}
+            width={77}
+            height={18}
             className={styles.logoImg}
             priority
-            sizes="120px"
+            sizes="77px"
           />
         </Link>
       ) : null}
@@ -133,11 +183,11 @@ export default function DirectorProjectVideoPlayer({
                 key={mp4Src}
                 className={styles.frame}
                 src={mp4Src}
-                controls
+                controls={!isMobile}
                 playsInline
                 preload="auto"
                 autoPlay
-                muted={false}
+                muted={isMobile ? muted : false}
                 onLoadedData={handleVideoReady}
                 onLoadedMetadata={handleVideoReady}
                 onCanPlay={handleVideoReady}
@@ -175,6 +225,84 @@ export default function DirectorProjectVideoPlayer({
               <span className={styles.projectTitle}>{projectDisplay}</span>
             </div>
           </div>
+
+          {showMobileVideoControls ? (
+            <div className={styles.mobileControlBar} data-no-play-cursor>
+              <button
+                type="button"
+                className={styles.mobileControlBtn}
+                onClick={toggleFullscreen}
+                aria-label="Enter fullscreen"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <path
+                    d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+              {pipSupported ? (
+                <button
+                  type="button"
+                  className={styles.mobileControlBtn}
+                  onClick={togglePictureInPicture}
+                  aria-label="Picture in picture"
+                >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+                    <rect
+                      x="3"
+                      y="5"
+                      width="14"
+                      height="11"
+                      rx="1.5"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    />
+                    <rect
+                      x="11"
+                      y="9"
+                      width="10"
+                      height="10"
+                      rx="1.5"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    />
+                  </svg>
+                </button>
+              ) : null}
+              <button
+                type="button"
+                className={styles.mobileControlBtn}
+                onClick={toggleMute}
+                aria-label={muted ? 'Unmute' : 'Mute'}
+              >
+                {muted ? (
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+                    <path
+                      d="M11 5L6 9H3v6h3l5 4V5zM22 9l-6 6M16 9l6 6"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                ) : (
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+                    <path
+                      d="M11 5L6 9H3v6h3l5 4V5zM15.54 8.46a5 5 0 010 7.08M19.07 4.93a9 9 0 010 14.14"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                )}
+              </button>
+            </div>
+          ) : null}
 
           {playback.kind === 'mp4' && videoLoading && !videoError ? (
             <div className={styles.loadingBadge} aria-live="polite">

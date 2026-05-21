@@ -8,10 +8,11 @@
   z-index: 10000;
 }
 
+/* Align with .navBar padding (12px 20px desktop; 10px mobile) */
 .logoLink {
   position: fixed;
-  top: 1.25rem;
-  left: 1.25rem;
+  top: 12px;
+  left: 20px;
   z-index: 10001;
   display: block;
   line-height: 0;
@@ -24,17 +25,19 @@
   text-decoration: none;
 }
 
+/* Match HeaderNavigation nav logo (base S: 77×18) */
 .logoImg {
-  width: auto;
-  height: 22px;
+  display: block;
+  width: 77px;
+  height: auto;
   object-fit: contain;
 }
 
 .close {
   position: fixed;
-  top: 1.25rem;
+  top: 12px;
   /* inset from Simian fullscreen control */
-  right: calc(1.25rem + 50px);
+  right: calc(20px + 50px);
   z-index: 10002;
   display: inline-flex;
   align-items: center;
@@ -87,6 +90,22 @@ video.frame {
 
 /* Mobile: center-crop landscape reels to fill the viewport */
 @media (max-width: 767px) {
+  .logoLink {
+    top: 10px;
+    left: 10px;
+  }
+
+  .close {
+    top: 10px;
+    /* Fullscreen control moved to bottom bar — CLOSE can sit flush right */
+    right: 10px;
+  }
+
+  .titleBar {
+    /* Sit above bottom utility controls (1rem + ~40px button row) */
+    padding-bottom: calc(2.25rem + 1rem + 40px + env(safe-area-inset-bottom, 0px));
+  }
+
   video.frame {
     object-fit: cover;
     object-position: center;
@@ -124,6 +143,44 @@ video.frame {
   padding: 1.5rem 1.25rem 2.25rem;
   pointer-events: none;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, transparent 100%);
+}
+
+/* Mobile: utility controls (fullscreen, PiP, volume) sit above title, clear of logo/CLOSE */
+.mobileControlBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  z-index: 10003;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  padding: 0 1.25rem;
+  box-sizing: border-box;
+  pointer-events: auto;
+}
+
+.mobileControlBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobileControlBtn:hover,
+.mobileControlBtn:focus-visible {
+  opacity: 0.85;
+  outline: none;
 }
 
 .titleLine {
