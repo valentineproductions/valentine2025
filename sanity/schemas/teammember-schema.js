@@ -163,7 +163,14 @@ const teamMember = {
                 title: 'Simian proxy file (MP4)',
                 type: 'string',
                 description:
-                  'Simian MP4 for this project: use the proxy file name from metadata (e.g. Nike-x-Union-LA-Field-General-Colored_4K_mov.mp4 or adidas_-_pureboost_go--1080p-.mp4). If there is no proxy, the regular file name also works. You can also paste the full URL (https://valentine.gosimian.com/assets/videos/…mp4). The site plays it as native video (muted on the profile). If Profile Clip is empty, this is used as the profile background. Legacy Simian share URLs still work on the full-screen project page only — upload a profile clip for those if you need them in the profile reel.',
+                  'Preferred Simian MP4 for this project: proxy file name from metadata (e.g. Nike-x-Union-LA-Field-General-Colored_4K_mov.mp4) or full URL (https://valentine.gosimian.com/assets/videos/…mp4). Used for the profile background reel (muted) and full-screen project video. If Profile Clip is empty, this drives the profile page when set.',
+              },
+              {
+                name: 'simianEmbedUrl',
+                title: 'Simian embed URL (legacy)',
+                type: 'string',
+                description:
+                  'Legacy field — still fully supported. Same values as Simian proxy file (MP4): proxy filename, full assets/videos URL, or a Simian share iframe URL (full-screen project page only; profile reel needs upload or MP4). Prefer Simian proxy file (MP4) for new projects; leave this as-is if it already has data.',
               },
               {
                 name: 'profileClip',
