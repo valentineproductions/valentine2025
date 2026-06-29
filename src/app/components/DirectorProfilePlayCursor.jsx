@@ -4,9 +4,11 @@ import { useEffect, useRef } from 'react';
 import styles from './DirectorProfilePlayCursor.module.css';
 
 const DEFAULT_ZONE = '[data-play-cursor-zone]';
-const LERP = 0.12;
-/** Play icon: 50% of original 24×24 art → 12×12 */
-const ICON_PX = 12;
+const LERP = 0.38;
+const ICON_OPACITY = 1;
+const RING_OPACITY = 0.2;
+/** Play icon: 20% smaller than prior 12×12 */
+const ICON_PX = 9.6;
 
 /**
  * Play/pause icon at pointer; ring follows with lag. Only when hovering elements with data-play-cursor-zone.
@@ -97,11 +99,11 @@ export default function DirectorProfilePlayCursor({
           r.y = m.y;
         }
         if (icon) {
-          icon.style.opacity = '1';
+          icon.style.opacity = String(ICON_OPACITY);
           icon.style.transform = `translate3d(${m.x}px, ${m.y}px, 0) translate(-50%, -50%)`;
         }
         if (ring) {
-          ring.style.opacity = '1';
+          ring.style.opacity = String(RING_OPACITY);
           ring.style.transform = `translate3d(${r.x}px, ${r.y}px, 0) translate(-50%, -50%)`;
         }
       } else {
