@@ -9,16 +9,20 @@ import styles from './DirectorProjectVideoPlayer.module.css';
 
 export default function DirectorProjectVideoPlayer({
   simianSource,
+  uploadedClipUrl = '',
   directorProfileHref,
   directorName,
   projectName,
   logoUrl,
   logoAlt = 'Valentine',
 }) {
-  const playback = useMemo(
-    () => resolveProfileProjectPlayback(simianSource),
-    [simianSource]
-  );
+  const playback = useMemo(() => {
+    const simian = resolveProfileProjectPlayback(simianSource);
+    if (simian.kind !== 'none') return simian;
+    const clip = String(uploadedClipUrl || '').trim();
+    if (clip) return { kind: 'mp4', src: clip };
+    return { kind: 'none' };
+  }, [simianSource, uploadedClipUrl]);
 
   const hasMedia = playback.kind !== 'none';
   const mp4Src = playback.kind === 'mp4' ? playback.src : '';
@@ -336,13 +340,10 @@ export default function DirectorProjectVideoPlayer({
         </div>
       ) : (
         <div className={styles.missing}>
-          <p>No Simian source is set for this project, or it could not be read.</p>
+          <p>No video is available for this project.</p>
           <p className={styles.missingHint}>
-            In Sanity → Team Member → Profile Projects, set <strong>Simian proxy file (MP4)</strong> to the
-            proxy file name (e.g. <code>Nike-x-Union-LA-Field-General-Colored_4K_mov.mp4</code>) or the full
-            URL under <code>https://valentine.gosimian.com/assets/videos/</code>. You can also paste a legacy
-            Simian <strong>share</strong> iframe URL (src only). After saving, do a full page refresh so the
-            site picks up new data.
+            In Sanity → Team Member → Profile Projects, upload a <strong>Profile Clip</strong> or set{' '}
+            <strong>Simian proxy file (MP4)</strong> for this project, then publish and refresh.
           </p>
         </div>
       )}

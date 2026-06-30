@@ -51,6 +51,7 @@ export default function DirectorProjectVideoPage({ params }) {
             (v) => v != null && String(v).trim() !== ''
           ) ?? ''
         }
+        uploadedClipUrl={project.profileClip?.asset?.url || ''}
         directorProfileHref={directorProfileHref}
         directorName={member.fullName}
         projectName={project.name}
