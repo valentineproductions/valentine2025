@@ -42,17 +42,27 @@ export function coerceSimianSourceInput(raw) {
 }
 
 /**
- * Background clip for director profile: uploaded file, else Simian MP4 from proxy filename / full MP4 URL.
- * Legacy share embed URLs do not produce a value here (use uploaded profile clip for those).
+ * Profile project playback: Simian file name first, uploaded Profile Clip fallback.
  *
- * @param {{ profileClip?: { asset?: { url?: string } }; simianProxyFile?: string; simianEmbedUrl?: string } | null | undefined} project
+ * @param {{ profileClip?: { asset?: { url?: string } }; simianProxyFile?: string } | null | undefined} project
+ * @returns {{ kind: 'none' } | { kind: 'mp4'; src: string } | { kind: 'iframe'; src: string }}
+ */
+export function resolveProfileProjectSources(project) {
+  const simian = resolveProfileProjectPlayback(project?.simianProxyFile);
+  if (simian.kind !== 'none') return simian;
+  const clip = String(project?.profileClip?.asset?.url || '').trim();
+  if (clip) return { kind: 'mp4', src: clip };
+  return { kind: 'none' };
+}
+
+/**
+ * Background clip URL for director profile reel (MP4 only).
+ *
+ * @param {{ profileClip?: { asset?: { url?: string } }; simianProxyFile?: string } | null | undefined} project
  * @returns {string}
  */
 export function getProfileProjectBackgroundUrl(project) {
-  const clip = project?.profileClip?.asset?.url;
-  if (clip) return clip;
-  const raw = project?.simianProxyFile || project?.simianEmbedUrl;
-  const playback = resolveProfileProjectPlayback(raw);
+  const playback = resolveProfileProjectSources(project);
   return playback.kind === 'mp4' ? playback.src : '';
 }
 

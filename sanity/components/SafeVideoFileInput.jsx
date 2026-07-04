@@ -1,5 +1,12 @@
 import React from 'react';
 
+/** Props Sanity passes that must not reach DOM nodes inside the default file input. */
+const FILTERED_INPUT_PROPS = new Set([
+  'disableTransition',
+  'sortable',
+  'items',
+]);
+
 class UploadInputErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -47,9 +54,16 @@ class UploadInputErrorBoundary extends React.Component {
   }
 }
 
+function filterInputProps(props) {
+  const safeProps = {};
+  for (const [key, value] of Object.entries(props)) {
+    if (!FILTERED_INPUT_PROPS.has(key)) safeProps[key] = value;
+  }
+  return safeProps;
+}
+
 export default function SafeVideoFileInput(props) {
-  const { disableTransition, ...safeProps } = props;
-  void disableTransition;
+  const safeProps = filterInputProps(props);
   return (
     <UploadInputErrorBoundary>
       {props.renderDefault(safeProps)}

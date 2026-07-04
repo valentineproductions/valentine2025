@@ -46,11 +46,7 @@ export default function DirectorProjectVideoPage({ params }) {
   return (
     <div className={styles.container}>
       <DirectorProjectVideoPlayer
-        simianSource={
-          [project.simianProxyFile, project.simianEmbedUrl].find(
-            (v) => v != null && String(v).trim() !== ''
-          ) ?? ''
-        }
+        simianSource={project.simianProxyFile ?? ''}
         uploadedClipUrl={project.profileClip?.asset?.url || ''}
         directorProfileHref={directorProfileHref}
         directorName={member.fullName}

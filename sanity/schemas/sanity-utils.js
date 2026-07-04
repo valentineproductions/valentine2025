@@ -263,7 +263,6 @@ export async function getProject(slug) {
             name,
             "slug": slug.current,
             simianProxyFile,
-            simianEmbedUrl,
             profileClip{
               asset->{ _id, url }
             }
@@ -406,7 +405,6 @@ export async function getTeamMemberBySlug(slug) {
         name,
         "slug": slug.current,
         simianProxyFile,
-        simianEmbedUrl,
         profileClip{
           asset->{ _id, url }
         }
@@ -475,7 +473,6 @@ export async function getLegalBySlug(slug) {
               name,
               "slug": slug.current,
               simianProxyFile,
-              simianEmbedUrl,
               profileClip{
                 asset->{ _id, url }
               }

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { resolveProfileProjectPlayback } from '@/app/lib/simianProfileVideo';
+import { resolveProfileProjectSources } from '@/app/lib/simianProfileVideo';
 import DirectorProfilePlayCursor from '@/app/components/DirectorProfilePlayCursor';
 import styles from './DirectorProjectVideoPlayer.module.css';
 
@@ -16,13 +16,14 @@ export default function DirectorProjectVideoPlayer({
   logoUrl,
   logoAlt = 'Valentine',
 }) {
-  const playback = useMemo(() => {
-    const simian = resolveProfileProjectPlayback(simianSource);
-    if (simian.kind !== 'none') return simian;
-    const clip = String(uploadedClipUrl || '').trim();
-    if (clip) return { kind: 'mp4', src: clip };
-    return { kind: 'none' };
-  }, [simianSource, uploadedClipUrl]);
+  const playback = useMemo(
+    () =>
+      resolveProfileProjectSources({
+        simianProxyFile: simianSource,
+        profileClip: uploadedClipUrl ? { asset: { url: uploadedClipUrl } } : undefined,
+      }),
+    [simianSource, uploadedClipUrl]
+  );
 
   const hasMedia = playback.kind !== 'none';
   const mp4Src = playback.kind === 'mp4' ? playback.src : '';
@@ -200,9 +201,8 @@ export default function DirectorProjectVideoPlayer({
               />
               {videoError ? (
                 <div className={styles.videoError} role="alert">
-                  This video could not be loaded (blocked, wrong file name, or missing on Simian). Check
-                  the Simian proxy file / MP4 URL in Sanity, hard-refresh after publishing, and confirm the
-                  file opens at the same URL in a new tab.
+                  This video could not be loaded. Check the Simian file name or Profile Clip in Sanity,
+                  publish, and hard-refresh.
                 </div>
               ) : null}
             </>
@@ -342,8 +342,8 @@ export default function DirectorProjectVideoPlayer({
         <div className={styles.missing}>
           <p>No video is available for this project.</p>
           <p className={styles.missingHint}>
-            In Sanity → Team Member → Profile Projects, upload a <strong>Profile Clip</strong> or set{' '}
-            <strong>Simian proxy file (MP4)</strong> for this project, then publish and refresh.
+            In Sanity → Team Member → Profile Projects, set the <strong>Simian file name or proxy file (.mp4)</strong>{' '}
+            or upload a <strong>Profile Clip</strong>, then publish and refresh.
           </p>
         </div>
       )}

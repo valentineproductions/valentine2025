@@ -741,6 +741,32 @@ new mode 100755
 diff --git a/node_modules/sanity/lib/index.mjs b/node_modules/sanity/lib/index.mjs
 old mode 100644
 new mode 100755
+index f7f5d1e..c7eaf12
+--- a/node_modules/sanity/lib/index.mjs
++++ b/node_modules/sanity/lib/index.mjs
+@@ -33815,16 +33815,17 @@ function List(props2) {
+   return $[8] !== handleSortEnd || $[9] !== onItemMoveEnd || $[10] !== onItemMoveStart || $[11] !== rest || $[12] !== sortable ? (t1 = sortable ? /* @__PURE__ */ jsx(SortableList, { onItemMove: handleSortEnd, onItemMoveStart, onItemMoveEnd, ...rest }) : /* @__PURE__ */ jsx(Grid, { ...rest }), $[8] = handleSortEnd, $[9] = onItemMoveEnd, $[10] = onItemMoveStart, $[11] = rest, $[12] = sortable, $[13] = t1) : t1 = $[13], t1;
+ }
+ const Item = forwardRef(function(props2, ref) {
+-  const $ = c(10);
+-  let rest, sortable;
++  const $ = c(11);
++  let rest, sortable, _disableTransition;
+   $[0] !== props2 ? ({
+     sortable,
++    disableTransition: _disableTransition,
+     ...rest
+-  } = props2, $[0] = props2, $[1] = rest, $[2] = sortable) : (rest = $[1], sortable = $[2]);
++  } = props2, $[0] = props2, $[1] = rest, $[2] = sortable, $[3] = _disableTransition) : (rest = $[1], sortable = $[2], _disableTransition = $[3]);
+   let t0;
+-  $[3] !== ref || $[4] !== rest || $[5] !== sortable ? (t0 = sortable ? /* @__PURE__ */ jsx(SortableListItem, { ref, ...rest }) : /* @__PURE__ */ jsx(ListItem$2, { ref, ...rest }), $[3] = ref, $[4] = rest, $[5] = sortable, $[6] = t0) : t0 = $[6];
++  $[4] !== ref || $[5] !== rest || $[6] !== sortable ? (t0 = sortable ? /* @__PURE__ */ jsx(SortableListItem, { ref, disableTransition: _disableTransition, ...rest }) : /* @__PURE__ */ jsx(ListItem$2, { ref, ...rest }), $[4] = ref, $[5] = rest, $[6] = sortable, $[7] = t0) : t0 = $[7];
+   let t1;
+-  return $[7] !== props2.id || $[8] !== t0 ? (t1 = /* @__PURE__ */ jsx(SortableItemIdContext.Provider, { value: props2.id, children: t0 }), $[7] = props2.id, $[8] = t0, $[9] = t1) : t1 = $[9], t1;
++  return $[8] !== props2.id || $[9] !== t0 ? (t1 = /* @__PURE__ */ jsx(SortableItemIdContext.Provider, { value: props2.id, children: t0 }), $[8] = props2.id, $[9] = t0, $[10] = t1) : t1 = $[10], t1;
+ });
+ function focusRingBorderStyle$2(border) {
+   return `inset 0 0 0 ${border.width}px ${border.color}`;
 diff --git a/node_modules/sanity/lib/index.mjs.map b/node_modules/sanity/lib/index.mjs.map
 old mode 100644
 new mode 100755
@@ -3906,6 +3932,36 @@ new mode 100755
 diff --git a/node_modules/sanity/src/core/form/inputs/arrays/common/list.tsx b/node_modules/sanity/src/core/form/inputs/arrays/common/list.tsx
 old mode 100644
 new mode 100755
+index ebcda0e..77410e1
+--- a/node_modules/sanity/src/core/form/inputs/arrays/common/list.tsx
++++ b/node_modules/sanity/src/core/form/inputs/arrays/common/list.tsx
+@@ -206,10 +206,23 @@ export const Item = forwardRef(function Item(
+   props: ItemProps & ComponentProps<typeof Card>,
+   ref: ForwardedRef<HTMLDivElement>,
+ ) {
+-  const {sortable, ...rest} = props
++  const {sortable, disableTransition, id, children, ...rest} = props
+   return (
+-    <SortableItemIdContext.Provider value={props.id}>
+-      {sortable ? <SortableListItem ref={ref} {...rest} /> : <ListItem ref={ref} {...rest} />}
++    <SortableItemIdContext.Provider value={id}>
++      {sortable ? (
++        <SortableListItem
++          ref={ref}
++          id={id}
++          disableTransition={disableTransition}
++          {...rest}
++        >
++          {children}
++        </SortableListItem>
++      ) : (
++        <ListItem ref={ref} {...rest}>
++          {children}
++        </ListItem>
++      )}
+     </SortableItemIdContext.Provider>
+   )
+ })
 diff --git a/node_modules/sanity/src/core/form/inputs/arrays/common/uploadTarget/styles.ts b/node_modules/sanity/src/core/form/inputs/arrays/common/uploadTarget/styles.ts
 old mode 100644
 new mode 100755

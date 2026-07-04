@@ -32,7 +32,8 @@ const teamMember = {
         name: 'city',
         title: 'City',
         type: 'string',
-        description: 'The city where the team member is based.',
+        description:
+          'For internal use only at the moment. The city where the team member is based.',
       },
       {
         name: 'image',
@@ -49,7 +50,8 @@ const teamMember = {
             description: 'Alternative text for accessibility.',
           },
         ],
-        description: 'Image of the team member.',
+        description:
+          'For internal use only at the moment. Image of the team member.',
       },
       {
         name: 'bio',
@@ -104,7 +106,7 @@ const teamMember = {
         title: 'Directors Page Clip (Simian)',
         type: 'string',
         description:
-          'Preferred for the Directors list background clip. Go to Simian > Media Library > Edit Media > Metadata and use the "PROXY FILE" from the first letter through .mp4. If there is no proxy, the regular file name also works.',
+          'Background clip for the Directors list (hover preview). In Simian → Media → open the video → Metadata, copy the .mp4 file name shown as FILE or PROXY NAME (e.g. Nike-x-Union-LA-Field-General-Colored_4K_mov.mp4). When set, Directors Page Clip (Upload) is not needed.',
       },
       {
         name: 'directorsPageClip',
@@ -139,6 +141,7 @@ const teamMember = {
                 type: 'slug',
                 options: {
                   maxLength: 96,
+                  disableArrayWarning: true,
                   /* String source ("name") does not resolve for slugs inside array objects; use parent. */
                   source: (_doc, context) => {
                     const name = context?.parent?.name;
@@ -160,17 +163,10 @@ const teamMember = {
               },
               {
                 name: 'simianProxyFile',
-                title: 'Simian proxy file (MP4)',
+                title: 'Simian file name or proxy file (.mp4)',
                 type: 'string',
                 description:
-                  'Preferred Simian MP4 for this project: proxy file name from metadata (e.g. Nike-x-Union-LA-Field-General-Colored_4K_mov.mp4) or full URL (https://valentine.gosimian.com/assets/videos/…mp4). Used for the profile background reel (muted) and full-screen project video. If Profile Clip is empty, this drives the profile page when set.',
-              },
-              {
-                name: 'simianEmbedUrl',
-                title: 'Simian embed URL (legacy)',
-                type: 'string',
-                description:
-                  'Legacy field — still fully supported. Same values as Simian proxy file (MP4): proxy filename, full assets/videos URL, or a Simian share iframe URL (full-screen project page only; profile reel needs upload or MP4). Prefer Simian proxy file (MP4) for new projects; leave this as-is if it already has data.',
+                  'In Simian → Media → open the video → Metadata. Copy the .mp4 file name shown as FILE or PROXY NAME (e.g. Nike-x-Union-LA-Field-General-Colored_4K_mov.mp4). When this is set, Profile Clip is not needed — the site uses this file for the profile reel and full-screen video.',
               },
               {
                 name: 'profileClip',
@@ -182,8 +178,9 @@ const teamMember = {
                 components: {
                   input: SafeVideoFileInput,
                 },
+                hidden: ({ parent }) => Boolean(String(parent?.simianProxyFile || '').trim()),
                 description:
-                  'Optional short MP4/WebM for the profile page background. If empty, the Simian proxy file (MP4 URL above) is used when set. Legacy Simian iframe URLs cannot drive the profile reel — use an upload or a Simian assets/videos …mp4 link in Simian proxy file.',
+                  'Optional MP4/WebM upload — only if the Simian file name above is empty. Used for the profile reel and full-screen video.',
               },
             ],
             preview: {
@@ -201,7 +198,7 @@ const teamMember = {
           },
         ],
         description:
-          'Projects on the director profile. Each row needs either an uploaded profile clip or a Simian proxy MP4 (filename or full URL). If none qualify, the Directors page clip is used as a single fallback reel.',
+          'Projects on the director profile. Each row needs a Simian .mp4 file name or an uploaded Profile Clip. If none qualify, the Directors page clip is used as a single fallback reel.',
       },
       {
         name: 'categories',
@@ -209,7 +206,8 @@ const teamMember = {
         type: 'array',
         of: [{ type: 'string' }],
         validation: Rule => Rule.max(5).error('You can add a maximum of 5 categories'),
-        description: 'Categories for this team member (e.g., Food/Beverage, Fashion, Lifestyle). Maximum of 5 categories',
+        description:
+          'For internal use only at the moment. Categories for this team member (e.g., Food/Beverage, Fashion, Lifestyle). Maximum of 5 categories.',
       },
       // You can add more fields here, like social media links, etc.
     ],

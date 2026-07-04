@@ -1,6 +1,6 @@
 const aboutPageV2 = {
   name: 'aboutPageV2',
-  title: 'Information Page v2',
+  title: 'Information Page',
   type: 'document',
   groups: [
     { name: 'content', title: 'Content' },
@@ -176,7 +176,7 @@ const aboutPageV2 = {
       const title = selection?.title || '';
       const words = title.trim().split(/\s+/).slice(0, 3).join(' ');
       return {
-        title: words ? `${words}…` : 'Information Page v2',
+        title: words ? `${words}…` : 'Information Page',
       };
     },
   },
